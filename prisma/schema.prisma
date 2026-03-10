@@ -360,3 +360,46 @@ model ActivityLog {
   @@index([entityType])
   @@index([createdAt])
 }
+
+// ─── ACCOUNTING ──────────────────────────────────────────────────────────────
+
+model Expense {
+  id          String   @id @default(cuid())
+  date        DateTime
+  vendor      String
+  category    String   // RENT | SUPPLIES | MARKETING | SOFTWARE | SHIPPING | UTILITIES | SALARIES | INSURANCE | EQUIPMENT | OTHER
+  description String?
+  amount      Float
+  receiptUrl  String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@index([category])
+}
+
+model Invoice {
+  id            String    @id @default(cuid())
+  invoiceNumber String    @unique
+  orderId       String?
+  clientName    String
+  clientEmail   String
+  clientAddress String?   // JSON: { line1, line2, city, state, zip, country }
+  lineItems     String    @default("[]") // JSON: [{ description, qty, unitPrice, amount }]
+  subtotal      Float
+  taxRate       Float     @default(0)
+  tax           Float     @default(0)
+  total         Float
+  status        String    @default("DRAFT") // DRAFT | SENT | PAID | OVERDUE | CANCELLED
+  issuedAt      DateTime  @default(now())
+  dueAt         DateTime?
+  paidAt        DateTime?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([issuedAt])
+  @@index([clientEmail])
+}
