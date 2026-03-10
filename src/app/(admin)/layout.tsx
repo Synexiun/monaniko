@@ -33,6 +33,7 @@ import {
   Paintbrush,
   Award,
   Crown,
+  Gavel,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ToastProvider from '@/components/admin/ToastProvider';
@@ -90,6 +91,7 @@ const sidebarSections: SidebarSection[] = [
     links: [
       { href: '/admin/collector-club', label: 'Collector Club', icon: Crown },
       { href: '/admin/certificates', label: 'Certificates', icon: Award },
+      { href: '/admin/auctions', label: 'Auctions', icon: Gavel },
     ],
   },
   {

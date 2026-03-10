@@ -21,6 +21,7 @@ const navLinks = [
     ],
   },
   { href: "/workshops", label: "Workshops & Events" },
+  { href: "/auctions", label: "Auctions" },
   { href: "/kids-club", label: "Kids Club" },
   {
     href: "/about",

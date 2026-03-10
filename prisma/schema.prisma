@@ -515,3 +515,47 @@ model CollectorMembership {
   @@index([status])
   @@index([email])
 }
+
+// ─── AUCTIONS ─────────────────────────────────────────────────────────────────
+
+model Auction {
+  id           String      @id @default(cuid())
+  artworkId    String?     // soft ref to Artwork.id
+  artworkTitle String
+  artworkImage String?
+  slug         String      @unique
+  startingBid  Float
+  reservePrice Float?
+  currentBid   Float?
+  winnerEmail  String?
+  winnerName   String?
+  winnerBidId  String?     // soft ref to winning AuctionBid.id
+  status       String      @default("DRAFT") // DRAFT | LIVE | ENDED | CANCELLED
+  startAt      DateTime
+  endAt        DateTime
+  description  String?
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  bids AuctionBid[]
+
+  @@index([status])
+  @@index([endAt])
+  @@index([slug])
+}
+
+model AuctionBid {
+  id          String   @id @default(cuid())
+  auctionId   String
+  bidderName  String
+  bidderEmail String
+  amount      Float
+  isWinning   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  auction Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+
+  @@index([auctionId])
+  @@index([auctionId, amount])
+}

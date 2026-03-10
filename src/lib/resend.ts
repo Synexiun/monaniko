@@ -335,3 +335,169 @@ export async function sendWorkshopConfirmation(data: {
     html,
   })
 }
+
+// ─── Auction: Outbid Notification ──────────────────────────────
+export async function sendAuctionOutbid(data: {
+  bidderName: string
+  bidderEmail: string
+  artworkTitle: string
+  previousBid: number
+  newBid: number
+  auctionSlug: string
+  endAt: Date
+}) {
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://monaniko.com'
+  const FROM = `${process.env.FROM_NAME || 'Mona Niko Gallery'} <${process.env.FROM_EMAIL || 'noreply@monaniko.com'}>`
+  const auctionUrl = `${SITE_URL}/auctions/${data.auctionSlug}`
+  const endDate = new Date(data.endAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })
+
+  const html = `
+<!DOCTYPE html><html><body style="margin:0;padding:0;background:#FAFAF8;font-family:system-ui,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8;padding:40px 20px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+      <tr><td style="background:#1A1A1A;padding:24px 40px;text-align:center;">
+        <a href="${SITE_URL}" style="font-family:Georgia,serif;font-size:18px;color:#C4A265;text-decoration:none;letter-spacing:0.1em;">MONA NIKO GALLERY</a>
+      </td></tr>
+      <tr><td style="background:#C4A265;height:3px;"></td></tr>
+      <tr><td style="padding:40px;">
+        <h1 style="font-family:Georgia,serif;font-size:24px;font-weight:400;color:#1A1A1A;margin:0 0 8px;">You've Been Outbid</h1>
+        <p style="font-size:15px;color:#4A4A4A;margin:0 0 28px;line-height:1.6;">
+          Dear ${data.bidderName}, someone has placed a higher bid on <strong>${data.artworkTitle}</strong>.
+        </p>
+        <div style="background:#FAFAF8;border:1px solid #E8E5E0;padding:20px 24px;margin-bottom:24px;">
+          <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A4A;">Your Bid</p>
+          <p style="margin:0;font-family:Georgia,serif;font-size:22px;color:#6B6560;text-decoration:line-through;">$${data.previousBid.toLocaleString()}</p>
+          <p style="margin:8px 0 0;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A4A;">Current Highest Bid</p>
+          <p style="margin:4px 0 0;font-family:Georgia,serif;font-size:28px;color:#C4A265;">$${data.newBid.toLocaleString()}</p>
+        </div>
+        <p style="font-size:14px;color:#4A4A4A;margin:0 0 24px;">Auction closes: <strong>${endDate}</strong></p>
+        <a href="${auctionUrl}" style="display:inline-block;background:#C4A265;color:#fff;text-decoration:none;padding:14px 32px;font-size:13px;letter-spacing:0.15em;text-transform:uppercase;">
+          Place a Higher Bid
+        </a>
+      </td></tr>
+      <tr><td style="background:#2C2C2C;padding:20px 40px;text-align:center;">
+        <p style="margin:0;font-size:11px;color:#C5C0B8;">Mona Niko Gallery · 668B The Shops at Mission Viejo Mall · Mission Viejo, CA 92691</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const resendClient = new Resend(process.env.RESEND_API_KEY || '')
+  return resendClient.emails.send({
+    from: FROM,
+    to: data.bidderEmail,
+    subject: `You've been outbid on "${data.artworkTitle}" — Bid Now`,
+    html,
+  })
+}
+
+// ─── Auction: Winner Notification ──────────────────────────────
+export async function sendAuctionWon(data: {
+  winnerName: string
+  winnerEmail: string
+  artworkTitle: string
+  winningBid: number
+  auctionSlug: string
+}) {
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://monaniko.com'
+  const FROM = `${process.env.FROM_NAME || 'Mona Niko Gallery'} <${process.env.FROM_EMAIL || 'noreply@monaniko.com'}>`
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@monaniko.com'
+
+  const html = `
+<!DOCTYPE html><html><body style="margin:0;padding:0;background:#FAFAF8;font-family:system-ui,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8;padding:40px 20px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+      <tr><td style="background:#1A1A1A;padding:24px 40px;text-align:center;">
+        <a href="${SITE_URL}" style="font-family:Georgia,serif;font-size:18px;color:#C4A265;text-decoration:none;letter-spacing:0.1em;">MONA NIKO GALLERY</a>
+      </td></tr>
+      <tr><td style="background:#C4A265;height:3px;"></td></tr>
+      <tr><td style="padding:48px 40px;text-align:center;">
+        <div style="font-size:40px;margin-bottom:16px;">🏆</div>
+        <h1 style="font-family:Georgia,serif;font-size:28px;font-weight:400;color:#1A1A1A;margin:0 0 8px;">Congratulations!</h1>
+        <p style="font-size:16px;color:#4A4A4A;margin:0 0 32px;line-height:1.6;">
+          Dear ${data.winnerName}, you have won the auction for <strong>${data.artworkTitle}</strong>.
+        </p>
+        <div style="background:#FAFAF8;border:1px solid #C4A265;padding:24px;margin-bottom:32px;text-align:left;">
+          <p style="margin:0 0 4px;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:#4A4A4A;">Your Winning Bid</p>
+          <p style="margin:0;font-family:Georgia,serif;font-size:36px;color:#C4A265;">$${data.winningBid.toLocaleString()}</p>
+        </div>
+        <p style="font-size:14px;color:#4A4A4A;line-height:1.8;margin:0 0 32px;text-align:left;">
+          Our team will be in touch within 24 hours to arrange payment and shipping for your artwork.
+          We're thrilled to connect you with this original work by Mona Niko.
+        </p>
+        <a href="mailto:${ADMIN_EMAIL}" style="display:inline-block;background:#1A1A1A;color:#fff;text-decoration:none;padding:14px 32px;font-size:13px;letter-spacing:0.15em;text-transform:uppercase;">
+          Contact Gallery
+        </a>
+      </td></tr>
+      <tr><td style="background:#2C2C2C;padding:20px 40px;text-align:center;">
+        <p style="margin:0;font-size:11px;color:#C5C0B8;">Mona Niko Gallery · 668B The Shops at Mission Viejo Mall · Mission Viejo, CA 92691</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const resendClient = new Resend(process.env.RESEND_API_KEY || '')
+  return resendClient.emails.send({
+    from: FROM,
+    to: data.winnerEmail,
+    bcc: ADMIN_EMAIL,
+    subject: `You Won! — "${data.artworkTitle}" | Mona Niko Gallery`,
+    html,
+  })
+}
+
+// ─── Auction: New Bid Admin Notification ───────────────────────
+export async function sendAuctionNewBid(data: {
+  bidderName: string
+  bidderEmail: string
+  artworkTitle: string
+  amount: number
+  auctionId: string
+}) {
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://monaniko.com'
+  const FROM = `${process.env.FROM_NAME || 'Mona Niko Gallery'} <${process.env.FROM_EMAIL || 'noreply@monaniko.com'}>`
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@monaniko.com'
+
+  const html = `
+<!DOCTYPE html><html><body style="margin:0;padding:0;background:#FAFAF8;font-family:system-ui,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8;padding:40px 20px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+      <tr><td style="background:#1A1A1A;padding:24px 40px;text-align:center;">
+        <span style="font-family:Georgia,serif;font-size:18px;color:#C4A265;letter-spacing:0.1em;">MONA NIKO GALLERY — ADMIN</span>
+      </td></tr>
+      <tr><td style="background:#C4A265;height:3px;"></td></tr>
+      <tr><td style="padding:32px 40px;">
+        <h1 style="font-family:Georgia,serif;font-size:20px;font-weight:400;color:#1A1A1A;margin:0 0 20px;">New Auction Bid</h1>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          ${[
+            ['Artwork', data.artworkTitle],
+            ['Bidder', data.bidderName],
+            ['Email', data.bidderEmail],
+            ['Bid Amount', '$' + data.amount.toLocaleString()],
+          ].map(([k, v]) => `<tr>
+            <td style="padding:8px 0;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#4A4A4A;width:120px;vertical-align:top;">${k}</td>
+            <td style="padding:8px 0;font-size:15px;color:#1A1A1A;font-weight:${k === 'Bid Amount' ? '600' : '400'};">${v}</td>
+          </tr>`).join('')}
+        </table>
+        <a href="${SITE_URL}/admin/auctions" style="display:inline-block;margin-top:24px;background:#C4A265;color:#fff;text-decoration:none;padding:12px 24px;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;">
+          View in Admin
+        </a>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const resendClient = new Resend(process.env.RESEND_API_KEY || '')
+  return resendClient.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `New bid $${data.amount.toLocaleString()} on "${data.artworkTitle}"`,
+    html,
+  })
+}
