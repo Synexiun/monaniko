@@ -229,6 +229,51 @@ export async function sendInquiryNotification(data: InquiryEmailData) {
   })
 }
 
+// ─── Email Blast (Batch) ───────────────────────────────────────
+export interface BlastRecipient {
+  email: string
+  firstName?: string
+  lastName?: string
+}
+
+export async function sendEmailBlast(data: {
+  subject: string
+  html: string
+  previewText?: string
+  recipients: BlastRecipient[]
+}): Promise<{ sent: number; failed: number }> {
+  if (!data.recipients.length) return { sent: 0, failed: 0 }
+
+  // Resend batch API supports up to 100 emails per call
+  const BATCH_SIZE = 100
+  let sent = 0
+  let failed = 0
+
+  for (let i = 0; i < data.recipients.length; i += BATCH_SIZE) {
+    const batch = data.recipients.slice(i, i + BATCH_SIZE)
+    try {
+      const emails = batch.map((r) => ({
+        from: FROM,
+        to: r.email,
+        subject: data.subject,
+        html: data.html,
+        ...(data.previewText ? { headers: { 'X-Preview-Text': data.previewText } } : {}),
+      }))
+      const result = await resend.batch.send(emails)
+      // resend.batch.send returns { data: [...], error }
+      if (result.error) {
+        failed += batch.length
+      } else {
+        sent += batch.length
+      }
+    } catch {
+      failed += batch.length
+    }
+  }
+
+  return { sent, failed }
+}
+
 // ─── Workshop Booking Confirmation ────────────────────────────
 export async function sendWorkshopConfirmation(data: {
   customerName: string

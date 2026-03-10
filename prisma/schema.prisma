@@ -403,3 +403,115 @@ model Invoice {
   @@index([issuedAt])
   @@index([clientEmail])
 }
+
+// ─── EMAIL MARKETING ─────────────────────────────────────────────────────────
+
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  subject     String
+  html        String
+  previewText String?
+  category    String   @default("newsletter") // newsletter | collection | workshop | promo | custom
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  blasts EmailBlast[]
+
+  @@index([category])
+}
+
+model EmailBlast {
+  id             String    @id @default(cuid())
+  subject        String
+  html           String
+  previewText    String?
+  segment        String    // all | newsletter | collector | print_buyer | workshop_attendee | vip | press
+  status         String    @default("DRAFT") // DRAFT | SENDING | SENT | FAILED
+  recipientCount Int       @default(0)
+  sentCount      Int       @default(0)
+  failedCount    Int       @default(0)
+  sentAt         DateTime?
+  templateId     String?
+  campaignId     String?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  template EmailTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([sentAt])
+  @@index([segment])
+}
+
+// ─── COMMISSIONS ──────────────────────────────────────────────────────────────
+
+model Commission {
+  id                 String    @id @default(cuid())
+  inquiryId          String?   // soft ref to Inquiry.id
+  clientName         String
+  clientEmail        String
+  clientPhone        String?
+  stage              String    @default("CONSULTATION") // CONSULTATION | CONCEPT | DEPOSIT_PENDING | DEPOSIT_PAID | IN_PROGRESS | REVIEW | COMPLETED | CANCELLED
+  artworkDescription String?
+  medium             String?
+  dimensions         String?
+  colorNotes         String?
+  deadline           DateTime?
+  depositAmount      Float?
+  totalAmount        Float?
+  depositPaidAt      DateTime?
+  completedAt        DateTime?
+  references         String    @default("[]") // JSON: [{ url, note }]
+  artworkId          String?   // soft ref to Artwork.id once created
+  notes              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([stage])
+  @@index([clientEmail])
+}
+
+// ─── CERTIFICATES ─────────────────────────────────────────────────────────────
+
+model Certificate {
+  id                String   @id @default(cuid())
+  certificateNumber String   @unique
+  artworkTitle      String
+  artworkDescription String?
+  medium            String?
+  dimensions        String?
+  year              Int?
+  edition           String?
+  artistName        String   @default("Mona Niko")
+  recipientName     String
+  orderId           String?  // soft ref to Order.id
+  artworkId         String?  // soft ref to Artwork.id
+  notes             String?
+  issuedAt          DateTime @default(now())
+  createdAt         DateTime @default(now())
+
+  @@index([orderId])
+  @@index([artworkId])
+}
+
+// ─── COLLECTOR CLUB ───────────────────────────────────────────────────────────
+
+model CollectorMembership {
+  id        String    @id @default(cuid())
+  userId    String?   // soft ref to User.id
+  name      String
+  email     String    @unique
+  tier      String    @default("SILVER") // SILVER | GOLD | PLATINUM
+  status    String    @default("ACTIVE") // ACTIVE | SUSPENDED | CANCELLED
+  joinedAt  DateTime  @default(now())
+  expiresAt DateTime?
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([tier])
+  @@index([status])
+  @@index([email])
+}

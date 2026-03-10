@@ -75,10 +75,37 @@ export default function CommissionsPage() {
   });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      // Post as a COMMISSION inquiry
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "COMMISSION",
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          message: `${formData.vision}\n\nPreferred size: ${formData.preferredSize || "Not specified"}\nBudget: ${formData.budgetRange}`,
+          budget: formData.budgetRange,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to send inquiry");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -328,8 +355,14 @@ export default function CommissionsPage() {
                     submitting this form.
                   </p>
 
-                  <Button type="submit" variant="gold" size="lg">
-                    Submit Inquiry
+                  {submitError && (
+                    <div className="px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm">
+                      {submitError}
+                    </div>
+                  )}
+
+                  <Button type="submit" variant="gold" size="lg" disabled={submitting}>
+                    {submitting ? "Sending…" : "Submit Inquiry"}
                   </Button>
                 </form>
               )}

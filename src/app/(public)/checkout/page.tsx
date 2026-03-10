@@ -76,9 +76,17 @@ interface ShippingForm {
 
 interface Breakdown {
   subtotal: number;
+  discount: number;
   shipping: number;
   tax: number;
   total: number;
+}
+
+interface PromoInfo {
+  code: string;
+  discountType: string;
+  discountValue: number;
+  description: string | null;
 }
 
 const initialForm: ShippingForm = {
@@ -173,6 +181,10 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [showOrderSummary, setShowOrderSummary] = useState(false);
+  const [promoInput, setPromoInput] = useState("");
+  const [promoInfo, setPromoInfo] = useState<PromoInfo | null>(null);
+  const [promoError, setPromoError] = useState("");
+  const [applyingPromo, setApplyingPromo] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -180,6 +192,23 @@ export default function CheckoutPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (formError) setFormError("");
   };
+
+  const handleApplyPromo = useCallback(async () => {
+    if (!promoInput.trim()) return;
+    setApplyingPromo(true);
+    setPromoError("");
+    setPromoInfo(null);
+    try {
+      const res = await fetch(`/api/promo-codes/validate?code=${encodeURIComponent(promoInput.trim())}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Invalid promo code");
+      setPromoInfo(data);
+    } catch (e) {
+      setPromoError(e instanceof Error ? e.message : "Invalid promo code");
+    } finally {
+      setApplyingPromo(false);
+    }
+  }, [promoInput]);
 
   const handleContinueToPayment = useCallback(async () => {
     const required: (keyof ShippingForm)[] = [
@@ -225,6 +254,7 @@ export default function CheckoutPage() {
             zip: form.zip,
             country: form.country,
           },
+          promoCode: promoInfo?.code || undefined,
         }),
       });
 
@@ -691,6 +721,57 @@ export default function CheckoutPage() {
                     ))}
                   </div>
 
+                  {/* Promo code — only on shipping step */}
+                  {step === "shipping" && (
+                    <div className="pt-5 pb-5 border-b border-warm-gray">
+                      {promoInfo ? (
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-[11px] tracking-[0.1em] uppercase text-emerald-600 font-medium">
+                              {promoInfo.code} applied
+                            </p>
+                            <p className="text-xs text-charcoal-light mt-0.5">
+                              {promoInfo.discountType === "PERCENTAGE"
+                                ? `${promoInfo.discountValue}% off`
+                                : `$${promoInfo.discountValue} off`}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => { setPromoInfo(null); setPromoInput(""); }}
+                            className="text-[11px] text-charcoal-light underline hover:text-red-500 transition-colors"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-[11px] tracking-[0.12em] uppercase text-charcoal-light font-medium mb-2">
+                            Promo Code
+                          </p>
+                          <div className="flex gap-2">
+                            <input
+                              value={promoInput}
+                              onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(""); }}
+                              onKeyDown={(e) => e.key === "Enter" && handleApplyPromo()}
+                              placeholder="Enter code"
+                              className="flex-1 border border-warm-gray bg-white px-3 py-2 text-sm text-charcoal focus:outline-none focus:border-charcoal transition-colors"
+                            />
+                            <button
+                              onClick={handleApplyPromo}
+                              disabled={applyingPromo || !promoInput.trim()}
+                              className="px-4 py-2 bg-charcoal text-white text-[11px] tracking-[0.1em] uppercase hover:bg-gold disabled:opacity-40 transition-colors"
+                            >
+                              {applyingPromo ? "…" : "Apply"}
+                            </button>
+                          </div>
+                          {promoError && (
+                            <p className="text-[11px] text-red-500 mt-1.5">{promoError}</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* Totals */}
                   <div className="space-y-3 pt-6 pb-6 border-b border-warm-gray">
                     <div className="flex items-center justify-between text-sm">
@@ -699,6 +780,12 @@ export default function CheckoutPage() {
                         {formatPrice(breakdown ? breakdown.subtotal : total())}
                       </span>
                     </div>
+                    {(breakdown?.discount ?? 0) > 0 && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-emerald-600">Discount</span>
+                        <span className="text-emerald-600">−{formatPrice(breakdown!.discount)}</span>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-charcoal-light">Shipping</span>
                       <span className="text-charcoal">

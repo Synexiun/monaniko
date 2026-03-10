@@ -28,6 +28,11 @@ import {
   Quote,
   Tag,
   Receipt,
+  Send,
+  LayoutTemplate,
+  Paintbrush,
+  Award,
+  Crown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ToastProvider from '@/components/admin/ToastProvider';
@@ -66,6 +71,8 @@ const sidebarSections: SidebarSection[] = [
     title: 'Marketing',
     links: [
       { href: '/admin/campaigns', label: 'Campaigns', icon: Megaphone },
+      { href: '/admin/marketing/blasts', label: 'Email Blasts', icon: Send },
+      { href: '/admin/marketing/templates', label: 'Email Templates', icon: LayoutTemplate },
       { href: '/admin/content', label: 'Content Scheduler', icon: FileText },
       { href: '/admin/audience', label: 'Audience', icon: Users },
     ],
@@ -74,7 +81,15 @@ const sidebarSections: SidebarSection[] = [
     title: 'Engagement',
     links: [
       { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
+      { href: '/admin/commissions', label: 'Commissions', icon: Paintbrush },
       { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
+    ],
+  },
+  {
+    title: 'Collector',
+    links: [
+      { href: '/admin/collector-club', label: 'Collector Club', icon: Crown },
+      { href: '/admin/certificates', label: 'Certificates', icon: Award },
     ],
   },
   {
