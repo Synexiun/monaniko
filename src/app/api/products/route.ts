@@ -4,6 +4,11 @@ import { parsePagination, parseSort, paginatedResponse, jsonResponse, errorRespo
 import { slugify } from '@/lib/utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
 export async function GET(req: NextRequest) {
   try {
     const sp = req.nextUrl.searchParams
@@ -23,10 +28,16 @@ export async function GET(req: NextRequest) {
     const featured = sp.get('featured')
     if (featured === 'true') where.featured = true
 
-    const [data, total] = await Promise.all([
+    const [raw, total] = await Promise.all([
       db.product.findMany({ where, skip, take: limit, orderBy, include: { variants: true, artwork: { select: { id: true, title: true } } } }),
       db.product.count({ where }),
     ])
+
+    const data = raw.map((p) => ({
+      ...p,
+      images: safeJson(p.images, []),
+      tags: safeJson(p.tags, []),
+    }))
 
     return paginatedResponse(data, total, page, limit)
   } catch (e) {

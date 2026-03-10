@@ -3,12 +3,26 @@ import { db } from '@/lib/db'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
+function parseCampaign(c: Record<string, unknown>) {
+  return {
+    ...c,
+    channels: safeJson(c.channels, []),
+    targetSegments: safeJson(c.targetSegments, []),
+    metrics: safeJson(c.metrics, { impressions: 0, clicks: 0, conversions: 0, inquiries: 0, revenue: 0 }),
+  }
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const campaign = await db.campaign.findUnique({ where: { id } })
     if (!campaign) return errorResponse('Campaign not found', 404)
-    return jsonResponse(campaign)
+    return jsonResponse(parseCampaign(campaign as Record<string, unknown>))
   } catch (e) {
     return errorResponse('Failed to fetch campaign: ' + (e instanceof Error ? e.message : ''), 500)
   }
@@ -56,7 +70,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       data: { entityType: 'campaign', entityId: id, action: 'update', details: JSON.stringify(Object.keys(data)) },
     })
 
-    return jsonResponse(campaign)
+    return jsonResponse(parseCampaign(campaign as Record<string, unknown>))
   } catch (e) {
     return errorResponse('Failed to update campaign: ' + (e instanceof Error ? e.message : ''), 500)
   }

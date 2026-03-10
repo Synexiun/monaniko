@@ -3,12 +3,22 @@ import { db } from '@/lib/db'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const artwork = await db.artwork.findUnique({ where: { id }, include: { collection: true, products: true, inquiries: true } })
     if (!artwork) return errorResponse('Artwork not found', 404)
-    return jsonResponse(artwork)
+    return jsonResponse({
+      ...artwork,
+      images: safeJson(artwork.images, []),
+      tags: safeJson(artwork.tags, []),
+      dimensions: safeJson(artwork.dimensions, null),
+    })
   } catch (e) {
     return errorResponse('Failed to fetch artwork: ' + (e instanceof Error ? e.message : ''), 500)
   }

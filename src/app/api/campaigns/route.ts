@@ -3,6 +3,20 @@ import { db } from '@/lib/db'
 import { parsePagination, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
+function parseCampaign(c: Record<string, unknown>) {
+  return {
+    ...c,
+    channels: safeJson(c.channels, []),
+    targetSegments: safeJson(c.targetSegments, []),
+    metrics: safeJson(c.metrics, { impressions: 0, clicks: 0, conversions: 0, inquiries: 0, revenue: 0 }),
+  }
+}
+
 export async function GET(req: NextRequest) {
   const authError = await requireAuth()
   if (authError) return authError
@@ -16,12 +30,12 @@ export async function GET(req: NextRequest) {
     const status = sp.get('status')
     if (status) where.status = status
 
-    const [data, total] = await Promise.all([
+    const [raw, total] = await Promise.all([
       db.campaign.findMany({ where, skip, take: limit, orderBy: { createdAt: 'desc' } }),
       db.campaign.count({ where }),
     ])
 
-    return paginatedResponse(data, total, page, limit)
+    return paginatedResponse(raw.map((c) => parseCampaign(c as Record<string, unknown>)), total, page, limit)
   } catch (e) {
     return errorResponse('Failed to fetch campaigns: ' + (e instanceof Error ? e.message : ''), 500)
   }

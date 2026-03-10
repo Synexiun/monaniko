@@ -3,12 +3,17 @@ import { db } from '@/lib/db'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const product = await db.product.findUnique({ where: { id }, include: { variants: true, artwork: true } })
     if (!product) return errorResponse('Product not found', 404)
-    return jsonResponse(product)
+    return jsonResponse({ ...product, images: safeJson(product.images, []), tags: safeJson(product.tags, []) })
   } catch (e) {
     return errorResponse('Failed to fetch product: ' + (e instanceof Error ? e.message : ''), 500)
   }
