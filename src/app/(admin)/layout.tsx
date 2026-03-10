@@ -27,6 +27,7 @@ import {
   MessageSquare,
   Quote,
   Tag,
+  Receipt,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ToastProvider from '@/components/admin/ToastProvider';
@@ -74,6 +75,14 @@ const sidebarSections: SidebarSection[] = [
     links: [
       { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
       { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
+    ],
+  },
+  {
+    title: 'Finance',
+    links: [
+      { href: '/admin/accounting', label: 'Accounting', icon: Receipt },
+      { href: '/admin/accounting/expenses', label: 'Expenses', icon: Tag },
+      { href: '/admin/accounting/invoices', label: 'Invoices', icon: FileText },
     ],
   },
   {
