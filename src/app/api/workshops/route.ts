@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { parsePagination, parseSort, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
 import { slugify } from '@/lib/utils'
+import { requireAuth } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   try {
@@ -32,6 +33,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const body = await req.json()
     const workshop = await db.workshop.create({

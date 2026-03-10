@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
+import { requireAuth } from '@/lib/auth'
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -14,6 +15,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const { id } = await params
     const body = await req.json()
@@ -43,6 +46,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const { id } = await params
     await db.promoCode.delete({ where: { id } })

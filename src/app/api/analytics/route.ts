@@ -1,7 +1,10 @@
 import { db } from '@/lib/db'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
+import { requireAuth } from '@/lib/auth'
 
 export async function GET() {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const now = new Date()
     const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1)

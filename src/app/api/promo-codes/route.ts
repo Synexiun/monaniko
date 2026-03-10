@@ -1,8 +1,11 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { parsePagination, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
+import { requireAuth } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const sp = req.nextUrl.searchParams
     const { page, limit, skip } = parsePagination(sp)
@@ -31,6 +34,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const authError = await requireAuth()
+  if (authError) return authError
   try {
     const body = await req.json()
 

@@ -13,7 +13,6 @@ import {
   Megaphone,
   PenLine,
   BarChart3,
-  Eye,
   ArrowRight,
   AlertTriangle,
   Calendar,
@@ -28,93 +27,39 @@ const fadeIn = {
   transition: { duration: 0.35 },
 };
 
-interface DashboardStats {
-  revenue: number;
-  revenueTrend: number;
-  orders: number;
-  ordersTrend: number;
-  activeInquiries: number;
-  inquiriesTrend: number;
-  subscribers: number;
-  subscribersTrend: number;
-}
-
-interface RecentOrder {
-  id: string;
-  orderNumber: string;
-  customer: string;
-  items: string;
-  total: number;
-  status: string;
-}
-
-interface RecentInquiry {
-  id: string;
-  name: string;
-  type: string;
-  artwork: string;
-  date: string;
-  status: string;
-}
-
-interface UpcomingWorkshop {
-  id: string;
-  title: string;
-  date: string;
-  spotsLeft: number;
-  capacity: number;
-}
-
-interface LowStockAlert {
-  id: string;
-  title: string;
-  variantName: string;
-  stock: number;
-}
-
-interface ActivityLogEntry {
-  id: string;
-  action: string;
-  details: string;
-  createdAt: string;
-}
-
-interface TopArtwork {
-  id: string;
-  title: string;
-  category: string;
-  price: number | null;
-  views: number;
-  inquiries: number;
-}
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface DashboardData {
-  stats: DashboardStats;
-  recentOrders: RecentOrder[];
-  recentInquiries: RecentInquiry[];
-  upcomingWorkshops: UpcomingWorkshop[];
-  lowStockAlerts: LowStockAlert[];
-  activityLog: ActivityLogEntry[];
-  topArtworks: TopArtwork[];
+  stats: {
+    revenue: { value: number; trend: number };
+    orders: { value: number; trend: number };
+    inquiries: { value: number; trend: number };
+    subscribers: { value: number; trend: number };
+  };
+  recentOrders: any[];
+  recentInquiries: any[];
+  upcomingWorkshops: any[];
+  lowStockVariants: any[];
+  recentActivity: any[];
 }
 
 const quickActions = [
   { label: 'Add Artwork', icon: Plus, href: '/admin/artworks', color: 'bg-black text-white hover:bg-gray-800' },
   { label: 'Create Campaign', icon: Megaphone, href: '/admin/campaigns', color: 'bg-blue-600 text-white hover:bg-blue-700' },
-  { label: 'Write Post', icon: PenLine, href: '/admin/content', color: 'bg-[#C4A265] text-white hover:bg-[#B3934F]' },
+  { label: 'Write Post', icon: PenLine, href: '/admin/journal', color: 'bg-[#C4A265] text-white hover:bg-[#B3934F]' },
   { label: 'View Analytics', icon: BarChart3, href: '/admin/analytics', color: 'bg-emerald-600 text-white hover:bg-emerald-700' },
 ];
 
 const statusColors: Record<string, string> = {
-  pending: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-  confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
-  processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
-  shipped: 'bg-purple-50 text-purple-700 border-purple-200',
-  delivered: 'bg-green-50 text-green-700 border-green-200',
-  new: 'bg-blue-50 text-blue-700 border-blue-200',
-  contacted: 'bg-yellow-50 text-yellow-700 border-yellow-200',
-  in_progress: 'bg-purple-50 text-purple-700 border-purple-200',
-  closed: 'bg-gray-100 text-gray-600 border-gray-200',
+  PENDING: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  CONFIRMED: 'bg-blue-50 text-blue-700 border-blue-200',
+  PROCESSING: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  SHIPPED: 'bg-purple-50 text-purple-700 border-purple-200',
+  DELIVERED: 'bg-green-50 text-green-700 border-green-200',
+  CANCELLED: 'bg-red-50 text-red-700 border-red-200',
+  NEW: 'bg-blue-50 text-blue-700 border-blue-200',
+  CONTACTED: 'bg-yellow-50 text-yellow-700 border-yellow-200',
+  IN_PROGRESS: 'bg-purple-50 text-purple-700 border-purple-200',
+  CLOSED: 'bg-gray-100 text-gray-600 border-gray-200',
 };
 
 function formatDate(): string {
@@ -123,6 +68,14 @@ function formatDate(): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+  });
+}
+
+function formatShortDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
   });
 }
 
@@ -221,36 +174,34 @@ export default function AdminDashboardPage() {
 
   if (!data) return null;
 
+  const { stats } = data;
+
   const statsCards = [
     {
       label: 'Total Revenue',
-      value: formatPrice(data.stats.revenue),
-      trend: `${data.stats.revenueTrend >= 0 ? '+' : ''}${data.stats.revenueTrend}%`,
-      trendUp: data.stats.revenueTrend >= 0,
+      value: formatPrice(stats.revenue.value),
+      trend: stats.revenue.trend,
       icon: DollarSign,
       color: 'bg-emerald-50 text-emerald-600',
     },
     {
       label: 'Total Orders',
-      value: data.stats.orders.toString(),
-      trend: `${data.stats.ordersTrend >= 0 ? '+' : ''}${data.stats.ordersTrend}%`,
-      trendUp: data.stats.ordersTrend >= 0,
+      value: stats.orders.value.toString(),
+      trend: stats.orders.trend,
       icon: ShoppingCart,
       color: 'bg-blue-50 text-blue-600',
     },
     {
       label: 'Active Inquiries',
-      value: data.stats.activeInquiries.toString(),
-      trend: `${data.stats.inquiriesTrend >= 0 ? '+' : ''}${data.stats.inquiriesTrend}%`,
-      trendUp: data.stats.inquiriesTrend >= 0,
+      value: stats.inquiries.value.toString(),
+      trend: stats.inquiries.trend,
       icon: MessageSquare,
       color: 'bg-amber-50 text-amber-600',
     },
     {
       label: 'Subscribers',
-      value: data.stats.subscribers.toLocaleString(),
-      trend: `${data.stats.subscribersTrend >= 0 ? '+' : ''}${data.stats.subscribersTrend}%`,
-      trendUp: data.stats.subscribersTrend >= 0,
+      value: stats.subscribers.value.toLocaleString(),
+      trend: stats.subscribers.trend,
       icon: Users,
       color: 'bg-purple-50 text-purple-600',
     },
@@ -270,6 +221,7 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {statsCards.map((stat) => {
           const Icon = stat.icon;
+          const trendUp = stat.trend >= 0;
           return (
             <div
               key={stat.label}
@@ -287,17 +239,17 @@ export default function AdminDashboardPage() {
                 <span
                   className={cn(
                     'inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full',
-                    stat.trendUp
+                    trendUp
                       ? 'text-emerald-700 bg-emerald-50'
                       : 'text-red-700 bg-red-50'
                   )}
                 >
-                  {stat.trendUp ? (
+                  {trendUp ? (
                     <TrendingUp className="w-3 h-3" />
                   ) : (
                     <TrendingDown className="w-3 h-3" />
                   )}
-                  {stat.trend}
+                  {trendUp ? '+' : ''}{stat.trend}%
                 </span>
               </div>
               <p className="mt-4 text-2xl font-bold text-gray-900">
@@ -366,7 +318,7 @@ export default function AdminDashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {data.recentOrders.map((order) => (
+                {data.recentOrders.map((order: any) => (
                   <tr
                     key={order.id}
                     className="hover:bg-gray-50/50 transition-colors"
@@ -375,10 +327,10 @@ export default function AdminDashboardPage() {
                       {order.orderNumber}
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-600">
-                      {order.customer}
+                      {order.customerName || order.customerEmail}
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-500 hidden sm:table-cell max-w-[200px] truncate">
-                      {order.items}
+                      {order.items?.length || 0} item{(order.items?.length || 0) !== 1 ? 's' : ''}
                     </td>
                     <td className="px-5 py-3.5 text-sm font-medium text-gray-900 text-right">
                       {formatPrice(order.total)}
@@ -390,7 +342,7 @@ export default function AdminDashboardPage() {
                           statusColors[order.status] || 'bg-gray-100 text-gray-600 border-gray-200'
                         )}
                       >
-                        {order.status.replace('_', ' ')}
+                        {(order.status || '').replace(/_/g, ' ').toLowerCase()}
                       </span>
                     </td>
                   </tr>
@@ -414,11 +366,11 @@ export default function AdminDashboardPage() {
               Recent Inquiries
             </h2>
             <span className="text-xs font-medium text-[#C4A265] bg-[#C4A265]/10 px-2 py-1 rounded-full">
-              {data.stats.activeInquiries} active
+              {stats.inquiries.value} active
             </span>
           </div>
           <div className="divide-y divide-gray-50">
-            {data.recentInquiries.map((inquiry) => (
+            {data.recentInquiries.map((inquiry: any) => (
               <div key={inquiry.id} className="px-5 py-4 hover:bg-gray-50/50 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="min-w-0">
@@ -426,7 +378,8 @@ export default function AdminDashboardPage() {
                       {inquiry.name}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      {inquiry.type} &middot; {inquiry.artwork}
+                      {(inquiry.type || '').replace(/_/g, ' ').toLowerCase()}
+                      {inquiry.artwork?.title && ` · ${inquiry.artwork.title}`}
                     </p>
                   </div>
                   <span
@@ -435,10 +388,12 @@ export default function AdminDashboardPage() {
                       statusColors[inquiry.status] || 'bg-gray-100 text-gray-600 border-gray-200'
                     )}
                   >
-                    {inquiry.status.replace('_', ' ')}
+                    {(inquiry.status || '').replace(/_/g, ' ').toLowerCase()}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-2">{inquiry.date}</p>
+                <p className="text-xs text-gray-400 mt-2">
+                  {formatShortDate(inquiry.createdAt)}
+                </p>
               </div>
             ))}
             {data.recentInquiries.length === 0 && (
@@ -461,7 +416,7 @@ export default function AdminDashboardPage() {
             </h2>
           </div>
           <div className="divide-y divide-gray-50">
-            {data.upcomingWorkshops.map((workshop) => (
+            {data.upcomingWorkshops.map((workshop: any) => (
               <div key={workshop.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0">
@@ -469,11 +424,7 @@ export default function AdminDashboardPage() {
                       {workshop.title}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      {new Date(workshop.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                      {formatShortDate(workshop.date)}
                     </p>
                   </div>
                   <span className="text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full whitespace-nowrap ml-3">
@@ -499,29 +450,29 @@ export default function AdminDashboardPage() {
             </h2>
           </div>
           <div className="divide-y divide-gray-50">
-            {data.lowStockAlerts.map((alert) => (
-              <div key={alert.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
+            {data.lowStockVariants.map((variant: any) => (
+              <div key={variant.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {alert.title}
+                      {variant.product?.title || 'Unknown Product'}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
-                      {alert.variantName}
+                      {variant.name}
                     </p>
                   </div>
                   <span className={cn(
                     'text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ml-3',
-                    alert.stock === 0
+                    variant.stock === 0
                       ? 'bg-red-50 text-red-700'
                       : 'bg-amber-50 text-amber-700'
                   )}>
-                    {alert.stock === 0 ? 'Out of stock' : `${alert.stock} left`}
+                    {variant.stock === 0 ? 'Out of stock' : `${variant.stock} left`}
                   </span>
                 </div>
               </div>
             ))}
-            {data.lowStockAlerts.length === 0 && (
+            {data.lowStockVariants.length === 0 && (
               <div className="px-5 py-8 text-center text-sm text-gray-400">
                 No low stock alerts
               </div>
@@ -530,70 +481,8 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Top Performing Artworks */}
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">
-            Top Performing Artworks
-          </h2>
-          <Link
-            href="/admin/analytics"
-            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 transition-colors"
-          >
-            View analytics
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-        <div className="divide-y divide-gray-50">
-          {data.topArtworks.map((artwork) => (
-            <div
-              key={artwork.id}
-              className="flex items-center gap-4 px-5 py-3.5 hover:bg-gray-50/50 transition-colors"
-            >
-              <div className="w-12 h-12 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-gray-900 truncate">
-                  {artwork.title}
-                </p>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {artwork.category} &middot;{' '}
-                  {artwork.price ? formatPrice(artwork.price) : 'Price on inquiry'}
-                </p>
-              </div>
-              <div className="flex items-center gap-4 text-right">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {artwork.views.toLocaleString()}
-                  </p>
-                  <p className="text-xs text-gray-400 flex items-center gap-1 justify-end">
-                    <Eye className="w-3 h-3" />
-                    views
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {artwork.inquiries}
-                  </p>
-                  <p className="text-xs text-gray-400 flex items-center gap-1 justify-end">
-                    <MessageSquare className="w-3 h-3" />
-                    inquiries
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-          {data.topArtworks.length === 0 && (
-            <div className="px-5 py-8 text-center text-sm text-gray-400">
-              No artwork data available
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Recent Activity Log */}
-      {data.activityLog.length > 0 && (
+      {data.recentActivity.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 className="text-base font-semibold text-gray-900 flex items-center gap-2">
@@ -602,15 +491,21 @@ export default function AdminDashboardPage() {
             </h2>
           </div>
           <div className="divide-y divide-gray-50">
-            {data.activityLog.map((entry) => (
+            {data.recentActivity.map((entry: any) => (
               <div key={entry.id} className="px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="min-w-0">
                     <p className="text-sm text-gray-900">
-                      <span className="font-medium">{entry.action}</span>
-                      {entry.details && (
-                        <span className="text-gray-500"> &mdash; {entry.details}</span>
-                      )}
+                      <span className="font-medium capitalize">{entry.action}</span>
+                      <span className="text-gray-500"> {entry.entityType}</span>
+                      {entry.details && (() => {
+                        try {
+                          const d = JSON.parse(entry.details);
+                          return d.title ? <span className="text-gray-500"> &mdash; {d.title}</span> : null;
+                        } catch {
+                          return <span className="text-gray-500"> &mdash; {entry.details}</span>;
+                        }
+                      })()}
                     </p>
                   </div>
                   <span className="text-xs text-gray-400 whitespace-nowrap ml-3">
