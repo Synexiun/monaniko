@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
-
 @import "tailwindcss";
 
 @theme inline {
   /* ─── Brand Colors ─────────────────────────────── */
   --color-cream: #FAFAF8;
-  --color-cream-dark: #F5F3EF;
+  --color-cream-dark: #F2F0EB;
   --color-warm-gray: #E8E5E0;
   --color-warm-gray-dark: #C5C0B8;
   --color-charcoal: #2C2C2C;
@@ -19,9 +17,10 @@
   --color-error: #9B2C2C;
   --color-warning: #B7791F;
 
-  /* ─── Typography ───────────────────────────────── */
-  --font-serif: "Playfair Display", "Georgia", serif;
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  /* ─── Typography (mapped to Next.js font CSS vars) ─── */
+  --font-serif: var(--font-playfair), "Georgia", serif;
+  --font-display: var(--font-cormorant), "Garamond", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 
   /* ─── Spacing & Sizing ─────────────────────────── */
   --container-max: 1400px;
@@ -43,7 +42,7 @@ body {
   background-color: var(--color-cream);
   color: var(--color-charcoal);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
 }
 
@@ -56,8 +55,8 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   font-weight: 500;
-  line-height: 1.2;
-  color: var(--color-black);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────── */

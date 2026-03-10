@@ -11,7 +11,100 @@ import ProductCard from "@/components/shop/ProductCard";
 import { products } from "@/data/artworks";
 import { formatPrice, cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
-import type { ProductVariant } from "@/types";
+import type { ProductVariant, ShopCategory } from "@/types";
+
+/**
+ * Returns breadcrumb info (label + href) based on shopCategory.
+ */
+function getCategoryBreadcrumb(shopCategory: ShopCategory) {
+  if (shopCategory === "print_limited_edition")
+    return { label: "Prints", href: "/shop/prints" };
+  if (shopCategory === "original_painting")
+    return { label: "Originals", href: "/shop/originals" };
+  if (shopCategory === "designers_collection")
+    return { label: "Designers Collection", href: "/shop/designers" };
+  if (shopCategory === "workshop")
+    return { label: "Workshops", href: "/workshops" };
+  if (shopCategory.startsWith("merch_"))
+    return { label: "Merch & Objects", href: "/shop/merch" };
+  return { label: "Shop", href: "/shop" };
+}
+
+/**
+ * Returns a human-readable badge label for the product.
+ */
+function getEditionInfo(
+  type: string,
+  shopCategory: ShopCategory,
+  tags: string[]
+) {
+  if (type === "print") {
+    return tags.includes("limited-edition") ? "Limited Edition" : "Open Edition";
+  }
+  if (type === "original") return "Original Work";
+  if (shopCategory === "designers_collection") return "Designers Collection";
+  if (shopCategory.startsWith("merch_")) return "Merchandise";
+  if (shopCategory === "workshop") return "Workshop";
+  return "Product";
+}
+
+/**
+ * Returns a variant selector label based on product type.
+ */
+function getVariantLabel(shopCategory: ShopCategory) {
+  if (
+    shopCategory === "merch_tshirt" ||
+    shopCategory === "merch_sweatshirt" ||
+    shopCategory === "merch_leggings" ||
+    shopCategory === "designers_collection"
+  )
+    return "Select Size";
+  if (
+    shopCategory === "merch_phone_case" ||
+    shopCategory === "merch_laptop_case"
+  )
+    return "Select Model";
+  if (shopCategory === "merch_cushion") return "Select Size";
+  if (shopCategory === "merch_suitcase") return "Select Size";
+  if (shopCategory === "print_limited_edition") return "Select Size";
+  return "Select Option";
+}
+
+/**
+ * Returns type-specific detail rows for the product details grid.
+ */
+function getTypeDetails(type: string, shopCategory: ShopCategory) {
+  const details: { label: string; value: string }[] = [];
+
+  if (type === "print") {
+    details.push(
+      { label: "Type", value: "Giclée Print" },
+      { label: "Paper", value: "310gsm Hahnemühle Photo Rag" },
+      { label: "Ink", value: "Archival pigment inks (100+ years)" }
+    );
+  } else if (shopCategory === "designers_collection") {
+    details.push({ label: "Type", value: "Designer Garment" });
+  } else if (shopCategory.startsWith("merch_")) {
+    const merchLabels: Record<string, string> = {
+      merch_phone_case: "Phone Case",
+      merch_cushion: "Art Cushion",
+      merch_tshirt: "T-Shirt",
+      merch_sweatshirt: "Sweatshirt",
+      merch_leggings: "Leggings",
+      merch_laptop_case: "Laptop Case",
+      merch_suitcase: "Suitcase",
+      merch_tie: "Silk Tie",
+    };
+    details.push({
+      label: "Type",
+      value: merchLabels[shopCategory] ?? "Merchandise",
+    });
+  } else {
+    details.push({ label: "Type", value: "Original Painting" });
+  }
+
+  return details;
+}
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -29,7 +122,10 @@ export default function ProductDetailPage() {
   const relatedProducts = useMemo(() => {
     if (!product) return [];
     return products
-      .filter((p) => p.id !== product.id && p.type === product.type)
+      .filter(
+        (p) =>
+          p.id !== product.id && p.shopCategory === product.shopCategory
+      )
       .slice(0, 3);
   }, [product]);
 
@@ -51,6 +147,10 @@ export default function ProductDetailPage() {
 
   const currentPrice = selectedVariant?.price ?? product.basePrice;
   const isInStock = selectedVariant ? selectedVariant.stock > 0 : true;
+  const breadcrumb = getCategoryBreadcrumb(product.shopCategory);
+  const editionInfo = getEditionInfo(product.type, product.shopCategory, product.tags);
+  const variantLabel = getVariantLabel(product.shopCategory);
+  const typeDetails = getTypeDetails(product.type, product.shopCategory);
 
   const handleAddToCart = () => {
     if (!selectedVariant || !isInStock) return;
@@ -71,13 +171,6 @@ export default function ProductDetailPage() {
     openCart();
   };
 
-  const editionInfo =
-    product.type === "print"
-      ? product.tags.includes("limited-edition")
-        ? "Limited Edition"
-        : "Open Edition"
-      : "Original Work";
-
   return (
     <>
       {/* ─── Breadcrumb ────────────────────────────────────── */}
@@ -94,10 +187,10 @@ export default function ProductDetailPage() {
             </Link>
             <span className="text-warm-gray-dark">/</span>
             <Link
-              href={product.type === "print" ? "/shop/prints" : "/shop/originals"}
+              href={breadcrumb.href}
               className="text-charcoal-light hover:text-gold transition-colors"
             >
-              {product.type === "print" ? "Prints" : "Originals"}
+              {breadcrumb.label}
             </Link>
             <span className="text-warm-gray-dark">/</span>
             <span className="text-charcoal">{product.title}</span>
@@ -187,7 +280,7 @@ export default function ProductDetailPage() {
               {product.variants.length > 1 && (
                 <div className="mt-8">
                   <p className="text-[11px] tracking-[0.15em] uppercase text-charcoal-light font-medium mb-3">
-                    Select Size
+                    {variantLabel}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     {product.variants.map((variant) => (
@@ -254,10 +347,12 @@ export default function ProductDetailPage() {
                   Product Details
                 </h3>
                 <div className="grid grid-cols-2 gap-y-3 text-sm">
-                  <span className="text-charcoal-light">Type</span>
-                  <span className="text-charcoal capitalize">
-                    {product.type === "print" ? "Giclée Print" : "Original Painting"}
-                  </span>
+                  {typeDetails.map((detail) => (
+                    <span key={detail.label} className="contents">
+                      <span className="text-charcoal-light">{detail.label}</span>
+                      <span className="text-charcoal">{detail.value}</span>
+                    </span>
+                  ))}
 
                   <span className="text-charcoal-light">Edition</span>
                   <span className="text-charcoal">{editionInfo}</span>
@@ -269,18 +364,12 @@ export default function ProductDetailPage() {
                     </>
                   )}
 
-                  {product.type === "print" && (
+                  {(product.type === "print" || product.type === "original") && (
                     <>
-                      <span className="text-charcoal-light">Paper</span>
-                      <span className="text-charcoal">310gsm Hahnemühle Photo Rag</span>
-
-                      <span className="text-charcoal-light">Ink</span>
-                      <span className="text-charcoal">Archival pigment inks (100+ years)</span>
+                      <span className="text-charcoal-light">Certificate</span>
+                      <span className="text-charcoal">Signed certificate of authenticity</span>
                     </>
                   )}
-
-                  <span className="text-charcoal-light">Certificate</span>
-                  <span className="text-charcoal">Signed certificate of authenticity</span>
 
                   <span className="text-charcoal-light">Shipping</span>
                   <span className="text-charcoal">Professionally packed &amp; insured</span>
@@ -297,7 +386,7 @@ export default function ProductDetailPage() {
           <div className="container-gallery">
             <SectionHeading
               title="You May Also Like"
-              subtitle="Explore more works from the collection."
+              subtitle="Explore more from this collection."
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {relatedProducts.map((p, i) => (

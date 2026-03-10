@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CollectionCard from "@/components/gallery/CollectionCard";
 import { collections } from "@/data/artworks";
@@ -9,8 +10,12 @@ export default function CollectionsPage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-cream">
-        <div className="container-gallery text-center">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/artworks/artwork-5.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+        <div className="relative z-10 container-gallery text-center">
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -23,7 +28,7 @@ export default function CollectionsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-[-0.01em]"
+            className="font-display text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[-0.02em]"
           >
             Collections
           </motion.h1>
@@ -31,7 +36,7 @@ export default function CollectionsPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-5 text-[15px] text-charcoal-light max-w-xl mx-auto leading-relaxed"
+            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
           >
             Each collection is a journey through a unified vision, exploring
             themes that resonate across individual works.
@@ -40,7 +45,7 @@ export default function CollectionsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="divider-gold mx-auto mt-6"
+            className="divider-gold mx-auto mt-8"
           />
         </div>
       </section>

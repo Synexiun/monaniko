@@ -17,6 +17,8 @@ export default function ProductCard({ product, index = 0, priority = false }: Pr
     print: { label: "Limited Edition Print", className: "bg-gold/10 text-gold" },
     original: { label: "Original", className: "bg-black text-white" },
     merchandise: { label: "Merchandise", className: "bg-charcoal-light/10 text-charcoal-light" },
+    designers_collection: { label: "Designers Collection", className: "bg-gold/20 text-gold" },
+    workshop: { label: "Workshop", className: "bg-charcoal-light/10 text-charcoal-light" },
   };
 
   const badge = typeLabels[product.type];

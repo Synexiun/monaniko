@@ -14,8 +14,12 @@ export default function OriginalsShopPage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-[var(--header-height)] bg-black">
-        <div className="py-20 md:py-28">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/artworks/artwork-4.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+        <div className="relative z-10">
           <div className="container-gallery text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -38,7 +42,7 @@ export default function OriginalsShopPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl text-white font-medium tracking-[-0.02em]"
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
             >
               Original Paintings
             </motion.h1>

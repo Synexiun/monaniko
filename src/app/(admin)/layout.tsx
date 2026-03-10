@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -19,19 +19,70 @@ import {
   X,
   ExternalLink,
   ChevronRight,
+  LogOut,
+  Package,
+  GraduationCap,
+  BookOpen,
+  Newspaper,
+  MessageSquare,
+  Quote,
+  Tag,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ToastProvider from '@/components/admin/ToastProvider';
 
-const sidebarLinks = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/artworks', label: 'Artworks', icon: Image },
-  { href: '/admin/collections', label: 'Collections', icon: FolderOpen },
-  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/admin/campaigns', label: 'Campaigns', icon: Megaphone },
-  { href: '/admin/content', label: 'Content', icon: FileText },
-  { href: '/admin/audience', label: 'Audience', icon: Users },
-  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+interface SidebarSection {
+  title: string;
+  links: { href: string; label: string; icon: React.ElementType }[];
+}
+
+const sidebarSections: SidebarSection[] = [
+  {
+    title: 'Overview',
+    links: [
+      { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    ],
+  },
+  {
+    title: 'Content',
+    links: [
+      { href: '/admin/artworks', label: 'Artworks', icon: Image },
+      { href: '/admin/collections', label: 'Collections', icon: FolderOpen },
+      { href: '/admin/journal', label: 'Journal', icon: BookOpen },
+      { href: '/admin/press', label: 'Press', icon: Newspaper },
+    ],
+  },
+  {
+    title: 'Shop',
+    links: [
+      { href: '/admin/products', label: 'Products', icon: Package },
+      { href: '/admin/workshops', label: 'Workshops', icon: GraduationCap },
+      { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
+      { href: '/admin/promo-codes', label: 'Promo Codes', icon: Tag },
+    ],
+  },
+  {
+    title: 'Marketing',
+    links: [
+      { href: '/admin/campaigns', label: 'Campaigns', icon: Megaphone },
+      { href: '/admin/content', label: 'Content Scheduler', icon: FileText },
+      { href: '/admin/audience', label: 'Audience', icon: Users },
+    ],
+  },
+  {
+    title: 'Engagement',
+    links: [
+      { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
+      { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
+    ],
+  },
+  {
+    title: 'System',
+    links: [
+      { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
+      { href: '/admin/settings', label: 'Settings', icon: Settings },
+    ],
+  },
 ];
 
 export default function AdminLayout({
@@ -40,11 +91,29 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  // Skip admin shell for login page
+  if (pathname === '/admin/login') {
+    return <>{children}</>;
+  }
 
   const isActive = (href: string) => {
     if (href === '/admin') return pathname === '/admin';
     return pathname.startsWith(href);
+  };
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/admin/login');
+      router.refresh();
+    } catch {
+      setLoggingOut(false);
+    }
   };
 
   const SidebarContent = () => (
@@ -61,34 +130,43 @@ export default function AdminLayout({
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {sidebarLinks.map((link) => {
-          const Icon = link.icon;
-          const active = isActive(link.href);
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setSidebarOpen(false)}
-              className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                active
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              )}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-              <span>{link.label}</span>
-              {active && (
-                <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
-              )}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 px-3 py-3 overflow-y-auto">
+        {sidebarSections.map((section) => (
+          <div key={section.title} className="mb-3">
+            <p className="px-3 py-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+              {section.title}
+            </p>
+            <div className="space-y-0.5">
+              {section.links.map((link) => {
+                const Icon = link.icon;
+                const active = isActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      active
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    )}
+                  >
+                    <Icon className="w-[18px] h-[18px] flex-shrink-0" />
+                    <span>{link.label}</span>
+                    {active && (
+                      <ChevronRight className="w-4 h-4 ml-auto opacity-50" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
-      {/* View Live Site */}
-      <div className="px-3 py-4 border-t border-gray-200">
+      {/* Bottom Actions */}
+      <div className="px-3 py-4 border-t border-gray-200 space-y-1">
         <a
           href="/"
           target="_blank"
@@ -98,6 +176,14 @@ export default function AdminLayout({
           <ExternalLink className="w-[18px] h-[18px] flex-shrink-0" />
           <span>View Live Site</span>
         </a>
+        <button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors disabled:opacity-50"
+        >
+          <LogOut className="w-[18px] h-[18px] flex-shrink-0" />
+          <span>{loggingOut ? 'Signing out...' : 'Sign Out'}</span>
+        </button>
       </div>
     </>
   );
@@ -146,7 +232,6 @@ export default function AdminLayout({
         {/* Top Bar */}
         <header className="sticky top-0 z-20 bg-white border-b border-gray-200">
           <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
-            {/* Left: Hamburger + Title */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
@@ -160,7 +245,6 @@ export default function AdminLayout({
               </h1>
             </div>
 
-            {/* Right: Notifications + Avatar */}
             <div className="flex items-center gap-2">
               <button
                 className="relative p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
@@ -181,6 +265,8 @@ export default function AdminLayout({
           {children}
         </main>
       </div>
+
+      <ToastProvider />
     </div>
   );
 }

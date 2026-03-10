@@ -20,19 +20,29 @@ export default function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.7 }}
       className={cn(
-        "mb-12 md:mb-16",
+        "mb-14 md:mb-20",
         align === "center" ? "text-center" : "text-left",
         className
       )}
     >
+      <div
+        className={cn(
+          "flex items-center gap-4 mb-5",
+          align === "center" ? "justify-center" : ""
+        )}
+      >
+        <div className="w-8 h-[1px] bg-gold" />
+        <div className="w-1.5 h-1.5 rounded-full bg-gold/40" />
+        <div className="w-8 h-[1px] bg-gold" />
+      </div>
       <h2
         className={cn(
-          "font-serif text-3xl md:text-4xl lg:text-[2.75rem] font-medium tracking-[-0.01em]",
+          "font-display text-3xl md:text-4xl lg:text-[2.75rem] font-light tracking-[0.01em] leading-[1.15]",
           light ? "text-white" : "text-black"
         )}
       >
@@ -41,20 +51,14 @@ export default function SectionHeading({
       {subtitle && (
         <p
           className={cn(
-            "mt-4 text-[15px] leading-relaxed max-w-2xl",
+            "mt-5 text-[14px] md:text-[15px] leading-relaxed max-w-xl font-light font-sans",
             align === "center" ? "mx-auto" : "",
-            light ? "text-white/60" : "text-charcoal-light"
+            light ? "text-white/50" : "text-charcoal-light"
           )}
         >
           {subtitle}
         </p>
       )}
-      <div
-        className={cn(
-          "divider-gold mt-6",
-          align === "center" ? "mx-auto" : ""
-        )}
-      />
     </motion.div>
   );
 }

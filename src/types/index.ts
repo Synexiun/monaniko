@@ -1,7 +1,7 @@
 // ─── Artwork ───────────────────────────────────────────────
 export type ArtworkStatus = "available" | "sold" | "on_exhibition" | "commissioned";
-export type ArtworkCategory = "painting" | "mixed_media" | "print" | "sculpture" | "drawing";
-export type ArtworkMedium = "oil" | "acrylic" | "watercolor" | "mixed_media" | "ink" | "pastel" | "digital";
+export type ArtworkCategory = "painting" | "sculpture_3d" | "mixed_media" | "limited_edition";
+export type ArtworkMedium = "oil" | "acrylic" | "watercolor" | "mixed_media" | "ink" | "pastel" | "digital" | "sculpture" | "ceramic";
 
 export interface Artwork {
   id: string;
@@ -43,8 +43,22 @@ export interface Collection {
   createdAt: string;
 }
 
-// ─── Product (Prints / Merch) ──────────────────────────────
-export type ProductType = "print" | "original" | "merchandise";
+// ─── Product (Shop Items) ──────────────────────────────────
+export type ProductType = "print" | "original" | "merchandise" | "designers_collection" | "workshop";
+
+export type ShopCategory =
+  | "original_painting"
+  | "print_limited_edition"
+  | "merch_tshirt"
+  | "merch_sweatshirt"
+  | "merch_leggings"
+  | "merch_phone_case"
+  | "merch_cushion"
+  | "merch_laptop_case"
+  | "merch_suitcase"
+  | "merch_tie"
+  | "designers_collection"
+  | "workshop";
 
 export interface ProductVariant {
   id: string;
@@ -61,6 +75,7 @@ export interface Product {
   description: string;
   images: string[];
   type: ProductType;
+  shopCategory: ShopCategory;
   variants: ProductVariant[];
   basePrice: number;
   artworkId?: string;

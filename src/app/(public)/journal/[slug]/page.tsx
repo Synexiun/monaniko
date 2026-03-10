@@ -46,8 +46,8 @@ export default function JournalPostPage() {
   return (
     <>
       {/* ─── Cover Image ──────────────────────────────────── */}
-      <section className="relative py-32 md:py-40 bg-black overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
           <Image
             src={post.coverImage}
             alt={post.title}
@@ -55,8 +55,8 @@ export default function JournalPostPage() {
             className="object-cover"
             priority
           />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
         <div className="relative z-10 container-gallery text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export default function JournalPostPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="font-serif text-3xl md:text-5xl lg:text-6xl text-white font-medium tracking-[-0.02em] max-w-4xl mx-auto leading-[1.15]"
+            className="font-display text-3xl md:text-5xl lg:text-6xl text-white font-light tracking-[-0.02em] max-w-4xl mx-auto leading-[1.15]"
           >
             {post.title}
           </motion.h1>

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ArtworkCard from "@/components/gallery/ArtworkCard";
 import { artworks } from "@/data/artworks";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { ArtworkCategory, ArtworkStatus } from "@/types";
 
@@ -14,8 +15,9 @@ type StatusFilter = "all" | ArtworkStatus;
 const categoryTabs: { value: CategoryFilter; label: string }[] = [
   { value: "all", label: "All" },
   { value: "painting", label: "Paintings" },
+  { value: "sculpture_3d", label: "Sculpture & 3D" },
   { value: "mixed_media", label: "Mixed Media" },
-  { value: "print", label: "Prints" },
+  { value: "limited_edition", label: "Limited Editions" },
 ];
 
 const statusTabs: { value: StatusFilter; label: string }[] = [
@@ -42,8 +44,12 @@ export default function GalleryPage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-cream">
-        <div className="container-gallery text-center">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/images/artworks/artwork-1.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+        <div className="relative z-10 container-gallery text-center">
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,7 +62,7 @@ export default function GalleryPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-black tracking-[-0.01em]"
+            className="font-display text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[-0.02em]"
           >
             Gallery
           </motion.h1>
@@ -64,7 +70,7 @@ export default function GalleryPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-5 text-[15px] text-charcoal-light max-w-xl mx-auto leading-relaxed"
+            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
           >
             Explore the complete collection of original paintings, mixed media
             works, and limited edition prints by Mona Niko.
@@ -73,7 +79,7 @@ export default function GalleryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="divider-gold mx-auto mt-6"
+            className="divider-gold mx-auto mt-8"
           />
         </div>
       </section>

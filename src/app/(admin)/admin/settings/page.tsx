@@ -1,8 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Save, Globe, Clock, Share2, Search as SearchIcon } from 'lucide-react';
+import {
+  Save,
+  Globe,
+  Clock,
+  Share2,
+  Search as SearchIcon,
+  Loader2,
+  AlertTriangle,
+  RotateCcw,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const fadeIn = {
@@ -44,39 +53,74 @@ interface SettingsState {
   };
 }
 
-const initialSettings: SettingsState = {
+const defaultSettings: SettingsState = {
   gallery: {
-    name: 'Mona Niko Gallery',
-    email: 'info@monaniko.com',
-    phone: '(949) 555-0127',
-    addressLine1: '27001 La Paz Road',
-    addressLine2: 'Suite 248',
-    city: 'Mission Viejo',
-    state: 'CA',
-    zip: '92691',
+    name: '',
+    email: '',
+    phone: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    zip: '',
   },
   hours: {
-    monday: '10:00 AM - 6:00 PM',
-    tuesday: '10:00 AM - 6:00 PM',
-    wednesday: '10:00 AM - 6:00 PM',
-    thursday: '10:00 AM - 8:00 PM',
-    friday: '10:00 AM - 6:00 PM',
-    saturday: '11:00 AM - 5:00 PM',
-    sunday: 'Closed',
+    monday: '',
+    tuesday: '',
+    wednesday: '',
+    thursday: '',
+    friday: '',
+    saturday: '',
+    sunday: '',
   },
   social: {
-    instagram: 'https://instagram.com/monaniko',
-    facebook: 'https://facebook.com/monaniko',
-    pinterest: 'https://pinterest.com/monaniko',
-    x: 'https://x.com/monaniko',
+    instagram: '',
+    facebook: '',
+    pinterest: '',
+    x: '',
     youtube: '',
   },
   seo: {
-    defaultTitle: 'Mona Niko — Contemporary Fine Art Gallery',
-    defaultDescription:
-      'Discover original paintings, limited edition prints, and immersive art workshops by Mona Niko. Contemporary fine art gallery in Mission Viejo, California.',
+    defaultTitle: '',
+    defaultDescription: '',
   },
 };
+
+/** Convert a flat key-value map from the API into nested SettingsState */
+function apiToState(data: Record<string, string>): SettingsState {
+  const state: SettingsState = JSON.parse(JSON.stringify(defaultSettings));
+
+  for (const [key, value] of Object.entries(data)) {
+    const parts = key.split('.');
+    if (parts.length !== 2) continue;
+    const [section, field] = parts;
+
+    if (section === 'gallery' && field in state.gallery) {
+      (state.gallery as Record<string, string>)[field] = value;
+    } else if (section === 'hours' && field in state.hours) {
+      (state.hours as Record<string, string>)[field] = value;
+    } else if (section === 'social' && field in state.social) {
+      (state.social as Record<string, string>)[field] = value;
+    } else if (section === 'seo' && field in state.seo) {
+      (state.seo as Record<string, string>)[field] = value;
+    }
+  }
+
+  return state;
+}
+
+/** Convert nested SettingsState to flat key-value map for the API */
+function stateToApi(state: SettingsState): Record<string, string> {
+  const result: Record<string, string> = {};
+
+  for (const [section, fields] of Object.entries(state)) {
+    for (const [field, value] of Object.entries(fields as Record<string, string>)) {
+      result[`${section}.${field}`] = value;
+    }
+  }
+
+  return result;
+}
 
 function InputField({
   label,
@@ -85,6 +129,7 @@ function InputField({
   type = 'text',
   placeholder,
   className,
+  disabled,
 }: {
   label: string;
   value: string;
@@ -92,6 +137,7 @@ function InputField({
   type?: string;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }) {
   return (
     <div className={className}>
@@ -103,7 +149,8 @@ function InputField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors"
+        disabled={disabled}
+        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       />
     </div>
   );
@@ -116,6 +163,7 @@ function TextAreaField({
   rows = 3,
   placeholder,
   helpText,
+  disabled,
 }: {
   label: string;
   value: string;
@@ -123,6 +171,7 @@ function TextAreaField({
   rows?: number;
   placeholder?: string;
   helpText?: string;
+  disabled?: boolean;
 }) {
   return (
     <div>
@@ -134,7 +183,8 @@ function TextAreaField({
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
         placeholder={placeholder}
-        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors resize-none"
+        disabled={disabled}
+        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
       />
       {helpText && (
         <p className="text-xs text-gray-400 mt-1.5">{helpText}</p>
@@ -154,8 +204,37 @@ const dayLabels: Record<string, string> = {
 };
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<SettingsState>(initialSettings);
-  const [saved, setSaved] = useState(false);
+  const [settings, setSettings] = useState<SettingsState>(defaultSettings);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const showFeedback = useCallback((type: 'success' | 'error', message: string) => {
+    setFeedback({ type, message });
+    setTimeout(() => setFeedback(null), 4000);
+  }, []);
+
+  const fetchSettings = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/settings');
+      if (!res.ok) throw new Error('Failed to fetch settings');
+      const data: Record<string, string> = await res.json();
+      setSettings(apiToState(data));
+    } catch (err) {
+      showFeedback('error',
+        err instanceof Error ? err.message : 'Failed to load settings'
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [showFeedback]);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
 
   const updateGallery = (
     key: keyof SettingsState['gallery'],
@@ -165,7 +244,6 @@ export default function SettingsPage() {
       ...prev,
       gallery: { ...prev.gallery, [key]: value },
     }));
-    setSaved(false);
   };
 
   const updateHours = (
@@ -176,7 +254,6 @@ export default function SettingsPage() {
       ...prev,
       hours: { ...prev.hours, [key]: value },
     }));
-    setSaved(false);
   };
 
   const updateSocial = (
@@ -187,7 +264,6 @@ export default function SettingsPage() {
       ...prev,
       social: { ...prev.social, [key]: value },
     }));
-    setSaved(false);
   };
 
   const updateSeo = (key: keyof SettingsState['seo'], value: string) => {
@@ -195,14 +271,67 @@ export default function SettingsPage() {
       ...prev,
       seo: { ...prev.seo, [key]: value },
     }));
-    setSaved(false);
   };
 
-  const handleSave = () => {
-    // In a real app, this would persist to backend
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      const payload = stateToApi(settings);
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.error || 'Failed to save settings');
+      }
+      const data: Record<string, string> = await res.json();
+      setSettings(apiToState(data));
+      showFeedback('success', 'Settings saved successfully');
+    } catch (err) {
+      showFeedback('error',
+        err instanceof Error ? err.message : 'Failed to save settings'
+      );
+    } finally {
+      setSaving(false);
+    }
   };
+
+  const handleReset = async () => {
+    if (!confirmReset) {
+      setConfirmReset(true);
+      return;
+    }
+    try {
+      setResetting(true);
+      const res = await fetch('/api/settings/reset', { method: 'POST' });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.error || 'Failed to reset database');
+      }
+      showFeedback('success', 'Database has been reset successfully');
+      setConfirmReset(false);
+      await fetchSettings();
+    } catch (err) {
+      showFeedback('error',
+        err instanceof Error ? err.message : 'Failed to reset database'
+      );
+    } finally {
+      setResetting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <motion.div {...fadeIn} className="flex flex-col items-center justify-center py-32 max-w-3xl">
+        <Loader2 className="w-8 h-8 text-gray-400 animate-spin mb-4" />
+        <p className="text-sm text-gray-500">Loading settings...</p>
+      </motion.div>
+    );
+  }
+
+  const isFormDisabled = saving;
 
   return (
     <motion.div {...fadeIn} className="space-y-6 max-w-3xl">
@@ -216,17 +345,42 @@ export default function SettingsPage() {
         </div>
         <button
           onClick={handleSave}
+          disabled={saving}
           className={cn(
             'inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-lg transition-all',
-            saved
-              ? 'bg-emerald-600 text-white'
+            saving
+              ? 'bg-gray-400 text-white cursor-not-allowed'
               : 'bg-black text-white hover:bg-gray-800'
           )}
         >
-          <Save className="w-4 h-4" />
-          {saved ? 'Saved!' : 'Save Changes'}
+          {saving ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
+
+      {/* Inline Feedback Banner */}
+      {feedback && (
+        <div
+          className={cn(
+            'flex items-center justify-between rounded-lg px-4 py-3 text-sm font-medium',
+            feedback.type === 'success'
+              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+              : 'bg-red-50 text-red-800 border border-red-200'
+          )}
+        >
+          <span>{feedback.message}</span>
+          <button
+            onClick={() => setFeedback(null)}
+            className="text-current opacity-60 hover:opacity-100 ml-4"
+          >
+            &times;
+          </button>
+        </div>
+      )}
 
       {/* Gallery Information */}
       <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -246,6 +400,7 @@ export default function SettingsPage() {
             label="Gallery Name"
             value={settings.gallery.name}
             onChange={(v) => updateGallery('name', v)}
+            disabled={isFormDisabled}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <InputField
@@ -253,40 +408,47 @@ export default function SettingsPage() {
               type="email"
               value={settings.gallery.email}
               onChange={(v) => updateGallery('email', v)}
+              disabled={isFormDisabled}
             />
             <InputField
               label="Phone"
               type="tel"
               value={settings.gallery.phone}
               onChange={(v) => updateGallery('phone', v)}
+              disabled={isFormDisabled}
             />
           </div>
           <InputField
             label="Address Line 1"
             value={settings.gallery.addressLine1}
             onChange={(v) => updateGallery('addressLine1', v)}
+            disabled={isFormDisabled}
           />
           <InputField
             label="Address Line 2"
             value={settings.gallery.addressLine2}
             onChange={(v) => updateGallery('addressLine2', v)}
             placeholder="Suite, unit, building, etc."
+            disabled={isFormDisabled}
           />
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <InputField
               label="City"
               value={settings.gallery.city}
               onChange={(v) => updateGallery('city', v)}
+              disabled={isFormDisabled}
             />
             <InputField
               label="State"
               value={settings.gallery.state}
               onChange={(v) => updateGallery('state', v)}
+              disabled={isFormDisabled}
             />
             <InputField
               label="ZIP Code"
               value={settings.gallery.zip}
               onChange={(v) => updateGallery('zip', v)}
+              disabled={isFormDisabled}
             />
           </div>
         </div>
@@ -319,7 +481,8 @@ export default function SettingsPage() {
                   type="text"
                   value={settings.hours[day]}
                   onChange={(e) => updateHours(day, e.target.value)}
-                  className="flex-1 max-w-xs px-3.5 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors"
+                  disabled={isFormDisabled}
+                  className="flex-1 max-w-xs px-3.5 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="e.g., 10:00 AM - 6:00 PM"
                 />
               </div>
@@ -347,30 +510,35 @@ export default function SettingsPage() {
             value={settings.social.instagram}
             onChange={(v) => updateSocial('instagram', v)}
             placeholder="https://instagram.com/yourusername"
+            disabled={isFormDisabled}
           />
           <InputField
             label="Facebook"
             value={settings.social.facebook}
             onChange={(v) => updateSocial('facebook', v)}
             placeholder="https://facebook.com/yourpage"
+            disabled={isFormDisabled}
           />
           <InputField
             label="Pinterest"
             value={settings.social.pinterest}
             onChange={(v) => updateSocial('pinterest', v)}
             placeholder="https://pinterest.com/yourusername"
+            disabled={isFormDisabled}
           />
           <InputField
             label="X (Twitter)"
             value={settings.social.x}
             onChange={(v) => updateSocial('x', v)}
             placeholder="https://x.com/yourusername"
+            disabled={isFormDisabled}
           />
           <InputField
             label="YouTube"
             value={settings.social.youtube}
             onChange={(v) => updateSocial('youtube', v)}
             placeholder="https://youtube.com/@yourchannel"
+            disabled={isFormDisabled}
           />
         </div>
       </section>
@@ -394,6 +562,7 @@ export default function SettingsPage() {
             value={settings.seo.defaultTitle}
             onChange={(v) => updateSeo('defaultTitle', v)}
             placeholder="Your gallery name — tagline"
+            disabled={isFormDisabled}
           />
           <TextAreaField
             label="Default Meta Description"
@@ -402,7 +571,67 @@ export default function SettingsPage() {
             rows={3}
             placeholder="A brief description of your gallery for search engines..."
             helpText="Recommended: 150-160 characters for optimal display in search results."
+            disabled={isFormDisabled}
           />
+        </div>
+      </section>
+
+      {/* Danger Zone */}
+      <section className="bg-white rounded-lg border border-red-200 shadow-sm">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-red-100">
+          <AlertTriangle className="w-5 h-5 text-red-500" />
+          <div>
+            <h2 className="text-base font-semibold text-red-900">
+              Danger Zone
+            </h2>
+            <p className="text-xs text-red-500 mt-0.5">
+              Irreversible actions that affect your entire database
+            </p>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900">
+                Reset Database
+              </h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-md">
+                This will wipe all data and restore the database to its initial
+                state. This action cannot be undone.
+              </p>
+            </div>
+            {confirmReset ? (
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => setConfirmReset(false)}
+                  disabled={resetting}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleReset}
+                  disabled={resetting}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {resetting ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <RotateCcw className="w-4 h-4" />
+                  )}
+                  {resetting ? 'Resetting...' : 'Confirm Reset'}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleReset}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors flex-shrink-0"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Reset Database
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
@@ -410,15 +639,20 @@ export default function SettingsPage() {
       <div className="flex justify-end pb-4">
         <button
           onClick={handleSave}
+          disabled={saving}
           className={cn(
             'inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium rounded-lg transition-all',
-            saved
-              ? 'bg-emerald-600 text-white'
+            saving
+              ? 'bg-gray-400 text-white cursor-not-allowed'
               : 'bg-black text-white hover:bg-gray-800'
           )}
         >
-          <Save className="w-4 h-4" />
-          {saved ? 'Saved!' : 'Save Changes'}
+          {saving ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
     </motion.div>

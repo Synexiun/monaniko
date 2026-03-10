@@ -19,17 +19,17 @@ export default function WorkshopsPage() {
   return (
     <>
       {/* ─── Hero ─────────────────────────────────────────── */}
-      <section className="relative py-32 md:py-40 bg-black overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
           <Image
-            src="/images/hero/workshop-preview.jpg"
-            alt="Workshops at Mona Niko Gallery"
+            src="/images/artworks/artwork-8.jpg"
+            alt=""
             fill
             className="object-cover"
             priority
           />
+          <div className="absolute inset-0 bg-black/70" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
         <div className="relative z-10 container-gallery text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export default function WorkshopsPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="font-serif text-4xl md:text-6xl lg:text-7xl text-white font-medium tracking-[-0.02em]"
+            className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
           >
             Workshops &amp; Events
           </motion.h1>
