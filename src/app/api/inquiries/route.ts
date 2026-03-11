@@ -35,6 +35,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+    if (!body.type || !body.name || !body.email || !body.message) {
+      return errorResponse('Missing required fields: type, name, email, message', 400)
+    }
     const inquiry = await db.inquiry.create({
       data: {
         type: body.type,

@@ -57,6 +57,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+    if (!body.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
+      return errorResponse('Valid email is required', 400)
+    }
     const subscriber = await db.subscriber.create({
       data: {
         email: body.email,
