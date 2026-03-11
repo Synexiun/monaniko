@@ -28,20 +28,24 @@ export default function CollectionCard({ collection, index = 0 }: CollectionCard
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
           {/* Content */}
           <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
             <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-2">
               Collection {collection.year && `— ${collection.year}`}
             </p>
-            <h3 className="font-serif text-2xl md:text-3xl text-white group-hover:text-gold-light transition-colors duration-300">
+            <h3
+              className="font-display font-light italic text-white group-hover:text-gold-light transition-colors duration-300"
+              style={{ fontSize: "clamp(1.8rem, 2.8vw, 2.6rem)", lineHeight: 1.1 }}
+            >
               {collection.title}
             </h3>
             <p className="text-sm text-white/60 mt-2 line-clamp-2 max-w-sm">
               {collection.description}
             </p>
-            <span className="inline-block mt-4 text-[11px] tracking-[0.15em] uppercase text-gold group-hover:text-gold-light transition-colors">
+            <span className="inline-flex items-center gap-2 mt-4 text-[11px] tracking-[0.15em] uppercase text-gold group-hover:text-gold-light transition-colors">
               View Collection
+              <span className="inline-block translate-x-0 group-hover:translate-x-1.5 transition-transform duration-300">→</span>
             </span>
           </div>
         </div>
