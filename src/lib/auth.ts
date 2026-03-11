@@ -6,8 +6,9 @@ const SESSION_COOKIE = 'admin_session'
 const SESSION_VALUE = 'authenticated'
 
 export async function validateCredentials(username: string, password: string): Promise<boolean> {
-  const adminUsername = process.env.ADMIN_USERNAME || 'demo'
+  const adminUsername = process.env.ADMIN_USERNAME || 'admin'
   const passwordHash = process.env.ADMIN_PASSWORD_HASH
+  const plainPassword = process.env.ADMIN_PASSWORD
 
   if (username !== adminUsername) return false
 
@@ -15,7 +16,11 @@ export async function validateCredentials(username: string, password: string): P
     return bcrypt.compare(password, passwordHash)
   }
 
-  // Dev fallback when no hash is configured
+  if (plainPassword) {
+    return password === plainPassword
+  }
+
+  // Dev fallback
   return password === 'demo'
 }
 

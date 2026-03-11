@@ -85,7 +85,7 @@ export default function Navigation() {
                 <div>
                   <h1
                     className={cn(
-                      "font-display text-[1.6rem] lg:text-[1.85rem] tracking-[0.04em] font-light transition-colors duration-500",
+                      "font-serif text-[1.6rem] lg:text-[1.85rem] tracking-[0.04em] font-medium transition-colors duration-500",
                       scrolled ? "text-black" : "text-white"
                     )}
                   >
