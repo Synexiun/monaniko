@@ -14,10 +14,12 @@ const navLinks = [
     label: "Shop",
     children: [
       { href: "/shop/originals", label: "Original Paintings" },
-      { href: "/shop/prints", label: "Prints" },
+      { href: "/shop/prints", label: "Prints & Limited Editions" },
+      { href: "/shop/merch", label: "Merch & Objects" },
+      { href: "/shop/designers", label: "Designers Collection" },
     ],
   },
-  { href: "/workshops", label: "Workshops" },
+  { href: "/workshops", label: "Workshops & Events" },
   { href: "/commissions", label: "Commissions" },
   { href: "/journal", label: "Journal" },
   { href: "/about", label: "About" },
@@ -32,7 +34,7 @@ export default function Navigation() {
   const openCart = useCartStore((s) => s.openCart);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -45,18 +47,39 @@ export default function Navigation() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out",
         scrolled
-          ? "bg-cream/95 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.05)]"
+          ? "bg-white/95 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,195,185,0.3)]"
           : "bg-transparent"
       )}
     >
-      <nav className="container-gallery flex items-center justify-between h-[var(--header-height)]">
+      {/* Thin gold accent line when scrolled */}
+      {scrolled && (
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#C4A265]/40 to-transparent" />
+      )}
+
+      <nav className="container-gallery flex items-center justify-between h-20 lg:h-[88px]">
+
         {/* Logo */}
-        <Link href="/" className="relative z-50">
-          <h1 className="font-serif text-2xl md:text-[1.7rem] tracking-[0.02em] text-black font-medium">
+        <Link href="/" className="relative z-50 group">
+          <h1
+            className={cn(
+              "font-display text-[2rem] lg:text-[2.2rem] tracking-[0.06em] font-light italic transition-all duration-700",
+              scrolled
+                ? "text-stone-900"
+                : "text-white drop-shadow-sm"
+            )}
+          >
             Mona Niko
           </h1>
+          <div
+            className={cn(
+              "text-[8px] tracking-[0.45em] uppercase font-sans font-light mt-[-4px] transition-all duration-700",
+              scrolled ? "text-[#C4A265]" : "text-white/60"
+            )}
+          >
+            Fine Art Gallery
+          </div>
         </Link>
 
         {/* Desktop Nav */}
@@ -70,7 +93,12 @@ export default function Navigation() {
             >
               <Link
                 href={link.href}
-                className="text-[13px] tracking-[0.12em] uppercase text-charcoal hover:text-gold transition-colors duration-300 font-medium"
+                className={cn(
+                  "text-[12px] tracking-[0.14em] uppercase font-medium transition-colors duration-500",
+                  scrolled
+                    ? "text-stone-700 hover:text-[#C4A265]"
+                    : "text-white/90 hover:text-white"
+                )}
               >
                 {link.label}
               </Link>
@@ -79,14 +107,14 @@ export default function Navigation() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute top-full left-0 pt-2"
+                  className="absolute top-full left-0 pt-3"
                 >
-                  <div className="bg-white rounded-sm shadow-lg border border-warm-gray/50 py-2 min-w-[200px]">
+                  <div className="bg-white shadow-xl border border-stone-100 py-2 min-w-[210px]">
                     {link.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-5 py-2.5 text-[12px] tracking-[0.1em] uppercase text-charcoal hover:text-gold hover:bg-cream transition-all duration-200"
+                        className="block px-5 py-2.5 text-[11px] tracking-[0.12em] uppercase text-stone-600 hover:text-[#C4A265] hover:bg-stone-50 transition-all duration-200"
                       >
                         {child.label}
                       </Link>
@@ -99,11 +127,14 @@ export default function Navigation() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4 relative z-50">
+        <div className="flex items-center gap-3 relative z-50">
           {/* Cart */}
           <button
             onClick={openCart}
-            className="relative p-2 text-charcoal hover:text-gold transition-colors"
+            className={cn(
+              "relative p-2 transition-colors duration-500",
+              scrolled ? "text-stone-700 hover:text-[#C4A265]" : "text-white/90 hover:text-white"
+            )}
             aria-label="Open cart"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -112,7 +143,7 @@ export default function Navigation() {
               <path d="M16 10a4 4 0 01-8 0" />
             </svg>
             {itemCount() > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-gold text-white text-[10px] font-medium rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#C4A265] text-white text-[10px] font-medium rounded-full flex items-center justify-center">
                 {itemCount()}
               </span>
             )}
@@ -121,7 +152,10 @@ export default function Navigation() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-charcoal"
+            className={cn(
+              "lg:hidden p-2 transition-colors duration-500",
+              scrolled ? "text-stone-700" : "text-white"
+            )}
             aria-label="Toggle menu"
           >
             <div className="w-5 flex flex-col gap-[5px]">
@@ -140,9 +174,9 @@ export default function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-cream z-40 lg:hidden"
+            className="fixed inset-0 bg-white z-40 lg:hidden"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-6">
+            <div className="flex flex-col items-center justify-center h-full gap-7">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -153,7 +187,7 @@ export default function Navigation() {
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-2xl font-serif text-black hover:text-gold transition-colors"
+                    className="font-display text-3xl text-stone-900 hover:text-[#C4A265] transition-colors italic"
                   >
                     {link.label}
                   </Link>
@@ -162,15 +196,15 @@ export default function Navigation() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 pt-8 border-t border-warm-gray"
+                transition={{ delay: 0.5 }}
+                className="mt-6 pt-6 border-t border-stone-200"
               >
                 <Link
                   href="/account"
                   onClick={() => setIsOpen(false)}
-                  className="text-sm tracking-[0.1em] uppercase text-charcoal-light hover:text-gold transition-colors"
+                  className="text-sm tracking-[0.15em] uppercase text-stone-400 hover:text-[#C4A265] transition-colors"
                 >
-                  Account
+                  My Account
                 </Link>
               </motion.div>
             </div>
