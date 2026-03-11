@@ -3,6 +3,12 @@ import { db } from '@/lib/db'
 import { parsePagination, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
 import { requireAuth } from '@/lib/auth'
 
+function safeJson<T>(val: unknown, fallback: T): T {
+  if (Array.isArray(val)) return val as T
+  if (typeof val !== 'string') return fallback
+  try { return JSON.parse(val) } catch { return fallback }
+}
+
 export async function GET(req: NextRequest) {
   const authError = await requireAuth()
   if (authError) return authError
@@ -25,10 +31,11 @@ export async function GET(req: NextRequest) {
     if (active === 'true') where.isActive = true
     if (active === 'false') where.isActive = false
 
-    const [data, total] = await Promise.all([
+    const [raw, total] = await Promise.all([
       db.subscriber.findMany({ where, skip, take: limit, orderBy: { createdAt: 'desc' } }),
       db.subscriber.count({ where }),
     ])
+    const data = raw.map((s) => ({ ...s, segments: safeJson(s.segments, []) }))
 
     // CSV export data
     const exportCsv = sp.get('export') === 'csv'

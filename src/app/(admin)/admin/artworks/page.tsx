@@ -481,7 +481,8 @@ export default function ArtworksPage() {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {artworks.map((artwork) => {
-                  const status = statusConfig[artwork.status];
+                  const statusKey = (artwork.status || '').toLowerCase() as ArtworkStatus;
+                  const status = statusConfig[statusKey] ?? { label: artwork.status, className: 'bg-gray-100 text-gray-600 border-gray-200' };
                   return (
                     <tr
                       key={artwork.id}
