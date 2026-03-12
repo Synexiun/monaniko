@@ -37,7 +37,7 @@ export default function Footer() {
                   Exclusive Access
                 </p>
               </div>
-              <h3 className="font-display text-3xl md:text-[2.2rem] text-white font-light leading-snug">
+              <h3 className="font-display text-[2.4rem] md:text-[3rem] text-white font-light italic leading-snug">
                 Join the Collector&apos;s Circle
               </h3>
               <p className="text-[13px] text-white/35 max-w-md mt-3 font-light">
@@ -71,7 +71,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
-              <span className="font-display text-[1.7rem] text-white font-light tracking-wide">
+              <span className="font-display text-[2.2rem] text-white font-light italic tracking-[0.04em]">
                 Mona Niko
               </span>
             </Link>
@@ -89,7 +89,7 @@ export default function Footer() {
                 <a
                   key={social.name}
                   href="#"
-                  className="text-white/25 hover:text-gold transition-colors duration-300"
+                  className="text-white/40 hover:text-gold transition-colors duration-300"
                   aria-label={social.name}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -103,7 +103,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([key, links]) => (
             <div key={key}>
-              <h4 className="text-[10px] tracking-[0.25em] uppercase text-white/20 mb-6 font-sans font-semibold">
+              <h4 className="text-[10px] tracking-[0.25em] uppercase text-white/45 mb-6 font-sans font-semibold">
                 {key === "info" ? "Information" : key.charAt(0).toUpperCase() + key.slice(1)}
               </h4>
               <ul className="space-y-3.5">
@@ -111,7 +111,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[13px] text-white/40 hover:text-gold transition-colors duration-300 font-light"
+                      className="text-[13px] text-white/55 hover:text-gold transition-colors duration-300 font-light"
                     >
                       {link.label}
                     </Link>

@@ -36,13 +36,13 @@ export default function SectionHeading({
           align === "center" ? "justify-center" : ""
         )}
       >
-        <div className="w-8 h-[1px] bg-gold" />
+        <div className="w-14 h-[1px] bg-gold" />
         <div className="w-1.5 h-1.5 rounded-full bg-gold/40" />
-        <div className="w-8 h-[1px] bg-gold" />
+        <div className="w-14 h-[1px] bg-gold" />
       </div>
       <h2
         className={cn(
-          "font-display text-3xl md:text-4xl lg:text-[2.75rem] font-light tracking-[0.01em] leading-[1.15]",
+          "font-display text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4.5rem] font-light tracking-[0.01em] leading-[1.1]",
           light ? "text-white" : "text-black"
         )}
       >

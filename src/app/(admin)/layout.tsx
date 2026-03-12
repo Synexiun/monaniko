@@ -34,6 +34,8 @@ import {
   Award,
   Crown,
   Gavel,
+  HelpCircle,
+  Ticket,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ToastProvider from '@/components/admin/ToastProvider';
@@ -107,6 +109,8 @@ const sidebarSections: SidebarSection[] = [
     links: [
       { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
       { href: '/admin/settings', label: 'Settings', icon: Settings },
+      { href: '/admin/help', label: 'Help Center', icon: HelpCircle },
+      { href: '/admin/tickets', label: 'Support Tickets', icon: Ticket },
     ],
   },
 ];

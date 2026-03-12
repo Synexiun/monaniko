@@ -25,9 +25,9 @@ export async function GET(req: NextRequest) {
       ]
     }
     const status = sp.get('status')
-    if (status) where.status = status
+    if (status) where.status = status.toUpperCase()
     const category = sp.get('category')
-    if (category) where.category = category
+    if (category) where.category = category.toUpperCase()
     const collectionId = sp.get('collectionId')
     if (collectionId) where.collectionId = collectionId
     const featured = sp.get('featured')
@@ -43,6 +43,9 @@ export async function GET(req: NextRequest) {
       images: safeJson(a.images, []),
       tags: safeJson(a.tags, []),
       dimensions: safeJson(a.dimensions, null),
+      status: (a.status || 'available').toLowerCase(),
+      category: (a.category || '').toLowerCase(),
+      medium: a.medium ? a.medium.toLowerCase() : null,
     }))
 
     return paginatedResponse(data, total, page, limit)
@@ -63,11 +66,11 @@ export async function POST(req: NextRequest) {
         slug,
         description: body.description || null,
         images: JSON.stringify(body.images || []),
-        category: body.category,
+        category: (body.category || '').toUpperCase(),
         medium: body.medium || null,
         dimensions: body.dimensions ? JSON.stringify(body.dimensions) : null,
         year: body.year || null,
-        status: body.status || 'AVAILABLE',
+        status: (body.status || 'available').toUpperCase(),
         price: body.price || null,
         priceOnInquiry: body.priceOnInquiry || false,
         collectionId: body.collectionId || null,

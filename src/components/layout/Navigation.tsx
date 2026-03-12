@@ -58,13 +58,13 @@ export default function Navigation() {
         <div className="h-[1px] bg-gradient-to-r from-transparent via-[#C4A265]/40 to-transparent" />
       )}
 
-      <nav className="container-gallery flex items-center justify-between h-20 lg:h-[88px]">
+      <nav className="container-gallery flex items-center justify-between h-24 lg:h-[100px]">
 
         {/* Logo */}
         <Link href="/" className="relative z-50 group">
           <h1
             className={cn(
-              "font-display text-[2rem] lg:text-[2.2rem] tracking-[0.06em] font-light italic transition-all duration-700",
+              "font-display text-[2.6rem] lg:text-[3.2rem] tracking-[0.04em] font-light italic transition-all duration-700",
               scrolled
                 ? "text-stone-900"
                 : "text-white drop-shadow-sm"
@@ -74,11 +74,11 @@ export default function Navigation() {
           </h1>
           <div
             className={cn(
-              "text-[8px] tracking-[0.45em] uppercase font-sans font-light mt-[-4px] transition-all duration-700",
-              scrolled ? "text-[#C4A265]" : "text-white/60"
+              "text-[9px] tracking-[0.42em] uppercase font-sans font-light mt-[-7px] text-center transition-all duration-700",
+              scrolled ? "text-[#C4A265]" : "text-white/50"
             )}
           >
-            Fine Art Gallery
+            · Fine Art Gallery ·
           </div>
         </Link>
 
@@ -94,10 +94,11 @@ export default function Navigation() {
               <Link
                 href={link.href}
                 className={cn(
-                  "text-[12px] tracking-[0.14em] uppercase font-medium transition-colors duration-500",
+                  "relative text-[12px] tracking-[0.14em] uppercase font-medium transition-colors duration-500",
+                  "after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:transition-all after:duration-500 hover:after:w-full",
                   scrolled
-                    ? "text-stone-700 hover:text-[#C4A265]"
-                    : "text-white/90 hover:text-white"
+                    ? "text-stone-700 hover:text-[#C4A265] after:bg-[#C4A265]"
+                    : "text-white/90 hover:text-white after:bg-white/70"
                 )}
               >
                 {link.label}
@@ -187,7 +188,7 @@ export default function Navigation() {
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="font-display text-3xl text-stone-900 hover:text-[#C4A265] transition-colors italic"
+                    className="font-display text-4xl md:text-5xl text-stone-900 hover:text-[#C4A265] transition-colors italic"
                   >
                     {link.label}
                   </Link>

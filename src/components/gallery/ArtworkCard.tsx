@@ -46,18 +46,24 @@ export default function ArtworkCard({ artwork, index = 0, priority = false }: Ar
             </div>
           )}
           {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
+          {/* View Work reveal */}
+          <div className="absolute inset-x-0 bottom-0 px-5 py-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out flex items-center justify-between pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <span className="relative text-[10px] tracking-[0.22em] uppercase text-white/90">View Work</span>
+            <span className="relative text-white/60">→</span>
+          </div>
         </div>
 
         {/* Info */}
-        <div className="mt-4 space-y-1">
-          <h3 className="font-serif text-lg text-black group-hover:text-gold transition-colors duration-300">
+        <div className="mt-5 space-y-1.5">
+          <h3 className="font-serif text-lg text-black group-hover:text-gold transition-colors duration-300 leading-tight">
             {artwork.title}
           </h3>
-          <p className="text-[12px] tracking-wider uppercase text-charcoal-light">
+          <p className="text-[11px] tracking-[0.14em] uppercase text-charcoal-light">
             {artwork.medium.replace("_", " ")} — {artwork.dimensions.width}&quot; × {artwork.dimensions.height}&quot;
           </p>
-          <p className="text-[13px] text-charcoal">
+          <p className="text-[13px] font-medium text-charcoal">
             {artwork.status === "available" && artwork.price
               ? formatPrice(artwork.price)
               : artwork.priceOnInquiry
