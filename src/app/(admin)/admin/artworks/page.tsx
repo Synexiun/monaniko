@@ -186,7 +186,7 @@ export default function ArtworksPage() {
       if (!res.ok) throw new Error('Failed to load artworks');
       const json = await res.json();
       setArtworks(json.artworks || json.data || []);
-      setTotalCount(json.total || json.totalCount || 0);
+      setTotalCount(json.pagination?.total || json.total || json.totalCount || 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load artworks');
     } finally {
@@ -265,9 +265,9 @@ export default function ArtworksPage() {
       description: artwork.description,
       category: artwork.category,
       medium: artwork.medium,
-      dimensionWidth: artwork.dimensions.width,
-      dimensionHeight: artwork.dimensions.height,
-      dimensionUnit: artwork.dimensions.unit,
+      dimensionWidth: artwork.dimensions?.width ?? 0,
+      dimensionHeight: artwork.dimensions?.height ?? 0,
+      dimensionUnit: artwork.dimensions?.unit ?? 'in',
       year: artwork.year,
       status: artwork.status,
       price: artwork.price != null ? artwork.price.toString() : '',
@@ -276,7 +276,7 @@ export default function ArtworksPage() {
       tags: artwork.tags.join(', '),
       featured: artwork.featured,
       framing: artwork.framing || '',
-      certificate: artwork.certificate,
+      certificate: Boolean(artwork.certificate),
     });
     setModalOpen(true);
   };
@@ -506,9 +506,10 @@ export default function ArtworksPage() {
                               {artwork.title}
                             </p>
                             <p className="text-xs text-gray-400 mt-0.5">
-                              {artwork.year} &middot;{' '}
-                              {artwork.dimensions.width}&times;{artwork.dimensions.height}{' '}
-                              {artwork.dimensions.unit}
+                              {artwork.year}
+                              {artwork.dimensions && (
+                                <> &middot; {artwork.dimensions.width}&times;{artwork.dimensions.height}{' '}{artwork.dimensions.unit}</>
+                              )}
                             </p>
                           </div>
                         </div>

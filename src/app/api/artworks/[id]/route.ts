@@ -36,11 +36,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (body.slug !== undefined) data.slug = body.slug
     if (body.description !== undefined) data.description = body.description
     if (body.images !== undefined) data.images = JSON.stringify(body.images)
-    if (body.category !== undefined) data.category = body.category
+    if (body.category !== undefined) data.category = String(body.category).toUpperCase()
     if (body.medium !== undefined) data.medium = body.medium
     if (body.dimensions !== undefined) data.dimensions = JSON.stringify(body.dimensions)
     if (body.year !== undefined) data.year = body.year
-    if (body.status !== undefined) data.status = body.status
+    if (body.status !== undefined) data.status = String(body.status).toUpperCase()
     if (body.price !== undefined) data.price = body.price
     if (body.priceOnInquiry !== undefined) data.priceOnInquiry = body.priceOnInquiry
     if (body.collectionId !== undefined) data.collectionId = body.collectionId
