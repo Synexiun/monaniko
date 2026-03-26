@@ -200,7 +200,7 @@ export default function HomePage() {
               transition={{ duration: 0.7 }}
             >
               <div className="relative aspect-[4/5] overflow-hidden">
-                <Image src="/images/hero/artist-portrait.jpg" alt="Mona Niko in her studio" fill className="object-cover" />
+                <Image src="/images/artist/studio-portrait.jpg" alt="Mona Niko in her studio" fill className="object-cover" />
               </div>
             </motion.div>
             <motion.div
@@ -255,7 +255,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── Services Triptych ──────────────────────────────── */}
-      <section className="py-24 md:py-32 bg-cream-dark">
+      <section className="py-24 md:py-32" style={{ background: "linear-gradient(135deg, #F5F0E8 0%, #EDE6D8 50%, #F0E9DC 100%)" }}>
         <div className="container-gallery">
           <SectionHeading
             title="The Mona Niko Experience"
@@ -383,7 +383,7 @@ export default function HomePage() {
               transition={{ duration: 0.7 }}
               className="relative aspect-[4/5] overflow-hidden hidden lg:block"
             >
-              <Image src="/images/hero/workshop-preview.jpg" alt="Art workshop at Mona Niko Gallery" fill className="object-cover" />
+              <Image src="/images/sections/workshop-preview.jpg" alt="Art workshop at Mona Niko Gallery" fill className="object-cover" />
             </motion.div>
           </div>
         </div>
@@ -392,8 +392,8 @@ export default function HomePage() {
       {/* ─── CTA Banner ────────────────────────────────────── */}
       <section className="relative py-32 md:py-40 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/hero/cta-bg.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/60" />
+          <Image src="/images/sections/cta-bg.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-black/35" />
         </div>
         <div className="relative z-10 container-gallery text-center">
           <motion.div

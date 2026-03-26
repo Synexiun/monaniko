@@ -66,9 +66,9 @@ export default function Navigation() {
           <h1
             className={cn(
               "font-display text-[2.6rem] lg:text-[3.2rem] tracking-[0.04em] font-light italic transition-all duration-700",
-              scrolled && !isOpen
-                ? "text-stone-900"
-                : "text-white drop-shadow-sm"
+              isOpen
+                ? "text-white drop-shadow-sm"
+                : "text-stone-900"
             )}
           >
             Mona Niko
@@ -76,7 +76,7 @@ export default function Navigation() {
           <div
             className={cn(
               "text-[9px] tracking-[0.42em] uppercase font-sans font-light mt-[-7px] text-center transition-all duration-700",
-              scrolled && !isOpen ? "text-[#C4A265]" : "text-white/50"
+              isOpen ? "text-white/50" : "text-[#C4A265]"
             )}
           >
             · Fine Art Gallery ·
@@ -99,7 +99,7 @@ export default function Navigation() {
                   "after:absolute after:bottom-[-3px] after:left-0 after:h-px after:w-0 after:transition-all after:duration-500 hover:after:w-full",
                   scrolled
                     ? "text-stone-700 hover:text-[#C4A265] after:bg-[#C4A265]"
-                    : "text-white/90 hover:text-white after:bg-white/70"
+                    : "text-stone-600 hover:text-[#C4A265] after:bg-[#C4A265]"
                 )}
               >
                 {link.label}
@@ -135,7 +135,7 @@ export default function Navigation() {
             onClick={openCart}
             className={cn(
               "relative p-2 transition-colors duration-500",
-              scrolled ? "text-stone-700 hover:text-[#C4A265]" : "text-white/90 hover:text-white"
+              "text-stone-700 hover:text-[#C4A265]"
             )}
             aria-label="Open cart"
           >
@@ -156,7 +156,7 @@ export default function Navigation() {
             onClick={() => { setIsOpen(!isOpen); setShopExpanded(false); }}
             className={cn(
               "lg:hidden p-2 transition-colors duration-300 relative z-[51]",
-              isOpen ? "text-white" : scrolled ? "text-stone-700" : "text-white"
+              isOpen ? "text-white" : "text-stone-700"
             )}
             aria-label="Toggle menu"
           >
