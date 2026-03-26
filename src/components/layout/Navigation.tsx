@@ -42,8 +42,20 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (!isOpen) return;
+    // iOS-compatible scroll lock — overflow:hidden alone doesn't work on Safari
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      window.scrollTo(0, scrollY);
+    };
   }, [isOpen]);
 
   return (
@@ -191,7 +203,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 lg:hidden bg-[#111111] flex flex-col overflow-y-auto"
+            className="fixed top-0 left-0 right-0 h-screen z-40 lg:hidden bg-[#111111] flex flex-col overflow-y-auto"
           >
             {/* Spacer for the fixed header above */}
             <div className="h-24 flex-shrink-0" />
