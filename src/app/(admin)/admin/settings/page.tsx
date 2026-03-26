@@ -11,6 +11,15 @@ import {
   Loader2,
   AlertTriangle,
   RotateCcw,
+  Plug,
+  CreditCard,
+  Cloud,
+  Mail,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  XCircle,
+  RefreshCw,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -193,6 +202,60 @@ function TextAreaField({
   );
 }
 
+interface IntegrationField {
+  value: string;
+  masked: string;
+  isSet: boolean;
+}
+
+type IntegrationKeys =
+  | 'STRIPE_SECRET_KEY'
+  | 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'
+  | 'STRIPE_WEBHOOK_SECRET'
+  | 'CLOUDINARY_CLOUD_NAME'
+  | 'CLOUDINARY_API_KEY'
+  | 'CLOUDINARY_API_SECRET'
+  | 'RESEND_API_KEY'
+  | 'ADMIN_EMAIL'
+  | 'FROM_EMAIL'
+  | 'FROM_NAME';
+
+type IntegrationsState = Record<IntegrationKeys, IntegrationField>;
+
+const integrationGroups = [
+  {
+    title: 'Stripe (Payments)',
+    icon: CreditCard,
+    description: 'Accept payments through Stripe. Get your keys from the Stripe Dashboard under Developers > API keys.',
+    fields: [
+      { key: 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY' as IntegrationKeys, label: 'Publishable Key', placeholder: 'pk_test_...', sensitive: false },
+      { key: 'STRIPE_SECRET_KEY' as IntegrationKeys, label: 'Secret Key', placeholder: 'sk_test_...', sensitive: true },
+      { key: 'STRIPE_WEBHOOK_SECRET' as IntegrationKeys, label: 'Webhook Secret', placeholder: 'whsec_...', sensitive: true },
+    ],
+  },
+  {
+    title: 'Cloudinary (Image Uploads)',
+    icon: Cloud,
+    description: 'Upload and serve artwork images via Cloudinary CDN. Find your credentials in the Cloudinary Dashboard.',
+    fields: [
+      { key: 'CLOUDINARY_CLOUD_NAME' as IntegrationKeys, label: 'Cloud Name', placeholder: 'your-cloud-name', sensitive: false },
+      { key: 'CLOUDINARY_API_KEY' as IntegrationKeys, label: 'API Key', placeholder: '123456789012345', sensitive: false },
+      { key: 'CLOUDINARY_API_SECRET' as IntegrationKeys, label: 'API Secret', placeholder: 'your-api-secret', sensitive: true },
+    ],
+  },
+  {
+    title: 'Resend (Email)',
+    icon: Mail,
+    description: 'Send transactional emails (order confirmations, inquiries, blasts). Get your API key from resend.com.',
+    fields: [
+      { key: 'RESEND_API_KEY' as IntegrationKeys, label: 'API Key', placeholder: 're_...', sensitive: true },
+      { key: 'ADMIN_EMAIL' as IntegrationKeys, label: 'Admin Email', placeholder: 'admin@yourdomain.com', sensitive: false },
+      { key: 'FROM_EMAIL' as IntegrationKeys, label: 'From Email', placeholder: 'noreply@yourdomain.com', sensitive: false },
+      { key: 'FROM_NAME' as IntegrationKeys, label: 'From Name', placeholder: 'Mona Niko Gallery', sensitive: false },
+    ],
+  },
+];
+
 const dayLabels: Record<string, string> = {
   monday: 'Monday',
   tuesday: 'Tuesday',
@@ -210,6 +273,13 @@ export default function SettingsPage() {
   const [resetting, setResetting] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  // Integrations state
+  const [integrations, setIntegrations] = useState<IntegrationsState | null>(null);
+  const [integrationsLoading, setIntegrationsLoading] = useState(true);
+  const [integrationsSaving, setIntegrationsSaving] = useState(false);
+  const [editingKeys, setEditingKeys] = useState<Record<string, string>>({});
+  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
 
   const showFeedback = useCallback((type: 'success' | 'error', message: string) => {
     setFeedback({ type, message });
@@ -232,9 +302,87 @@ export default function SettingsPage() {
     }
   }, [showFeedback]);
 
+  const fetchIntegrations = useCallback(async () => {
+    try {
+      setIntegrationsLoading(true);
+      const res = await fetch('/api/settings/integrations');
+      if (!res.ok) throw new Error('Failed to fetch integrations');
+      const data: IntegrationsState = await res.json();
+      setIntegrations(data);
+    } catch (err) {
+      showFeedback('error',
+        err instanceof Error ? err.message : 'Failed to load integrations'
+      );
+    } finally {
+      setIntegrationsLoading(false);
+    }
+  }, [showFeedback]);
+
+  const handleSaveIntegrations = async () => {
+    if (Object.keys(editingKeys).length === 0) {
+      showFeedback('error', 'No changes to save');
+      return;
+    }
+    try {
+      setIntegrationsSaving(true);
+      const res = await fetch('/api/settings/integrations', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingKeys),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        throw new Error(errData?.error || 'Failed to save integrations');
+      }
+      const data: IntegrationsState = await res.json();
+      setIntegrations(data);
+      setEditingKeys({});
+      setRevealedKeys(new Set());
+      showFeedback('success', 'Integrations saved. Restart the dev server for changes to take effect.');
+    } catch (err) {
+      showFeedback('error',
+        err instanceof Error ? err.message : 'Failed to save integrations'
+      );
+    } finally {
+      setIntegrationsSaving(false);
+    }
+  };
+
+  const toggleReveal = (key: string) => {
+    setRevealedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  const startEditing = (key: string, currentValue: string) => {
+    setEditingKeys((prev) => ({ ...prev, [key]: currentValue }));
+    setRevealedKeys((prev) => new Set(prev).add(key));
+  };
+
+  const updateEditingKey = (key: string, value: string) => {
+    setEditingKeys((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const cancelEditing = (key: string) => {
+    setEditingKeys((prev) => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+    setRevealedKeys((prev) => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+  };
+
   useEffect(() => {
     fetchSettings();
-  }, [fetchSettings]);
+    fetchIntegrations();
+  }, [fetchSettings, fetchIntegrations]);
 
   const updateGallery = (
     key: keyof SettingsState['gallery'],
@@ -574,6 +722,171 @@ export default function SettingsPage() {
             disabled={isFormDisabled}
           />
         </div>
+      </section>
+
+      {/* Integrations */}
+      <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <Plug className="w-5 h-5 text-gray-400" />
+            <div>
+              <h2 className="text-base font-semibold text-gray-900">
+                Integrations
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                API keys and credentials for third-party services
+              </p>
+            </div>
+          </div>
+          {Object.keys(editingKeys).length > 0 && (
+            <button
+              onClick={handleSaveIntegrations}
+              disabled={integrationsSaving}
+              className={cn(
+                'inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all',
+                integrationsSaving
+                  ? 'bg-gray-400 text-white cursor-not-allowed'
+                  : 'bg-black text-white hover:bg-gray-800'
+              )}
+            >
+              {integrationsSaving ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              {integrationsSaving ? 'Saving...' : 'Save Keys'}
+            </button>
+          )}
+        </div>
+
+        {integrationsLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-100">
+            {integrationGroups.map((group) => {
+              const GroupIcon = group.icon;
+              const allSet = group.fields.every(
+                (f) => integrations?.[f.key]?.isSet
+              );
+              const someSet = group.fields.some(
+                (f) => integrations?.[f.key]?.isSet
+              );
+
+              return (
+                <div key={group.title} className="p-6">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className={cn(
+                      'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
+                      allSet ? 'bg-emerald-50' : someSet ? 'bg-amber-50' : 'bg-gray-50'
+                    )}>
+                      <GroupIcon className={cn(
+                        'w-5 h-5',
+                        allSet ? 'text-emerald-600' : someSet ? 'text-amber-600' : 'text-gray-400'
+                      )} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-gray-900">
+                          {group.title}
+                        </h3>
+                        {allSet ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium rounded-full bg-emerald-50 text-emerald-700">
+                            <CheckCircle2 className="w-3 h-3" />
+                            Connected
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-100 text-gray-500">
+                            <XCircle className="w-3 h-3" />
+                            Not configured
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {group.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 ml-[52px]">
+                    {group.fields.map((field) => {
+                      const data = integrations?.[field.key];
+                      const isEditing = field.key in editingKeys;
+                      const isRevealed = revealedKeys.has(field.key);
+
+                      return (
+                        <div key={field.key} className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-600">
+                            {field.label}
+                          </label>
+                          {isEditing ? (
+                            <div className="flex gap-2">
+                              <input
+                                type={field.sensitive && !isRevealed ? 'password' : 'text'}
+                                value={editingKeys[field.key]}
+                                onChange={(e) => updateEditingKey(field.key, e.target.value)}
+                                placeholder={field.placeholder}
+                                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 font-mono placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors"
+                              />
+                              {field.sensitive && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleReveal(field.key)}
+                                  className="px-2.5 py-2 rounded-lg border border-gray-200 text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors"
+                                  title={isRevealed ? 'Hide' : 'Reveal'}
+                                >
+                                  {isRevealed ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => cancelEditing(field.key)}
+                                className="px-3 py-2 text-sm text-gray-600 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <div className={cn(
+                                'flex-1 px-3 py-2 rounded-lg border text-sm font-mono',
+                                data?.isSet
+                                  ? 'bg-gray-50 border-gray-200 text-gray-600'
+                                  : 'bg-red-50/50 border-red-200 text-red-400'
+                              )}>
+                                {data?.isSet
+                                  ? (field.sensitive ? data.masked : data.value)
+                                  : (data?.value?.includes('REPLACE_WITH') ? 'Not configured' : (data?.value || 'Not set'))
+                                }
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => startEditing(field.key, data?.isSet ? data.value : '')}
+                                className="px-3 py-2 text-sm font-medium text-gray-600 rounded-lg border border-gray-200 hover:bg-gray-50 hover:text-gray-900 transition-colors flex-shrink-0"
+                              >
+                                {data?.isSet ? 'Change' : 'Set'}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {Object.keys(editingKeys).length > 0 && (
+          <div className="px-6 py-3 bg-amber-50 border-t border-amber-200">
+            <div className="flex items-center gap-2 text-xs text-amber-800">
+              <RefreshCw className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>After saving, restart the dev server for changes to take effect.</span>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Danger Zone */}
