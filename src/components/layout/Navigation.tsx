@@ -63,20 +63,38 @@ export default function Navigation() {
       <nav className="container-gallery flex items-center justify-between h-24 lg:h-[100px]">
 
         {/* Logo */}
-        <Link href="/" className="relative z-50">
+        <Link href="/" className="relative z-50 flex items-center gap-3">
           <Image
             src="/images/logo/1.png"
-            alt="Mona Niko Fine Art Gallery"
-            width={180}
-            height={180}
+            alt="Mona Niko"
+            width={100}
+            height={100}
             priority
             className={cn(
-              "h-[70px] lg:h-[82px] w-auto object-contain transition-all duration-500",
+              "h-[48px] lg:h-[56px] w-auto object-contain transition-all duration-500",
               isOpen
                 ? "brightness-0 invert"
                 : "mix-blend-multiply"
             )}
           />
+          <div className="hidden sm:block">
+            <h1
+              className={cn(
+                "font-display text-[1.5rem] lg:text-[1.75rem] tracking-[0.08em] font-semibold uppercase transition-colors duration-500 leading-tight",
+                isOpen ? "text-white" : "text-stone-900"
+              )}
+            >
+              Mona Niko
+            </h1>
+            <p
+              className={cn(
+                "text-[8px] lg:text-[9px] tracking-[0.3em] uppercase font-sans font-light transition-colors duration-500",
+                isOpen ? "text-white/40" : "text-[#C4A265]"
+              )}
+            >
+              Fine Art Gallery
+            </p>
+          </div>
         </Link>
 
         {/* Desktop Nav */}

@@ -110,16 +110,22 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4 }}
-                className="mb-6"
+                className="mb-4"
               >
                 <Image
                   src="/images/logo/1.png"
-                  alt="Mona Niko Fine Art Gallery"
-                  width={400}
-                  height={400}
+                  alt="Mona Niko"
+                  width={120}
+                  height={120}
                   priority
-                  className="h-[200px] md:h-[260px] w-auto object-contain mix-blend-multiply"
+                  className="h-[80px] md:h-[100px] w-auto object-contain mix-blend-multiply mb-4"
                 />
+                <h1 className="font-display text-[2.8rem] md:text-[3.6rem] font-semibold tracking-[0.1em] uppercase text-black leading-none">
+                  Mona Niko
+                </h1>
+                <p className="text-[10px] md:text-[11px] tracking-[0.35em] uppercase text-gold mt-2">
+                  Contemporary Fine Art Gallery
+                </p>
               </motion.div>
 
               <motion.p

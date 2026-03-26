@@ -71,14 +71,22 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-14">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" className="inline-flex items-center gap-3 mb-6">
               <Image
                 src="/images/logo/1.png"
-                alt="Mona Niko Fine Art Gallery"
-                width={200}
-                height={200}
-                className="h-[90px] w-auto object-contain brightness-0 invert opacity-85"
+                alt="Mona Niko"
+                width={100}
+                height={100}
+                className="h-[52px] w-auto object-contain brightness-0 invert opacity-80"
               />
+              <div>
+                <span className="font-display text-[1.6rem] text-white font-semibold tracking-[0.08em] uppercase leading-tight block">
+                  Mona Niko
+                </span>
+                <span className="text-[8px] tracking-[0.3em] uppercase text-white/30 font-sans font-light">
+                  Fine Art Gallery
+                </span>
+              </div>
             </Link>
             <p className="text-[13px] leading-[1.8] text-white/35 max-w-sm mb-8 font-light">
               Contemporary fine art gallery featuring original paintings,
