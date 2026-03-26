@@ -74,50 +74,6 @@ export default function ShopPage() {
         subtitle="Original Paintings · Prints · Limited Editions"
       />
 
-      {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-3.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10">
-          <div className="container-gallery text-center">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-[11px] tracking-[0.3em] uppercase text-gold mb-5"
-            >
-              Mona Niko Gallery
-            </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-display text-5xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-            >
-              Shop
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
-            >
-              Discover original paintings, limited edition prints, designer
-              fashion, art-inspired merchandise, and creative workshops — each a
-              testament to color, emotion, and craftsmanship.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="divider-gold mx-auto mt-8"
-            />
-          </div>
-        </div>
-      </section>
-
 
       {/* ─── Category Cards ──────────────────────────────────── */}
       <section className="py-24 md:py-32">

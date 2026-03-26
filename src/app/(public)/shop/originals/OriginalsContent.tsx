@@ -21,58 +21,7 @@ export default function OriginalsShopPage() {
         subtitle="One-of-a-kind works directly from the artist"
       />
 
-      {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-4.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10">
-          <div className="container-gallery text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-4"
-            >
-              <Link
-                href="/shop"
-                className="text-[11px] tracking-[0.2em] uppercase text-white/40 hover:text-gold transition-colors font-medium"
-              >
-                Shop
-              </Link>
-              <span className="text-white/20 mx-3">/</span>
-              <span className="text-[11px] tracking-[0.2em] uppercase text-gold font-medium">
-                Originals
-              </span>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-            >
-              Original Paintings
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-5 text-base text-white/60 max-w-lg mx-auto leading-relaxed"
-            >
-              One-of-a-kind works by Mona Niko. Each original painting comes
-              with a certificate of authenticity and complimentary white-glove
-              delivery within Southern California.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="divider-gold mx-auto mt-8"
-            />
-          </div>
-        </div>
-      </section>
+
 
       {/* ─── Artworks Grid ─────────────────────────────────── */}
       <section className="py-24 md:py-32">

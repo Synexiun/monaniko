@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
-import SectionHeading from "@/components/ui/SectionHeading";
 import CollectionCard from "@/components/gallery/CollectionCard";
 import { collections } from "@/data/artworks";
 import PageHero from "@/components/ui/PageHero";
@@ -11,47 +9,6 @@ export default function CollectionsPage() {
   return (
     <>
       <PageHero image="/images/hero/collection/2.jpg" alt="Mona Niko Collections" />
-
-      {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-5.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10 container-gallery text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-gold mb-5"
-          >
-            Curated Bodies of Work
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[-0.02em]"
-          >
-            Collections
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
-          >
-            Each collection is a journey through a unified vision, exploring
-            themes that resonate across individual works.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="divider-gold mx-auto mt-8"
-          />
-        </div>
-      </section>
 
       {/* ─── Collections Grid ──────────────────────────────── */}
       <section className="py-16 md:py-24 bg-cream">

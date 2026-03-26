@@ -21,47 +21,6 @@ export default function WorkshopsPage() {
     <>
       <PageHero image="/images/hero/workshop/hero.jpg" alt="Mona Niko Workshops" />
 
-      {/* ─── Hero ─────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/artworks/artwork-8.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10 container-gallery text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-gold mb-6"
-          >
-            Learn &middot; Create &middot; Transform
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-          >
-            Workshops &amp; Events
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
-          >
-            Intimate creative sessions led by Mona Niko. Discover your artistic
-            voice in a supportive, inspiring environment.
-          </motion.p>
-        </div>
-      </section>
-
       {/* ─── Workshop Grid ────────────────────────────────── */}
       <section className="py-24 md:py-32">
         <div className="container-gallery">

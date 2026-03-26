@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
 import ProductCard from "@/components/shop/ProductCard";
 import PageHero from "@/components/ui/PageHero";
 import { products } from "@/data/artworks";
@@ -21,59 +19,7 @@ export default function DesignersShopPage() {
         subtitle="Exclusive collaborative pieces"
       />
 
-      {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-6.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10">
-          <div className="container-gallery text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-4"
-            >
-              <Link
-                href="/shop"
-                className="text-[11px] tracking-[0.2em] uppercase text-white/40 hover:text-gold transition-colors font-medium"
-              >
-                Shop
-              </Link>
-              <span className="text-white/20 mx-3">/</span>
-              <span className="text-[11px] tracking-[0.2em] uppercase text-gold font-medium">
-                Designers Collection
-              </span>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-            >
-              Designers Collection
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-5 text-base text-white/60 max-w-lg mx-auto leading-relaxed"
-            >
-              Where art meets fashion. Hand-embellished jackets, blouses,
-              dresses, and vests — each piece designed by Mona Niko as a
-              wearable work of art. Limited quantities, extraordinary
-              craftsmanship.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="divider-gold mx-auto mt-8"
-            />
-          </div>
-        </div>
-      </section>
+
 
       {/* ─── Products Grid ─────────────────────────────────── */}
       <section className="py-24 md:py-32">
