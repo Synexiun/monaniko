@@ -112,7 +112,7 @@ export default function CommissionsPage() {
   return (
     <>
       <PageHero
-        image="/images/hero/shop/2.jpg"
+        image="/images/hero/collection/com.png"
         alt="Commissions"
         title="Custom Commissions"
         subtitle="A bespoke artwork tailored to your vision"
