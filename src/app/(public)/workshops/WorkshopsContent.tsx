@@ -7,6 +7,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import { workshops } from "@/data/artworks";
 import { formatPrice } from "@/lib/utils";
+import PageHero from "@/components/ui/PageHero";
 
 const levelLabels: Record<string, string> = {
   beginner: "Beginner",
@@ -18,6 +19,8 @@ const levelLabels: Record<string, string> = {
 export default function WorkshopsPage() {
   return (
     <>
+      <PageHero image="/images/hero/workshop/hero.jpg" alt="Mona Niko Workshops" />
+
       {/* ─── Hero ─────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

@@ -5,6 +5,7 @@ import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/shop/ProductCard";
 import Link from "next/link";
+import PageHero from "@/components/ui/PageHero";
 import { products } from "@/data/artworks";
 
 const printProducts = products.filter((p) => p.shopCategory === "print_limited_edition");
@@ -12,6 +13,13 @@ const printProducts = products.filter((p) => p.shopCategory === "print_limited_e
 export default function PrintsShopPage() {
   return (
     <>
+      <PageHero
+        image="/images/hero/shop/2.jpg"
+        alt="Prints & Editions"
+        title="Prints & Editions"
+        subtitle="Museum-quality limited edition prints"
+      />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

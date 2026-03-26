@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 
@@ -57,41 +58,12 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* ─── Hero ─────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-5.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10 container-gallery text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-gold mb-6"
-          >
-            Get in Touch
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-          >
-            Contact
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
-          >
-            We would love to hear from you. Whether you have a question about an
-            artwork, want to schedule a visit, or are interested in a
-            collaboration.
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/hero/about/2.jpg"
+        alt="Contact"
+        title="Contact & Visit"
+        subtitle="We'd love to hear from you"
+      />
 
       {/* ─── Contact Form + Info ───────────────────────────── */}
       <section className="py-24 md:py-32">

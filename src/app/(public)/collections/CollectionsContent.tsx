@@ -5,10 +5,13 @@ import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CollectionCard from "@/components/gallery/CollectionCard";
 import { collections } from "@/data/artworks";
+import PageHero from "@/components/ui/PageHero";
 
 export default function CollectionsPage() {
   return (
     <>
+      <PageHero image="/images/hero/collection/2.jpg" alt="Mona Niko Collections" />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

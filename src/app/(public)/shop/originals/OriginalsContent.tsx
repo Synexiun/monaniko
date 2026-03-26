@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
+import PageHero from "@/components/ui/PageHero";
 import { artworks } from "@/data/artworks";
 import { formatPrice } from "@/lib/utils";
 
@@ -13,6 +14,13 @@ const availableOriginals = artworks.filter((a) => a.status === "available");
 export default function OriginalsShopPage() {
   return (
     <>
+      <PageHero
+        image="/images/hero/shop/2.jpg"
+        alt="Original Paintings"
+        title="Original Paintings"
+        subtitle="One-of-a-kind works directly from the artist"
+      />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

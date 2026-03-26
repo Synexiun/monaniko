@@ -6,6 +6,7 @@ import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import ProductCard from "@/components/shop/ProductCard";
+import PageHero from "@/components/ui/PageHero";
 import { products, artworks } from "@/data/artworks";
 
 const featuredProducts = products.filter((p) => p.featured).slice(0, 6);
@@ -66,6 +67,13 @@ const categories = [
 export default function ShopPage() {
   return (
     <>
+      <PageHero
+        image="/images/hero/shop/2.jpg"
+        alt="Shop"
+        title="Shop"
+        subtitle="Original Paintings · Prints · Limited Editions"
+      />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

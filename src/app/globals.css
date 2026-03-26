@@ -18,7 +18,7 @@
   --color-warning: #B7791F;
 
   /* ─── Typography (mapped to Next.js font CSS vars) ─── */
-  --font-serif: var(--font-playfair), "Georgia", serif;
+  --font-serif: var(--font-cormorant), "Garamond", serif;
   --font-display: var(--font-cormorant), "Garamond", serif;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 

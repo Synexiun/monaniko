@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { journalPosts } from "@/data/artworks";
 
@@ -22,40 +23,12 @@ export default function JournalPage() {
 
   return (
     <>
-      {/* ─── Hero ─────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/images/artworks/artwork-4.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
-        <div className="relative z-10 container-gallery text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-gold mb-6"
-          >
-            Stories &middot; Reflections &middot; Insights
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-[-0.02em]"
-          >
-            The Journal
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-6 text-base md:text-lg text-white/60 max-w-xl mx-auto leading-relaxed"
-          >
-            Behind the canvas — studio diaries, creative reflections, and
-            collector guides from Mona Niko.
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/hero/gallery/2.jpg"
+        alt="Journal"
+        title="Journal"
+        subtitle="Stories, studio notes, and creative insights"
+      />
 
       {/* ─── Category Filter ──────────────────────────────── */}
       <section className="py-24 md:py-32">

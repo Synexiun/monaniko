@@ -6,6 +6,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import ArtworkCard from "@/components/gallery/ArtworkCard";
 import { artworks } from "@/data/artworks";
 import Image from "next/image";
+import PageHero from "@/components/ui/PageHero";
 import { cn } from "@/lib/utils";
 import type { ArtworkCategory, ArtworkStatus } from "@/types";
 
@@ -43,6 +44,8 @@ export default function GalleryPage() {
 
   return (
     <>
+      <PageHero image="/images/hero/gallery/gallery.jpg" alt="Mona Niko Gallery" />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">

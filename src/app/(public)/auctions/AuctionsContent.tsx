@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Gavel, Clock, TrendingUp, Loader2 } from "lucide-react";
+import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 interface AuctionItem {
@@ -59,26 +60,12 @@ export default function AuctionsContent() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-[#1A1A1A] overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <Image src="/images/hero/hero-main.jpg" alt="" fill className="object-cover" priority />
-        </div>
-        <div className="relative z-10 container-gallery text-center">
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-[#C4A265] mb-6">
-            Live Auctions
-          </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-display text-4xl md:text-6xl text-white font-light tracking-[-0.02em]">
-            Bid on Original Art
-          </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-6 text-white/60 max-w-xl mx-auto leading-relaxed">
-            Rare works and one-of-a-kind pieces available for a limited time. Place your bid before the clock runs out.
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/hero/gallery/2.jpg"
+        alt="Auctions"
+        title="Auctions"
+        subtitle="Bid on exclusive original works"
+      />
 
       {/* Auctions Grid */}
       <section className="py-20 md:py-28">

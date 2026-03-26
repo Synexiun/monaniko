@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "@/components/shop/ProductCard";
+import PageHero from "@/components/ui/PageHero";
 import { products } from "@/data/artworks";
 import { cn } from "@/lib/utils";
 import type { ShopCategory } from "@/types";
@@ -37,6 +38,13 @@ export default function MerchShopPage() {
 
   return (
     <>
+      <PageHero
+        image="/images/hero/shop/2.jpg"
+        alt="Merch & Objects"
+        title="Merch & Objects"
+        subtitle="Wearable art and curated objects"
+      />
+
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
         <div className="absolute inset-0">
