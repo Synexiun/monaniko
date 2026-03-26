@@ -20,7 +20,7 @@ const navLinks = [
       { href: "/shop/designers", label: "Designers Collection" },
     ],
   },
-  { href: "/workshops", label: "Workshops & Events" },
+  { href: "/workshops", label: "Workshops" },
   { href: "/commissions", label: "Commissions" },
   { href: "/journal", label: "Journal" },
   { href: "/about", label: "About" },
@@ -52,7 +52,7 @@ export default function Navigation() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out",
         scrolled
           ? "bg-white/95 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,195,185,0.3)]"
-          : "bg-transparent"
+          : "bg-cream"
       )}
     >
       {/* Thin gold accent line when scrolled */}
@@ -98,7 +98,7 @@ export default function Navigation() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-5 xl:gap-7">
           {navLinks.map((link) => (
             <div
               key={link.href}

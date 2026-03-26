@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     siteName: "Mona Niko Gallery",
     locale: "en_US",
     url: BASE_URL + "/workshops",
-    images: [{ url: "/images/hero/workshop-preview.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/images/artist/studio-portrait.jpg", width: 1200, height: 630 }],
   },
   alternates: { canonical: BASE_URL + "/workshops" },
 };

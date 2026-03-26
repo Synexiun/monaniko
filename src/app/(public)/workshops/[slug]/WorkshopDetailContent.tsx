@@ -209,7 +209,7 @@ export default function WorkshopDetailContent() {
                 <div className="divider-gold mb-8" />
                 <div className="flex items-start gap-6 bg-cream-dark p-6 md:p-8">
                   <div className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
-                    <Image src="/images/hero/artist-portrait.jpg" alt={workshop.instructor || "Instructor"} fill className="object-cover" />
+                    <Image src="/images/artist/headshot.jpg" alt={workshop.instructor || "Instructor"} fill className="object-cover" />
                   </div>
                   <div>
                     <h3 className="font-serif text-xl text-black mb-2">{workshop.instructor}</h3>

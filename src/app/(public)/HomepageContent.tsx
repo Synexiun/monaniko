@@ -90,7 +90,7 @@ export default function HomePage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="py-12 md:py-16 bg-cream">
+      <section className="pt-28 lg:pt-32 pb-12 md:pb-16 bg-cream">
         <div className="container-gallery">
           <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-14 items-center">
 

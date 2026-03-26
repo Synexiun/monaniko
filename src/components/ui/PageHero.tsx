@@ -11,38 +11,35 @@ interface PageHeroProps {
 
 export default function PageHero({ image, alt, title, subtitle }: PageHeroProps) {
   return (
-    <section className="relative w-full h-[200px] sm:h-[260px] md:h-[320px] overflow-hidden">
-      <Image
-        src={image}
-        alt={alt}
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
-      />
-
-      {/* Subtle gradient only when we need text overlay */}
-      {title && (
-        <>
-          <div
-            className="absolute inset-0 z-[1]"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)",
-            }}
+    <section className="pt-28 lg:pt-32">
+      <div className="container-gallery">
+        {/* Contained image box — not full-width, gallery-framed */}
+        <div className="relative h-[220px] sm:h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden shadow-[0_4px_30px_-8px_rgba(0,0,0,0.08)]">
+          <Image
+            src={image}
+            alt={alt}
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 768px) calc(100vw - 3rem), (max-width: 1280px) calc(100vw - 6rem), 1272px"
           />
-          <div className="absolute inset-0 z-[2] flex flex-col items-center justify-end pb-8 md:pb-12">
-            <h1 className="font-display text-[2rem] md:text-[2.8rem] text-white font-light italic tracking-wide">
+        </div>
+
+        {/* Title positioned below image — clean editorial layout */}
+        {title && (
+          <div className="mt-8 md:mt-10">
+            <h1 className="font-display text-[2rem] md:text-[2.8rem] lg:text-[3.2rem] text-black font-light italic tracking-wide">
               {title}
             </h1>
             {subtitle && (
-              <p className="mt-2 text-[10px] md:text-[11px] tracking-[0.3em] uppercase text-white/50">
+              <p className="mt-2 text-[11px] tracking-[0.3em] uppercase text-charcoal-light/60 font-sans font-light">
                 {subtitle}
               </p>
             )}
+            <div className="divider-gold mt-5" />
           </div>
-        </>
-      )}
+        )}
+      </div>
     </section>
   );
 }

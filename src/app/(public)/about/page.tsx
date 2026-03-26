@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description:
       "Meet Mona Niko — contemporary artist and gallery owner in Mission Viejo, CA. Explore her journey, artistic vision, and Persian heritage-inspired works.",
     url: BASE_URL + "/about",
-    images: [{ url: "/images/hero/artist-portrait.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/images/artist/studio-portrait.jpg", width: 1200, height: 630 }],
   },
   alternates: { canonical: BASE_URL + "/about" },
 };

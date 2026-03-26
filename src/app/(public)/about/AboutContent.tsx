@@ -91,7 +91,7 @@ export default function AboutPage() {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src="/images/hero/artist-portrait.jpg"
+                  src="/images/artist/studio-portrait.jpg"
                   alt="Mona Niko in her studio"
                   fill
                   className="object-cover"
@@ -245,7 +245,7 @@ export default function AboutPage() {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src="/images/hero/workshop-preview.jpg"
+                  src="/images/artist/columns-portrait.jpg"
                   alt="Mona Niko Gallery & Studio"
                   fill
                   className="object-cover"
