@@ -59,7 +59,7 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        image="/images/hero/about/2.jpg"
+        image="/images/hero/gallery/gallery.jpg"
         alt="Contact"
         title="Contact & Visit"
         subtitle="We'd love to hear from you"
