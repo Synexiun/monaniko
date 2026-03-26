@@ -46,7 +46,7 @@ function HeroSlideshow() {
   }, [advance, images.length]);
 
   return (
-    <div className="absolute inset-0 bg-black overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden bg-black">
       <AnimatePresence initial={false}>
         <motion.div
           key={current}
@@ -54,32 +54,18 @@ function HeroSlideshow() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
+          className="hero-ken-burns absolute inset-0"
           style={{
-            position: "absolute",
-            inset: 0,
             backgroundImage: `url(${images[current]})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            animation: "hero-ken-burns 8s ease-in-out infinite alternate",
           }}
         />
       </AnimatePresence>
 
-      {/* Ultra-light overlays — just enough for text, images stay vivid */}
-      <div className="absolute inset-0 z-[1]"
-        style={{
-          background: "linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 40%, transparent 70%)",
-        }}
-      />
-      <div className="absolute inset-0 z-[1]"
-        style={{
-          background: "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%)",
-        }}
-      />
-
       {/* Slide indicators */}
       {images.length > 1 && (
-        <div className="absolute bottom-28 right-8 md:right-16 z-[2] flex gap-2.5 items-center">
+        <div className="absolute bottom-4 right-4 z-10 flex gap-2 items-center">
           {images.map((_, i) => (
             <button
               key={i}
@@ -89,8 +75,8 @@ function HeroSlideshow() {
             >
               <div className={`rounded-full transition-all duration-500 ${
                 i === current
-                  ? "w-8 h-1 bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]"
-                  : "w-2 h-2 bg-white/40 group-hover:bg-white/70"
+                  ? "w-6 h-1 bg-white"
+                  : "w-1.5 h-1.5 bg-white/50 group-hover:bg-white/80"
               }`} />
             </button>
           ))}
@@ -104,90 +90,83 @@ export default function HomePage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
-      <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
-        <HeroSlideshow />
+      <section className="py-12 md:py-16 bg-cream">
+        <div className="container-gallery">
+          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-14 items-center">
 
-        <div className="relative z-[3] container-gallery w-full">
-          <div className="max-w-3xl lg:max-w-[55rem]">
-
-            {/* Eyebrow label */}
+            {/* Image box — sharp, vivid, no overlay */}
             <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex items-center gap-4 mb-8 md:mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9 }}
+              className="relative h-[62vh] min-h-[460px] overflow-hidden shadow-2xl"
             >
-              <span className="w-10 h-px bg-white/30 flex-shrink-0" />
-              <p className="text-[10px] md:text-[11px] tracking-[0.35em] uppercase text-white/60">
+              <HeroSlideshow />
+            </motion.div>
+
+            {/* Text */}
+            <div>
+              <motion.p
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="text-[10px] tracking-[0.35em] uppercase text-gold mb-6"
+              >
                 Contemporary Fine Art Gallery
-              </p>
-            </motion.div>
+              </motion.p>
 
-            {/* Hero name — dramatic stacked display */}
-            <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.25, 0, 0, 1] }}
-              className="font-display font-light italic text-white display-hero"
-            >
-              <span className="block">Mona</span>
-              <span className="block" style={{ marginLeft: "0.08em" }}>Niko</span>
-            </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.5, ease: [0.25, 0, 0, 1] }}
+                className="font-display font-light italic text-black display-hero leading-none"
+              >
+                <span className="block">Mona</span>
+                <span className="block">Niko</span>
+              </motion.h1>
 
-            {/* Animated gold rule */}
-            <motion.div
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 1.0, ease: "easeOut" }}
-              className="origin-left mt-8 mb-7 w-16 h-px bg-gold"
-            />
+              <motion.div
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: 1, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+                className="origin-left mt-6 mb-6 w-12 h-px bg-gold"
+              />
 
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="text-base md:text-[1.05rem] text-white/65 max-w-sm md:max-w-md leading-relaxed"
-            >
-              Original paintings and limited editions that transform spaces and captivate collectors worldwide.
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.1 }}
+                className="text-charcoal-light leading-relaxed mb-8 max-w-xs"
+              >
+                Original paintings and limited editions that transform spaces and captivate collectors worldwide.
+              </motion.p>
 
-            {/* CTAs + location whisper */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.3 }}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Link href="/gallery">
-                <Button variant="gold" size="lg">View Gallery</Button>
-              </Link>
-              <Link href="/collections">
-                <Button variant="outline" size="lg" className="border-white/40 text-white hover:bg-white hover:text-black hover:border-white">
-                  Explore Collections
-                </Button>
-              </Link>
-              <span className="hidden lg:inline-block ml-4 text-[9px] tracking-[0.35em] uppercase text-white/25">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.3 }}
+                className="flex flex-wrap gap-3"
+              >
+                <Link href="/gallery">
+                  <Button variant="gold" size="lg">View Gallery</Button>
+                </Link>
+                <Link href="/collections">
+                  <Button variant="outline" size="lg">Explore Collections</Button>
+                </Link>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.5 }}
+                className="mt-8 text-[9px] tracking-[0.35em] uppercase text-warm-gray-dark"
+              >
                 Mission Viejo · California
-              </span>
-            </motion.div>
+              </motion.p>
+            </div>
 
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[3]"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-px h-14 bg-gradient-to-b from-white/50 to-transparent"
-          />
-        </motion.div>
       </section>
 
       {/* ─── Featured Artworks ─────────────────────────────── */}
