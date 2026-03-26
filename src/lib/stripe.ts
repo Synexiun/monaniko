@@ -1,10 +1,10 @@
 import Stripe from 'stripe'
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not set')
+  console.warn('STRIPE_SECRET_KEY is not set — payments will not work')
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'placeholder', {
   apiVersion: '2026-02-25.clover',
   typescript: true,
 })
