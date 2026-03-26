@@ -30,6 +30,7 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [shopExpanded, setShopExpanded] = useState(false);
   const itemCount = useCartStore((s) => s.itemCount);
   const openCart = useCartStore((s) => s.openCart);
 
@@ -65,7 +66,7 @@ export default function Navigation() {
           <h1
             className={cn(
               "font-display text-[2.6rem] lg:text-[3.2rem] tracking-[0.04em] font-light italic transition-all duration-700",
-              scrolled
+              scrolled && !isOpen
                 ? "text-stone-900"
                 : "text-white drop-shadow-sm"
             )}
@@ -75,7 +76,7 @@ export default function Navigation() {
           <div
             className={cn(
               "text-[9px] tracking-[0.42em] uppercase font-sans font-light mt-[-7px] text-center transition-all duration-700",
-              scrolled ? "text-[#C4A265]" : "text-white/50"
+              scrolled && !isOpen ? "text-[#C4A265]" : "text-white/50"
             )}
           >
             · Fine Art Gallery ·
@@ -152,63 +153,141 @@ export default function Navigation() {
 
           {/* Mobile Menu Toggle */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => { setIsOpen(!isOpen); setShopExpanded(false); }}
             className={cn(
-              "lg:hidden p-2 transition-colors duration-500",
-              scrolled ? "text-stone-700" : "text-white"
+              "lg:hidden p-2 transition-colors duration-300 relative z-[51]",
+              isOpen ? "text-white" : scrolled ? "text-stone-700" : "text-white"
             )}
             aria-label="Toggle menu"
           >
             <div className="w-5 flex flex-col gap-[5px]">
               <span className={cn("block h-[1.5px] bg-current transition-all duration-300", isOpen ? "rotate-45 translate-y-[6.5px]" : "")} />
-              <span className={cn("block h-[1.5px] bg-current transition-all duration-300", isOpen ? "opacity-0" : "")} />
+              <span className={cn("block h-[1.5px] bg-current transition-all duration-300", isOpen ? "opacity-0 scale-x-0" : "")} />
               <span className={cn("block h-[1.5px] bg-current transition-all duration-300", isOpen ? "-rotate-45 -translate-y-[6.5px]" : "")} />
             </div>
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu — full-screen dark overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white z-40 lg:hidden"
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 lg:hidden bg-[#111111] flex flex-col overflow-y-auto"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-7">
+            {/* Spacer for the fixed header above */}
+            <div className="h-24 flex-shrink-0" />
+
+            {/* Gold rule below header */}
+            <div className="h-px bg-gradient-to-r from-transparent via-[#C4A265]/40 to-transparent mx-6 flex-shrink-0" />
+
+            {/* Nav links */}
+            <nav className="flex-1 px-6 pt-4 pb-2">
               {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="font-display text-4xl md:text-5xl text-stone-900 hover:text-[#C4A265] transition-colors italic"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
+                <div key={link.href}>
+                  {link.children ? (
+                    // Shop accordion
+                    <>
+                      <motion.button
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.06 + i * 0.055, duration: 0.4 }}
+                        onClick={() => setShopExpanded((v) => !v)}
+                        className="flex items-center justify-between w-full py-4 group"
+                      >
+                        <div className="flex items-baseline gap-4">
+                          <span className="text-[10px] text-white/20 tracking-widest tabular-nums w-5 text-left">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="font-display text-[2.2rem] font-light italic text-white/85 group-hover:text-[#C4A265] transition-colors duration-300">
+                            {link.label}
+                          </span>
+                        </div>
+                        <motion.span
+                          animate={{ rotate: shopExpanded ? 45 : 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="text-[#C4A265]/60 text-2xl font-light leading-none pr-1"
+                        >
+                          +
+                        </motion.span>
+                      </motion.button>
+
+                      <AnimatePresence initial={false}>
+                        {shopExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden pl-9"
+                          >
+                            {link.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                onClick={() => { setIsOpen(false); setShopExpanded(false); }}
+                                className="flex items-center gap-3 py-2.5 group/child"
+                              >
+                                <span className="w-3 h-px bg-[#C4A265]/30 group-hover/child:bg-[#C4A265] group-hover/child:w-5 transition-all duration-300 flex-shrink-0" />
+                                <span className="text-[11px] tracking-[0.18em] uppercase text-white/40 group-hover/child:text-[#C4A265] transition-colors duration-300">
+                                  {child.label}
+                                </span>
+                              </Link>
+                            ))}
+                            <div className="h-3" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.06 + i * 0.055, duration: 0.4 }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-baseline gap-4 py-4 group"
+                      >
+                        <span className="text-[10px] text-white/20 tracking-widest tabular-nums w-5 text-left">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="font-display text-[2.2rem] font-light italic text-white/85 group-hover:text-[#C4A265] transition-colors duration-300">
+                          {link.label}
+                        </span>
+                      </Link>
+                    </motion.div>
+                  )}
+
+                  {/* Subtle divider */}
+                  <div className="h-px bg-white/[0.05]" />
+                </div>
               ))}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 pt-6 border-t border-stone-200"
+            </nav>
+
+            {/* Bottom strip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.55 }}
+              className="px-6 py-6 flex items-center justify-between border-t border-white/[0.07] flex-shrink-0"
+            >
+              <Link
+                href="/account"
+                onClick={() => setIsOpen(false)}
+                className="text-[11px] tracking-[0.25em] uppercase text-white/35 hover:text-white transition-colors duration-300"
               >
-                <Link
-                  href="/account"
-                  onClick={() => setIsOpen(false)}
-                  className="text-sm tracking-[0.15em] uppercase text-stone-400 hover:text-[#C4A265] transition-colors"
-                >
-                  My Account
-                </Link>
-              </motion.div>
-            </div>
+                My Account
+              </Link>
+              <span className="text-[9px] tracking-[0.3em] uppercase text-white/20">
+                Mission Viejo · CA
+              </span>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
