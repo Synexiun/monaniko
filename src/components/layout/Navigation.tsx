@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cart";
 import { cn } from "@/lib/utils";
@@ -62,25 +63,20 @@ export default function Navigation() {
       <nav className="container-gallery flex items-center justify-between h-24 lg:h-[100px]">
 
         {/* Logo */}
-        <Link href="/" className="relative z-50 group">
-          <h1
+        <Link href="/" className="relative z-50">
+          <Image
+            src="/images/logo/1.png"
+            alt="Mona Niko Fine Art Gallery"
+            width={180}
+            height={180}
+            priority
             className={cn(
-              "font-display text-[2.6rem] lg:text-[3.2rem] tracking-[0.04em] font-light italic transition-all duration-700",
+              "h-[70px] lg:h-[82px] w-auto object-contain transition-all duration-500",
               isOpen
-                ? "text-white drop-shadow-sm"
-                : "text-stone-900"
+                ? "brightness-0 invert"
+                : "mix-blend-multiply"
             )}
-          >
-            Mona Niko
-          </h1>
-          <div
-            className={cn(
-              "text-[9px] tracking-[0.42em] uppercase font-sans font-light mt-[-7px] text-center transition-all duration-700",
-              isOpen ? "text-white/50" : "text-[#C4A265]"
-            )}
-          >
-            · Fine Art Gallery ·
-          </div>
+          />
         </Link>
 
         {/* Desktop Nav */}

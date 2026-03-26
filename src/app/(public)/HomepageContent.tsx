@@ -106,31 +106,21 @@ export default function HomePage() {
 
             {/* Text */}
             <div>
-              <motion.p
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="text-[10px] tracking-[0.35em] uppercase text-gold mb-6"
-              >
-                Contemporary Fine Art Gallery
-              </motion.p>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.5, ease: [0.25, 0, 0, 1] }}
-                className="font-display font-light italic text-black display-hero leading-none"
-              >
-                <span className="block">Mona</span>
-                <span className="block">Niko</span>
-              </motion.h1>
-
               <motion.div
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
-                className="origin-left mt-6 mb-6 w-12 h-px bg-gold"
-              />
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.4 }}
+                className="mb-6"
+              >
+                <Image
+                  src="/images/logo/1.png"
+                  alt="Mona Niko Fine Art Gallery"
+                  width={400}
+                  height={400}
+                  priority
+                  className="h-[200px] md:h-[260px] w-auto object-contain mix-blend-multiply"
+                />
+              </motion.div>
 
               <motion.p
                 initial={{ opacity: 0 }}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const footerLinks = {
   gallery: [
@@ -71,9 +72,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
-              <span className="font-display text-[2.2rem] text-white font-light italic tracking-[0.04em]">
-                Mona Niko
-              </span>
+              <Image
+                src="/images/logo/1.png"
+                alt="Mona Niko Fine Art Gallery"
+                width={200}
+                height={200}
+                className="h-[90px] w-auto object-contain brightness-0 invert opacity-85"
+              />
             </Link>
             <p className="text-[13px] leading-[1.8] text-white/35 max-w-sm mb-8 font-light">
               Contemporary fine art gallery featuring original paintings,
