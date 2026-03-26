@@ -31,17 +31,6 @@ function useHeroImages() {
   return images;
 }
 
-/*
- * Ken Burns directions — each slide gets a different slow pan/zoom
- * so consecutive images feel alive and cinematic.
- */
-const kenBurns = [
-  { scale: [1, 1.12], x: ["0%", "-3%"], y: ["0%", "-2%"] },   // slow zoom + drift left-up
-  { scale: [1.1, 1], x: ["-2%", "2%"], y: ["-1%", "1%"] },    // zoom out + drift right-down
-  { scale: [1, 1.08], x: ["2%", "-2%"], y: ["1%", "-1%"] },    // zoom in + drift left-up
-  { scale: [1.08, 1.02], x: ["-1%", "1%"], y: ["0%", "0%"] },  // gentle zoom out + drift right
-];
-
 function HeroSlideshow() {
   const images = useHeroImages();
   const [current, setCurrent] = useState(0);
@@ -56,8 +45,6 @@ function HeroSlideshow() {
     return () => clearInterval(timer);
   }, [advance, images.length]);
 
-  const kb = kenBurns[current % kenBurns.length];
-
   return (
     <div className="absolute inset-0 bg-black overflow-hidden">
       <AnimatePresence initial={false}>
@@ -69,13 +56,8 @@ function HeroSlideshow() {
           transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* Ken Burns inner — slow pan/zoom, loops forever */}
-          <motion.div
-            initial={{ scale: kb.scale[0], x: kb.x[0], y: kb.y[0] }}
-            animate={{ scale: kb.scale[1], x: kb.x[1], y: kb.y[1] }}
-            transition={{ duration: SLIDE_INTERVAL / 1000 + 1.2, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
-            className="absolute inset-0"
-          >
+          {/* Ken Burns inner — CSS animation, unaffected by React Compiler */}
+          <div className={`absolute inset-0 ken-burns-${current % 4}`}>
             <Image
               src={images[current]}
               alt="Mona Niko Gallery"
@@ -86,7 +68,7 @@ function HeroSlideshow() {
               sizes="100vw"
               unoptimized
             />
-          </motion.div>
+          </div>
         </motion.div>
       </AnimatePresence>
 
