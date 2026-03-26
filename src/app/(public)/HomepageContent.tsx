@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,11 +31,6 @@ function useHeroImages() {
   return images;
 }
 
-const KB_STYLE: React.CSSProperties = {
-  animation: "hero-ken-burns 8s ease-in-out infinite alternate",
-  transformOrigin: "center center",
-};
-
 function HeroSlideshow() {
   const images = useHeroImages();
   const [current, setCurrent] = useState(0);
@@ -52,14 +47,6 @@ function HeroSlideshow() {
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden">
-      {/* Keyframe injected inline — immune to CSS purging and build tools */}
-      <style>{`
-        @keyframes hero-ken-burns {
-          0%   { transform: scale(1)    translate(0,     0);   }
-          100% { transform: scale(1.12) translate(-2%,  -1%);  }
-        }
-      `}</style>
-
       <AnimatePresence initial={false}>
         <motion.div
           key={current}
@@ -67,21 +54,15 @@ function HeroSlideshow() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <div className="absolute inset-0" style={KB_STYLE}>
-            <Image
-              src={images[current]}
-              alt="Mona Niko Gallery"
-              fill
-              className="object-cover"
-              priority={current === 0}
-              quality={100}
-              sizes="100vw"
-              unoptimized
-            />
-          </div>
-        </motion.div>
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(${images[current]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            animation: "hero-ken-burns 8s ease-in-out infinite alternate",
+          }}
+        />
       </AnimatePresence>
 
       {/* Ultra-light overlays — just enough for text, images stay vivid */}
