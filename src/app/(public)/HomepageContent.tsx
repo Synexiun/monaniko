@@ -69,11 +69,11 @@ function HeroSlideshow() {
           transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* Ken Burns inner — slow pan/zoom over the slide duration */}
+          {/* Ken Burns inner — slow pan/zoom, loops forever */}
           <motion.div
             initial={{ scale: kb.scale[0], x: kb.x[0], y: kb.y[0] }}
             animate={{ scale: kb.scale[1], x: kb.x[1], y: kb.y[1] }}
-            transition={{ duration: SLIDE_INTERVAL / 1000 + 1.2, ease: "linear" }}
+            transition={{ duration: SLIDE_INTERVAL / 1000 + 1.2, ease: "linear", repeat: Infinity, repeatType: "mirror" }}
             className="absolute inset-0"
           >
             <Image
