@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -12,26 +13,126 @@ import { artworks, collections, testimonials, workshops } from "@/data/artworks"
 const featuredArtworks = artworks.filter((a) => a.featured).slice(0, 4);
 const featuredCollections = collections.filter((c) => c.featured);
 
+const SLIDE_INTERVAL = 5000;
+const FALLBACK_IMAGE = "/images/hero/hero-main.jpg";
+
+function useHeroImages() {
+  const [images, setImages] = useState<string[]>([FALLBACK_IMAGE]);
+
+  useEffect(() => {
+    fetch("/api/hero-images")
+      .then((res) => res.json())
+      .then((data: string[]) => {
+        if (data.length > 0) setImages(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  return images;
+}
+
+/*
+ * Ken Burns directions — each slide gets a different slow pan/zoom
+ * so consecutive images feel alive and cinematic.
+ */
+const kenBurns = [
+  { scale: [1, 1.12], x: ["0%", "-3%"], y: ["0%", "-2%"] },   // slow zoom + drift left-up
+  { scale: [1.1, 1], x: ["-2%", "2%"], y: ["-1%", "1%"] },    // zoom out + drift right-down
+  { scale: [1, 1.08], x: ["2%", "-2%"], y: ["1%", "-1%"] },    // zoom in + drift left-up
+  { scale: [1.08, 1.02], x: ["-1%", "1%"], y: ["0%", "0%"] },  // gentle zoom out + drift right
+];
+
+function HeroSlideshow() {
+  const images = useHeroImages();
+  const [current, setCurrent] = useState(0);
+
+  const advance = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(advance, SLIDE_INTERVAL);
+    return () => clearInterval(timer);
+  }, [advance, images.length]);
+
+  const kb = kenBurns[current % kenBurns.length];
+
+  return (
+    <div className="absolute inset-0 bg-black overflow-hidden">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={current}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          {/* Ken Burns inner — slow pan/zoom over the slide duration */}
+          <motion.div
+            initial={{ scale: kb.scale[0], x: kb.x[0], y: kb.y[0] }}
+            animate={{ scale: kb.scale[1], x: kb.x[1], y: kb.y[1] }}
+            transition={{ duration: SLIDE_INTERVAL / 1000 + 1.2, ease: "linear" }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={images[current]}
+              alt="Mona Niko Gallery"
+              fill
+              className="object-cover"
+              priority={current === 0}
+              quality={100}
+              sizes="100vw"
+              unoptimized
+            />
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Ultra-light overlays — just enough for text, images stay vivid */}
+      <div className="absolute inset-0 z-[1]"
+        style={{
+          background: "linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 40%, transparent 70%)",
+        }}
+      />
+      <div className="absolute inset-0 z-[1]"
+        style={{
+          background: "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 40%)",
+        }}
+      />
+
+      {/* Slide indicators */}
+      {images.length > 1 && (
+        <div className="absolute bottom-28 right-8 md:right-16 z-[2] flex gap-2.5 items-center">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className="group p-1"
+            >
+              <div className={`rounded-full transition-all duration-500 ${
+                i === current
+                  ? "w-8 h-1 bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]"
+                  : "w-2 h-2 bg-white/40 group-hover:bg-white/70"
+              }`} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero/hero-main.jpg"
-            alt="Mona Niko Gallery"
-            fill
-            className="object-cover"
-            priority
-            quality={90}
-          />
-          {/* Left-weighted gradient so text reads on the dark side, image breathes on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/72 via-black/40 to-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-        </div>
+        <HeroSlideshow />
 
-        <div className="relative z-10 container-gallery w-full">
+        <div className="relative z-[3] container-gallery w-full">
           <div className="max-w-3xl lg:max-w-[55rem]">
 
             {/* Eyebrow label */}
@@ -104,7 +205,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[3]"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
