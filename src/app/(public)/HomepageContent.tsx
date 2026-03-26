@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +31,11 @@ function useHeroImages() {
   return images;
 }
 
+const KB_STYLE: React.CSSProperties = {
+  animation: "hero-ken-burns 8s ease-in-out infinite alternate",
+  transformOrigin: "center center",
+};
+
 function HeroSlideshow() {
   const images = useHeroImages();
   const [current, setCurrent] = useState(0);
@@ -47,6 +52,14 @@ function HeroSlideshow() {
 
   return (
     <div className="absolute inset-0 bg-black overflow-hidden">
+      {/* Keyframe injected inline — immune to CSS purging and build tools */}
+      <style>{`
+        @keyframes hero-ken-burns {
+          0%   { transform: scale(1)    translate(0,     0);   }
+          100% { transform: scale(1.12) translate(-2%,  -1%);  }
+        }
+      `}</style>
+
       <AnimatePresence initial={false}>
         <motion.div
           key={current}
@@ -56,8 +69,7 @@ function HeroSlideshow() {
           transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* Ken Burns inner — CSS animation, unaffected by React Compiler */}
-          <div className={`absolute inset-0 ken-burns-${current % 4}`}>
+          <div className="absolute inset-0" style={KB_STYLE}>
             <Image
               src={images[current]}
               alt="Mona Niko Gallery"
