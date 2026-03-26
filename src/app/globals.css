@@ -27,27 +27,11 @@
   --header-height: 80px;
 }
 
-/* ─── Ken Burns Animations ──────────────────────────── */
-@keyframes ken-burns-0 {
-  0%   { transform: scale(1)    translate(0,    0);    }
-  100% { transform: scale(1.12) translate(-3%,  -2%);  }
+/* ─── Hero Ken Burns ────────────────────────────────── */
+@keyframes hero-ken-burns {
+  0%   { transform: scale(1);    }
+  100% { transform: scale(1.12); }
 }
-@keyframes ken-burns-1 {
-  0%   { transform: scale(1.1)  translate(-2%,  -1%);  }
-  100% { transform: scale(1)    translate(2%,    1%);   }
-}
-@keyframes ken-burns-2 {
-  0%   { transform: scale(1)    translate(2%,   1%);   }
-  100% { transform: scale(1.08) translate(-2%,  -1%);  }
-}
-@keyframes ken-burns-3 {
-  0%   { transform: scale(1.08) translate(-1%,  0);    }
-  100% { transform: scale(1.02) translate(1%,   0);    }
-}
-.ken-burns-0 { animation: ken-burns-0 6.2s linear infinite alternate; }
-.ken-burns-1 { animation: ken-burns-1 6.2s linear infinite alternate; }
-.ken-burns-2 { animation: ken-burns-2 6.2s linear infinite alternate; }
-.ken-burns-3 { animation: ken-burns-3 6.2s linear infinite alternate; }
 
 /* ─── Base Styles ───────────────────────────────────── */
 * {
