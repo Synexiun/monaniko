@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { useParams } from "next/navigation";
 import Button from "@/components/ui/Button";
 import ArtworkCard from "@/components/gallery/ArtworkCard";
+import InquiryModal from "@/components/gallery/InquiryModal";
 import { artworks, collections } from "@/data/artworks";
 import { cn, formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
@@ -46,6 +47,7 @@ export default function ArtworkDetailContent() {
   const openCart = useCartStore((s) => s.openCart);
   const [zoomed, setZoomed] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   if (!foundArtwork) {
     notFound();
@@ -356,17 +358,20 @@ export default function ArtworkDetailContent() {
                     Add to Cart
                   </Button>
                 )}
-                <Link href={`/contact?type=artwork&artwork=${artwork.slug}`} className="block">
-                  <Button variant="outline" size="lg" className="w-full">
-                    Inquire About This Piece
-                  </Button>
-                </Link>
-                <Link
-                  href="/contact?type=private_viewing"
-                  className="block text-center text-[11px] tracking-[0.12em] uppercase text-gold hover:text-gold-dark transition-colors pt-2"
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full"
+                  onClick={() => setInquiryOpen(true)}
+                >
+                  Inquire About This Piece
+                </Button>
+                <button
+                  onClick={() => setInquiryOpen(true)}
+                  className="block w-full text-center text-[11px] tracking-[0.12em] uppercase text-gold hover:text-gold-dark transition-colors pt-2"
                 >
                   Request Private Viewing
-                </Link>
+                </button>
               </div>
             </motion.div>
           </div>
@@ -409,6 +414,16 @@ export default function ArtworkDetailContent() {
           </div>
         </section>
       )}
+
+      <InquiryModal
+        isOpen={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        artworkTitle={artwork.title}
+        artworkImage={artwork.images[0]}
+        artworkId={artwork.id}
+        artworkYear={artwork.year}
+        artworkMedium={mediumLabels[artwork.medium] || artwork.medium}
+      />
     </>
   );
 }

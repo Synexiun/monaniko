@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { parsePagination, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
+import { sendArtworkInquiry } from '@/lib/resend'
 
 export async function GET(req: NextRequest) {
   try {
@@ -54,6 +55,23 @@ export async function POST(req: NextRequest) {
     await db.activityLog.create({
       data: { entityType: 'inquiry', entityId: inquiry.id, action: 'create', details: JSON.stringify({ name: inquiry.name, type: inquiry.type }) },
     })
+
+    // Send email notification to admin
+    if (inquiry.type === 'artwork' || body.artworkTitle) {
+      const artworkTitle = body.artworkTitle ||
+        (inquiry.artworkId
+          ? (await db.artwork.findUnique({ where: { id: inquiry.artworkId }, select: { title: true } }))?.title || 'Artwork'
+          : 'Artwork')
+
+      sendArtworkInquiry({
+        name: inquiry.name,
+        email: inquiry.email,
+        phone: inquiry.phone || '',
+        message: inquiry.message,
+        artworkTitle,
+        artworkId: inquiry.artworkId || '',
+      }).catch(() => {}) // fire-and-forget, don't fail the request
+    }
 
     return jsonResponse(inquiry, 201)
   } catch (e) {

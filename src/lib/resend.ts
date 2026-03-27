@@ -501,3 +501,101 @@ export async function sendAuctionNewBid(data: {
     html,
   })
 }
+
+// ─── Artwork Inquiry ──────────────────────────────────────────
+export interface ArtworkInquiryData {
+  name: string
+  email: string
+  phone: string
+  message: string
+  artworkTitle: string
+  artworkId: string
+}
+
+export async function sendArtworkInquiry(data: ArtworkInquiryData) {
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#FAFAF8;font-family:system-ui,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8;padding:40px 20px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;max-width:600px;width:100%;">
+
+      <!-- Header -->
+      <tr><td style="background:#1A1A1A;padding:32px 40px;">
+        <p style="font-family:Georgia,serif;font-size:22px;color:#C4A265;margin:0;letter-spacing:0.08em;">Mona Niko Gallery</p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin:6px 0 0;letter-spacing:0.25em;text-transform:uppercase;">New Artwork Inquiry</p>
+      </td></tr>
+
+      <!-- Body -->
+      <tr><td style="padding:40px;">
+        <p style="font-family:Georgia,serif;font-size:20px;color:#1A1A1A;margin:0 0 6px;">
+          Inquiry about <em style="color:#C4A265;">${data.artworkTitle}</em>
+        </p>
+        <p style="font-size:12px;color:#999;margin:0 0 32px;letter-spacing:0.1em;text-transform:uppercase;">
+          Received via gallery website
+        </p>
+
+        <!-- Contact Details -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+          <tr>
+            <td style="padding:10px 14px;background:#F8F7F5;border-left:3px solid #C4A265;margin-bottom:8px;">
+              <p style="font-size:10px;color:#999;margin:0 0 3px;letter-spacing:0.2em;text-transform:uppercase;">Name</p>
+              <p style="font-size:15px;color:#1A1A1A;margin:0;font-weight:600;">${data.name}</p>
+            </td>
+          </tr>
+          <tr><td style="height:8px;"></td></tr>
+          <tr>
+            <td style="padding:10px 14px;background:#F8F7F5;border-left:3px solid #C4A265;">
+              <p style="font-size:10px;color:#999;margin:0 0 3px;letter-spacing:0.2em;text-transform:uppercase;">Email</p>
+              <p style="font-size:15px;color:#1A1A1A;margin:0;">
+                <a href="mailto:${data.email}" style="color:#C4A265;text-decoration:none;">${data.email}</a>
+              </p>
+            </td>
+          </tr>
+          <tr><td style="height:8px;"></td></tr>
+          <tr>
+            <td style="padding:10px 14px;background:#F8F7F5;border-left:3px solid #C4A265;">
+              <p style="font-size:10px;color:#999;margin:0 0 3px;letter-spacing:0.2em;text-transform:uppercase;">Phone</p>
+              <p style="font-size:15px;color:#1A1A1A;margin:0;font-weight:600;">${data.phone}</p>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Message -->
+        <p style="font-size:10px;color:#999;margin:0 0 8px;letter-spacing:0.2em;text-transform:uppercase;">Message</p>
+        <div style="background:#F8F7F5;padding:16px 20px;border-radius:2px;font-size:14px;color:#3A3A3A;line-height:1.7;">
+          ${data.message.replace(/\n/g, '<br>')}
+        </div>
+
+        <!-- CTA -->
+        <div style="margin-top:32px;padding-top:24px;border-top:1px solid #E8E5E0;">
+          <a href="${SITE_URL}/admin/inquiries" style="display:inline-block;background:#C4A265;color:#fff;text-decoration:none;padding:12px 28px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">
+            View in Admin Dashboard
+          </a>
+          <p style="margin-top:12px;font-size:11px;color:#bbb;">
+            Reply directly to this email to respond to ${data.name}.
+          </p>
+        </div>
+      </td></tr>
+
+      <!-- Footer -->
+      <tr><td style="padding:20px 40px;background:#F8F7F5;border-top:1px solid #E8E5E0;">
+        <p style="font-size:11px;color:#bbb;margin:0;">Mona Niko Gallery · Mission Viejo, CA</p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body></html>`
+
+  const resendClient = new Resend(process.env.RESEND_API_KEY || '')
+  return resendClient.emails.send({
+    from: FROM,
+    to: 'admin@monaniko.com',
+    replyTo: data.email,
+    subject: `Artwork Inquiry: "${data.artworkTitle}" from ${data.name}`,
+    html,
+  })
+}
