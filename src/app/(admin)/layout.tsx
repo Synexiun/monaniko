@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import HelpPanel from '@/components/admin/HelpPanel';
 import {
   LayoutDashboard,
   Image,
@@ -124,6 +125,7 @@ export default function AdminLayout({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
 
   // Skip admin shell for login page
   if (pathname === '/admin/login') {
@@ -277,6 +279,19 @@ export default function AdminLayout({
 
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setHelpOpen((v) => !v)}
+                className={cn(
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  helpOpen
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                )}
+                aria-label="Toggle help panel"
+              >
+                <HelpCircle className="w-4 h-4" />
+                <span className="hidden sm:inline text-[12px]">Help</span>
+              </button>
+              <button
                 className="relative p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
                 aria-label="Notifications"
               >
@@ -297,6 +312,7 @@ export default function AdminLayout({
       </div>
 
       <ToastProvider />
+      <HelpPanel pathname={pathname} isOpen={helpOpen} onClose={() => setHelpOpen(false)} />
     </div>
   );
 }
