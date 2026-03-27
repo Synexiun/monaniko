@@ -3,1057 +3,1530 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mona Niko Gallery — Website & Platform Valuation Report</title>
+  <title>Mona Niko Gallery — Platform Valuation Report</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C4A265;
+      --gold-light: #D4B87A;
+      --black: #1A1A1A;
+      --charcoal: #2C2C2C;
+      --gray: #6B6B6B;
+      --light: #F8F7F5;
+      --border: #E8E3DA;
+      --nav-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', sans-serif;
-      color: #1A1A1A;
-      background: #ffffff;
-      font-size: 13px;
-      line-height: 1.6;
+      color: var(--black);
+      background: #fff;
+      font-size: 15px;
+      line-height: 1.65;
     }
 
-    .page {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 60px 60px;
-    }
-
-    /* ── Cover ── */
-    .cover {
-      min-height: 100vh;
+    /* ══ NAV ══════════════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(26,26,26,0.97);
+      backdrop-filter: blur(12px);
+      z-index: 100;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 60px;
-      background: linear-gradient(135deg, #1A1A1A 0%, #2C2C2C 60%, #3A3228 100%);
-      color: white;
-      position: relative;
-      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(196,162,101,0.2);
     }
 
-    .cover::before {
-      content: '';
-      position: absolute;
-      top: -100px; right: -100px;
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(196,162,101,0.15) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    .cover-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #C4A265;
-      margin-bottom: 24px;
-    }
-
-    .cover h1 {
+    .nav-brand {
       font-family: 'Playfair Display', serif;
-      font-size: 52px;
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.04em;
     }
 
-    .cover h1 em {
-      font-style: italic;
-      color: #C4A265;
-    }
+    .nav-brand span { color: var(--gold); font-style: italic; }
 
-    .cover-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.55);
-      font-weight: 300;
-      margin-bottom: 60px;
-    }
-
-    .cover-meta {
+    .nav-links {
       display: flex;
-      gap: 60px;
+      gap: 4px;
+      list-style: none;
     }
 
-    .cover-meta-item label {
+    .nav-links a {
       display: block;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: #C4A265;
-      margin-bottom: 4px;
-    }
-
-    .cover-meta-item span {
-      font-size: 14px;
-      color: rgba(255,255,255,0.8);
-    }
-
-    .gold-rule {
-      height: 1px;
-      background: linear-gradient(to right, transparent, #C4A265, transparent);
-      margin: 40px 0;
-    }
-
-    /* ── Sections ── */
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 600;
-      color: #1A1A1A;
-      margin-bottom: 8px;
-      margin-top: 60px;
-    }
-
-    h2:first-of-type { margin-top: 0; }
-
-    .section-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #C4A265;
-      margin-bottom: 24px;
-    }
-
-    h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1A1A1A;
-      margin-bottom: 6px;
-      margin-top: 28px;
-    }
-
-    p { margin-bottom: 12px; color: #3A3A3A; }
-
-    /* ── Valuation Box ── */
-    .valuation-hero {
-      background: linear-gradient(135deg, #1A1A1A, #2C2C2C);
-      color: white;
-      border-radius: 12px;
-      padding: 48px;
-      margin: 32px 0;
-      text-align: center;
-    }
-
-    .valuation-hero .value {
-      font-family: 'Playfair Display', serif;
-      font-size: 72px;
-      font-weight: 700;
-      color: #C4A265;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .valuation-hero .value-label {
+      padding: 6px 14px;
       font-size: 11px;
-      letter-spacing: 0.3em;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(196,162,101,0.1);
+    }
+
+    .nav-print {
+      background: var(--gold);
+      color: #1A1A1A !important;
+      font-weight: 700 !important;
+      padding: 7px 16px !important;
+      border-radius: 4px !important;
+    }
+
+    .nav-print:hover { background: var(--gold-light) !important; color: #1A1A1A !important; }
+
+    /* ══ HERO ══════════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111 0%, #1A1A1A 55%, #251F16 100%);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: var(--nav-h);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(196,162,101,0.12) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(196,162,101,0.07) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 60px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 24px;
     }
 
-    .valuation-hero .value-range {
-      font-size: 18px;
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 5vw, 58px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 40px;
+      max-width: 460px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 40px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(196,162,101,0.2);
+    }
+
+    .hero-meta-item label {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+
+    .hero-meta-item span {
+      font-size: 13px;
       color: rgba(255,255,255,0.7);
     }
 
-    /* ── Feature Grid ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin: 24px 0;
+    /* Hero Right: Big Valuation Card */
+    .hero-valuation {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(196,162,101,0.25);
+      border-radius: 16px;
+      padding: 40px 32px;
+      text-align: center;
     }
 
-    .feature-card {
-      border: 1px solid #E8E3DA;
-      border-radius: 8px;
-      padding: 20px;
-    }
-
-    .feature-card .icon {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .feature-card h4 {
-      font-size: 12px;
+    .hero-val-label {
+      font-size: 10px;
       font-weight: 700;
-      color: #1A1A1A;
-      margin-bottom: 6px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 16px;
     }
 
-    .feature-card p {
-      font-size: 11px;
-      color: #666;
-      margin: 0;
-      line-height: 1.5;
+    .hero-val-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 46px);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.1;
+      margin-bottom: 8px;
     }
 
-    /* ── Comparison Table ── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
+    .hero-val-sub {
       font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 32px;
     }
 
-    thead th {
-      background: #1A1A1A;
-      color: white;
-      padding: 12px 14px;
-      text-align: left;
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 14px 12px;
+    }
+
+    .hero-stat .s-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat .s-lbl {
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
     }
 
-    thead th:first-child { border-radius: 6px 0 0 0; }
-    thead th:last-child { border-radius: 0 6px 0 0; }
+    /* ══ SHARED ═══════════════════════════════════════════════════ */
+    section { padding: 100px 0; }
+    section:nth-child(even) { background: var(--light); }
 
-    tbody tr:nth-child(even) { background: #F8F7F5; }
-
-    tbody td {
-      padding: 10px 14px;
-      border-bottom: 1px solid #EEE;
-      vertical-align: middle;
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 60px;
     }
 
-    tbody td:first-child { font-weight: 600; color: #1A1A1A; }
-
-    .check { color: #22C55E; font-size: 14px; }
-    .cross { color: #EF4444; font-size: 14px; }
-    .partial { color: #F59E0B; font-size: 14px; }
-
-    /* ── Value Table ── */
-    .value-table { margin: 24px 0; }
-
-    .value-row {
-      display: flex;
-      justify-content: space-between;
+    .section-eyebrow {
+      display: inline-flex;
       align-items: center;
-      padding: 12px 16px;
-      border-bottom: 1px solid #F0EDE8;
-    }
-
-    .value-row:last-child { border-bottom: none; }
-
-    .value-row.total {
-      background: #1A1A1A;
-      color: white;
-      border-radius: 6px;
-      margin-top: 4px;
-    }
-
-    .value-row.total .v-label { color: white; font-weight: 700; }
-    .value-row.total .v-amount { color: #C4A265; font-size: 18px; font-weight: 700; }
-
-    .v-label { font-size: 13px; color: #3A3A3A; }
-    .v-sublabel { font-size: 10px; color: #999; margin-top: 1px; }
-    .v-amount { font-size: 14px; font-weight: 700; color: #1A1A1A; }
-
-    /* ── KPI Row ── */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .kpi-card {
-      border: 1px solid #E8E3DA;
-      border-radius: 8px;
-      padding: 18px;
-      text-align: center;
-    }
-
-    .kpi-card .kpi-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: #C4A265;
-      line-height: 1.1;
-      margin-bottom: 4px;
-    }
-
-    .kpi-card .kpi-label {
+      gap: 10px;
       font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #999;
-    }
-
-    /* ── Phase Timeline ── */
-    .phase-list { margin: 24px 0; }
-
-    .phase-item {
-      display: flex;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid #F0EDE8;
-    }
-
-    .phase-item:last-child { border-bottom: none; }
-
-    .phase-num {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #C4A265;
-      color: white;
       font-weight: 700;
-      font-size: 12px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-eyebrow .num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
     }
 
-    .phase-content h4 {
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--gray);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .gold-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin: 20px 0 36px;
+    }
+
+    /* ══ SUMMARY SECTION ═══════════════════════════════════════════ */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .summary-text p {
+      color: #444;
+      margin-bottom: 16px;
+      line-height: 1.75;
+    }
+
+    .summary-right { display: flex; flex-direction: column; gap: 16px; }
+
+    .big-kpi {
+      background: var(--black);
+      color: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .big-kpi .kpi-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .big-kpi .kpi-sub {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .kpi-row-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .kpi-mini {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 12px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .kpi-mini .m-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.1;
+    }
+
+    .kpi-mini .m-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* ══ FEATURES ══════════════════════════════════════════════════ */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+      background: #fff;
+      transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 26px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .feature-card h4 {
       font-size: 13px;
       font-weight: 700;
-      color: #1A1A1A;
-      margin-bottom: 4px;
+      color: var(--black);
+      margin-bottom: 8px;
     }
 
-    .phase-content p { font-size: 11.5px; margin: 0; }
+    .feature-card p {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+    }
 
-    /* ── Tag List ── */
-    .tag-list {
+    /* ══ COMPARISON ════════════════════════════════════════════════ */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 760px;
+    }
+
+    thead th {
+      background: var(--black);
+      color: rgba(255,255,255,0.6);
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    thead th:first-child {
+      text-align: left;
+      color: rgba(255,255,255,0.9);
+      width: 220px;
+    }
+
+    thead th.highlight-col {
+      background: #2C2C2C;
+      color: var(--gold);
+    }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: #FFF9F2; }
+    tbody tr:nth-child(even) { background: #FAFAF8; }
+    tbody tr:nth-child(even):hover { background: #FFF9F2; }
+
+    tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #F0EDE8;
+      text-align: center;
+      vertical-align: middle;
+      color: #555;
+    }
+
+    tbody td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    tbody td.highlight-col { background: rgba(196,162,101,0.05); }
+
+    .ck { color: #16A34A; font-size: 16px; font-weight: 700; }
+    .cx { color: #DC2626; font-size: 16px; }
+    .cp { color: #D97706; font-size: 16px; }
+
+    .cost-row td { font-weight: 700; background: #F8F7F5 !important; }
+    .cost-row td.highlight-col { background: rgba(196,162,101,0.12) !important; color: var(--black); }
+
+    /* ══ VALUATION ═════════════════════════════════════════════════ */
+    .val-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .val-method {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .val-method-head {
+      background: var(--black);
+      padding: 20px 24px;
+    }
+
+    .val-method-head .method-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .val-method-head h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .val-method-body {
+      padding: 24px;
+      background: #fff;
+    }
+
+    .val-method-body .amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .val-method-body p {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .breakdown-table { margin: 0; }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid #F0EDE8;
+    }
+
+    .breakdown-row:last-child { border-bottom: none; }
+
+    .breakdown-row.total {
+      background: var(--black);
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .breakdown-row.total .b-label { color: #fff; font-weight: 700; }
+    .breakdown-row.total .b-amount { color: var(--gold); font-size: 20px; font-weight: 700; }
+
+    .b-label { font-size: 14px; color: var(--black); }
+    .b-sub { font-size: 11px; color: #999; margin-top: 2px; }
+    .b-amount { font-size: 15px; font-weight: 700; color: var(--black); }
+
+    /* ══ TIMELINE ══════════════════════════════════════════════════ */
+    .timeline {
+      position: relative;
+      padding-left: 56px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), rgba(196,162,101,0.1));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 36px;
+      padding: 24px 28px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: box-shadow 0.25s, border-color 0.25s;
+    }
+
+    .timeline-item:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border-color: var(--gold);
+    }
+
+    .timeline-item::before {
+      content: attr(data-num);
+      position: absolute;
+      left: -46px;
+      top: 24px;
+      width: 32px;
+      height: 32px;
+      background: var(--gold);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeline-item h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .timeline-item p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.65;
+    }
+
+    .timeline-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin: 16px 0;
+      gap: 6px;
+      margin-top: 12px;
     }
 
-    .tag {
-      background: #F5F3EF;
-      border: 1px solid #E8E3DA;
+    .t-tag {
+      background: var(--light);
+      border: 1px solid var(--border);
       border-radius: 4px;
-      padding: 4px 10px;
+      padding: 3px 10px;
       font-size: 11px;
       font-weight: 500;
-      color: #3A3A3A;
+      color: #555;
     }
 
-    /* ── Quote Box ── */
-    .quote-box {
-      border-left: 3px solid #C4A265;
+    /* ══ TECH STACK ════════════════════════════════════════════════ */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .stack-group h4 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stack-items { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .stack-tag {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s;
+    }
+
+    .stack-tag:hover { border-color: var(--gold); }
+    .stack-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+    /* ══ ROI SECTION ═══════════════════════════════════════════════ */
+    .roi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .roi-card {
+      background: var(--black);
+      border-radius: 16px;
+      padding: 40px;
+      color: #fff;
+    }
+
+    .roi-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(196,162,101,0.25);
+    }
+
+    .roi-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .roi-line:last-child { border-bottom: none; }
+
+    .roi-line .r-label { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .roi-line .r-val { font-size: 15px; font-weight: 700; color: #fff; }
+
+    .roi-total {
+      background: var(--gold);
+      border-radius: 8px;
       padding: 16px 20px;
-      background: #FAFAF8;
-      border-radius: 0 8px 8px 0;
-      margin: 24px 0;
-      font-style: italic;
-      color: #444;
-    }
-
-    /* ── Footer ── */
-    .report-footer {
-      margin-top: 80px;
-      padding-top: 32px;
-      border-top: 1px solid #E8E3DA;
+      margin-top: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .report-footer p { font-size: 10px; color: #999; margin: 0; }
+    .roi-total .r-label { color: rgba(26,26,26,0.7); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+    .roi-total .r-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--black); }
 
-    /* ── Print ── */
+    .conclusion {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+
+    .conclusion h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .conclusion p {
+      color: #555;
+      line-height: 1.75;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .conclusion p:last-child { margin-bottom: 0; }
+
+    .highlight-box {
+      background: linear-gradient(135deg, var(--black), #2C2C2C);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 20px;
+    }
+
+    .highlight-box p {
+      font-size: 16px;
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+    }
+
+    .highlight-box p em { color: var(--gold); font-style: normal; }
+
+    /* ══ FOOTER ═══════════════════════════════════════════════════ */
+    footer {
+      background: var(--black);
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    footer .f-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    footer .f-brand span { color: var(--gold); font-style: italic; }
+    footer .f-note { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+    footer .f-right { text-align: right; }
+    footer .f-right p { font-size: 11px; color: rgba(255,255,255,0.3); margin-bottom: 2px; }
+
+    /* ══ PRINT ════════════════════════════════════════════════════ */
     @media print {
-      .cover { min-height: auto; page-break-after: always; }
-      h2 { page-break-before: auto; }
-      .page { padding: 40px; }
-      body { font-size: 12px; }
+      #nav { display: none; }
+      section { padding: 60px 0; page-break-inside: avoid; }
+      #hero { min-height: auto; padding-top: 40px; }
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ══ RESPONSIVE ════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+      .hero-valuation { display: none; }
+      .summary-grid, .roi-grid { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .val-methods { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; text-align: center; padding: 32px 24px; }
+      footer .f-right { text-align: center; }
     }
   </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════════════════ -->
-<!-- COVER PAGE -->
-<!-- ════════════════════════════════════════════════════════ -->
-<div class="cover">
-  <p class="cover-label">Confidential Business Report · March 2026</p>
-  <h1>Mona Niko Gallery<br><em>Platform Valuation</em><br>& Feature Analysis</h1>
-  <p class="cover-sub">Digital platform assessment, competitive benchmarking,<br>and estimated business value contribution</p>
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav id="nav">
+  <div class="nav-brand">Mona Niko <span>Gallery</span></div>
+  <ul class="nav-links">
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#comparison">Comparison</a></li>
+    <li><a href="#valuation">Valuation</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#techstack">Tech Stack</a></li>
+    <li><a href="#roi">ROI</a></li>
+    <li><a href="#roi" onclick="window.print()" class="nav-print">Download PDF</a></li>
+  </ul>
+</nav>
 
-  <div class="cover-meta">
-    <div class="cover-meta-item">
-      <label>Business</label>
-      <span>Mona Niko Gallery & Studio</span>
-    </div>
-    <div class="cover-meta-item">
-      <label>Location</label>
-      <span>Mission Viejo, CA 92691</span>
-    </div>
-    <div class="cover-meta-item">
-      <label>Report Date</label>
-      <span>March 2026</span>
-    </div>
-    <div class="cover-meta-item">
-      <label>Version</label>
-      <span>1.0 — Post Phase 7</span>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════════════════════════ -->
-<!-- MAIN CONTENT -->
-<!-- ════════════════════════════════════════════════════════ -->
-<div class="page">
-
-  <!-- ── Executive Summary ── -->
-  <p class="section-label">01 — Executive Summary</p>
-  <h2>Platform Overview</h2>
-
-  <p>
-    The Mona Niko Gallery digital platform is a purpose-built, full-stack web application that serves as the
-    primary digital storefront, customer relationship hub, and operational backbone for a fine art gallery and
-    studio in Mission Viejo, California. The platform was engineered from the ground up using modern enterprise
-    web technologies — Next.js 16, Prisma ORM, Stripe payments, Cloudinary CDN, and Resend email — replacing
-    a previous WordPress / WooCommerce installation that lacked the customization and operational depth required
-    for a growing multi-channel art business.
-  </p>
-
-  <p>
-    The platform currently supports seven complete operational phases including e-commerce, marketing automation,
-    customer accounts, commissions management, auctions, and a full admin dashboard. It is equivalent in
-    functional scope to platforms typically costing $80,000–$180,000 to build with an agency.
-  </p>
-
-  <div class="valuation-hero">
-    <div class="value">$95,000–$145,000</div>
-    <div class="value-label">Estimated Platform Replacement Value (as built)</div>
-    <div class="value-range">Conservative range · Custom agency development equivalent</div>
-  </div>
-
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-value">7</div>
-      <div class="kpi-label">Dev Phases Complete</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value">25+</div>
-      <div class="kpi-label">Admin Pages</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value">22</div>
-      <div class="kpi-label">DB Models</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value">60+</div>
-      <div class="kpi-label">API Endpoints</div>
-    </div>
-  </div>
-
-  <!-- ── Platform Features ── -->
-  <p class="section-label">02 — Complete Feature Set</p>
-  <h2>What the Platform Delivers</h2>
-
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="icon">🖼️</div>
-      <h4>Gallery & Shop</h4>
-      <p>30 original artworks, 3 collections, 28+ products (merch, prints, designers collection) with Stripe checkout, cart, and promo codes.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🎓</div>
-      <h4>Workshops & Events</h4>
-      <p>17 workshop listings with booking, capacity tracking, instructor management, and confirmation emails.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📧</div>
-      <h4>Email Marketing</h4>
-      <p>Full email blast system with templates, subscriber segmentation, Resend integration, and campaign tracking.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">👤</div>
-      <h4>Customer Accounts</h4>
-      <p>Full auth (register/login), order history, wishlist, profile management, and secure session tokens.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🔨</div>
-      <h4>Live Auctions</h4>
-      <p>Real-time auction system with bidding, countdown timers, reserve prices, and automated winner/outbid emails.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🎨</div>
-      <h4>Commission Pipeline</h4>
-      <p>8-stage commission workflow from inquiry to delivery, with deposit tracking, stage history, and certificate generation.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">👑</div>
-      <h4>Collector Club</h4>
-      <p>Tiered VIP membership (Patron / Connoisseur / Luminary) with benefits, member tracking, and exclusive access.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📜</div>
-      <h4>Certificates of Authenticity</h4>
-      <p>Auto-numbered certificates (MN-YYYY-NNNN format), linked to artworks, printable as professional PDF.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">💰</div>
-      <h4>Accounting & Finance</h4>
-      <p>P&L dashboard, expense logging, professional invoicing with PDF export, and revenue analytics by period.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📊</div>
-      <h4>Admin Dashboard</h4>
-      <p>25+ admin pages covering every business function: artworks, orders, marketing, audience, analytics, and settings.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🔍</div>
-      <h4>SEO & Metadata</h4>
-      <p>Full structured data (JSON-LD), per-page metadata, sitemap.xml, robots.txt, and OpenGraph for all 18 public pages.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">❓</div>
-      <h4>Contextual Help System</h4>
-      <p>Three-level admin help panel (Workflow / Logic / Technical) on every admin page with expandable accordion content.</p>
-    </div>
-  </div>
-
-  <!-- ── Competitive Comparison ── -->
-  <p class="section-label">03 — Competitive Benchmarking</p>
-  <h2>Comparison to Leading Platforms</h2>
-
-  <p>
-    The following comparison evaluates Mona Niko Gallery's platform against five art-specific and general
-    e-commerce platforms that an art business of this scale might consider using as an alternative.
-  </p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Feature / Capability</th>
-        <th>Mona Niko<br>Gallery</th>
-        <th>Artsy<br>Pro</th>
-        <th>Shopify<br>+ Apps</th>
-        <th>Squarespace<br>Commerce</th>
-        <th>Saatchi Art</th>
-        <th>Custom<br>Agency</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Full Custom Branding & Design</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Original Art Auction System</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Commission Pipeline (8 stages)</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-      </tr>
-      <tr>
-        <td>Workshop Booking System</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Customer Accounts & Wishlist</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Collector Club / VIP Tiers</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Certificate of Authenticity</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-      </tr>
-      <tr>
-        <td>Integrated Email Marketing</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Full P&L Accounting</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-      </tr>
-      <tr>
-        <td>Zero Platform Commission Fee</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Own Your Data Completely</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Full SEO Control (JSON-LD, sitemap)</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="partial">~</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="check">✓</span></td>
-      </tr>
-      <tr>
-        <td>Contextual Admin Help System</td>
-        <td><span class="check">✓</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="cross">✗</span></td>
-        <td><span class="partial">~</span></td>
-      </tr>
-      <tr>
-        <td>Monthly Platform Cost</td>
-        <td><strong>~$50–80</strong></td>
-        <td>$500–2,000+</td>
-        <td>$79–299</td>
-        <td>$23–49</td>
-        <td>35% commission</td>
-        <td>$200–500 hosting</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="quote-box">
-    Key insight: Artsy charges galleries $500–$2,000+/month with limited customization. Saatchi Art takes 35% commission on every sale. The Mona Niko platform eliminates both costs while providing capabilities neither platform offers — commissions, auctions, workshops, and collector club in one integrated system.
-  </div>
-
-  <!-- ── Valuation Breakdown ── -->
-  <p class="section-label">04 — Valuation Analysis</p>
-  <h2>Platform Value Breakdown</h2>
-
-  <p>
-    The following valuation is based on three methodologies: (1) <strong>Replacement cost</strong> — what it would
-    cost to build the same platform with a professional agency or freelancer team, (2) <strong>SaaS equivalent cost</strong>
-    — what equivalent capabilities would cost using commercial SaaS tools on an ongoing basis, and (3)
-    <strong>Business value contribution</strong> — measurable and estimated business impact over 3 years.
-  </p>
-
-  <h3>1. Replacement Cost Method</h3>
-
-  <div class="value-table">
-    <div class="value-row">
-      <div>
-        <div class="v-label">Full-Stack Development (7 phases)</div>
-        <div class="v-sublabel">Next.js, Prisma, API routes, admin dashboard, public pages</div>
-      </div>
-      <div class="v-amount">$55,000–$80,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">UI/UX Design & Brand Implementation</div>
-        <div class="v-sublabel">Editorial layout, typography system, mobile-first responsive</div>
-      </div>
-      <div class="v-amount">$12,000–$20,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">E-Commerce & Payment Integration</div>
-        <div class="v-sublabel">Stripe checkout, webhooks, cart, promo codes</div>
-      </div>
-      <div class="v-amount">$8,000–$15,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Custom Auction System</div>
-        <div class="v-sublabel">Real-time bidding, countdown, notifications, reserve prices</div>
-      </div>
-      <div class="v-amount">$10,000–$18,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Email Marketing System</div>
-        <div class="v-sublabel">Blast engine, templates, subscriber segmentation, campaigns</div>
-      </div>
-      <div class="v-amount">$5,000–$10,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Commission, Certificate & Collector Club Systems</div>
-        <div class="v-sublabel">8-stage pipeline, auto-numbering, tiered memberships</div>
-      </div>
-      <div class="v-amount">$6,000–$12,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">SEO, Content Scheduling & Analytics</div>
-        <div class="v-sublabel">JSON-LD, sitemap, ISR, structured data, analytics dashboard</div>
-      </div>
-      <div class="v-amount">$4,000–$8,000</div>
-    </div>
-    <div class="value-row total">
-      <div>
-        <div class="v-label">Total Replacement Cost Estimate</div>
-      </div>
-      <div class="v-amount">$100,000–$163,000</div>
-    </div>
-  </div>
-
-  <h3>2. SaaS Equivalent Annual Cost (What You'd Pay Instead)</h3>
-
-  <div class="value-table">
-    <div class="value-row">
-      <div>
-        <div class="v-label">Artsy Gallery Platform</div>
-        <div class="v-sublabel">Art-specific listing and sales platform</div>
-      </div>
-      <div class="v-amount">$6,000–$24,000/yr</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Shopify (Advanced) + App Stack</div>
-        <div class="v-sublabel">E-commerce + workshop booking + email + CRM apps</div>
-      </div>
-      <div class="v-amount">$3,600–$6,000/yr</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Klaviyo Email Marketing (Pro)</div>
-        <div class="v-sublabel">500-subscriber plan with automation</div>
-      </div>
-      <div class="v-amount">$900–$1,800/yr</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Auction Software (Bidpath / BidJS)</div>
-        <div class="v-sublabel">Dedicated auction platform or SaaS</div>
-      </div>
-      <div class="v-amount">$3,000–$12,000/yr</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Commission Management (HoneyBook / Dubsado)</div>
-        <div class="v-sublabel">Client management and workflow tool</div>
-      </div>
-      <div class="v-amount">$400–$800/yr</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Saatchi Art Commission Fees (35%) on $50k sales</div>
-        <div class="v-sublabel">Platform commission if selling through Saatchi</div>
-      </div>
-      <div class="v-amount">$17,500/yr avoided</div>
-    </div>
-    <div class="value-row total">
-      <div>
-        <div class="v-label">Total SaaS Equivalent Cost Avoided (3-year)</div>
-      </div>
-      <div class="v-amount">$90,000–$150,000</div>
-    </div>
-  </div>
-
-  <h3>3. Business Value Contribution (3-Year Projection)</h3>
-
-  <div class="value-table">
-    <div class="value-row">
-      <div>
-        <div class="v-label">Online Revenue Enablement</div>
-        <div class="v-sublabel">Artworks, prints, merch, workshops sold through the platform</div>
-      </div>
-      <div class="v-amount">$150,000–$400,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Email Marketing Revenue (5% list conversion)</div>
-        <div class="v-sublabel">500 subscribers, avg. $200 AOV, 3 campaigns/year</div>
-      </div>
-      <div class="v-amount">$9,000–$30,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Auction Revenue Premium</div>
-        <div class="v-sublabel">Price discovery — auctions can achieve 15–40% above gallery price</div>
-      </div>
-      <div class="v-amount">$5,000–$25,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Collector Club Membership Revenue</div>
-        <div class="v-sublabel">50 members × $700 avg annual fee × 3 years</div>
-      </div>
-      <div class="v-amount">$105,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">Commission Pipeline Revenue</div>
-        <div class="v-sublabel">8–12 commissions/year × $3,000–$8,000 avg</div>
-      </div>
-      <div class="v-amount">$72,000–$288,000</div>
-    </div>
-    <div class="value-row">
-      <div>
-        <div class="v-label">SEO Organic Traffic Value</div>
-        <div class="v-sublabel">Est. 2,000 monthly visitors at $1.50 cost-per-click equivalent</div>
-      </div>
-      <div class="v-amount">$36,000/yr equivalent</div>
-    </div>
-    <div class="value-row total">
-      <div>
-        <div class="v-label">Total 3-Year Business Value Contribution</div>
-      </div>
-      <div class="v-amount">$377,000–$848,000+</div>
-    </div>
-  </div>
-
-  <!-- ── Development Phases ── -->
-  <p class="section-label">05 — Development Phases</p>
-  <h2>What Was Built — Phase by Phase</h2>
-
-  <div class="phase-list">
-    <div class="phase-item">
-      <div class="phase-num">1</div>
-      <div class="phase-content">
-        <h4>Phase 1 — Core E-Commerce & Payments</h4>
-        <p>Stripe PaymentIntent API, Stripe webhook (order-to-DB + email), two-step checkout flow, /checkout/success page, Cloudinary image uploads, and all transactional emails via Resend (order confirmation, inquiry notification, workshop booking).</p>
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">Confidential Business Report · March 2026</div>
+      <h1 class="hero-title">
+        Mona Niko Gallery<br>
+        <em>Platform Valuation</em><br>
+        &amp; Feature Analysis
+      </h1>
+      <p class="hero-desc">
+        Digital platform assessment, competitive benchmarking, and estimated business value contribution for a custom-built full-stack art gallery platform.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <label>Business</label>
+          <span>Mona Niko Gallery & Studio</span>
+        </div>
+        <div class="hero-meta-item">
+          <label>Location</label>
+          <span>Mission Viejo, CA</span>
+        </div>
+        <div class="hero-meta-item">
+          <label>Report Date</label>
+          <span>March 2026</span>
+        </div>
+        <div class="hero-meta-item">
+          <label>Version</label>
+          <span>1.0 — Post Phase 7</span>
+        </div>
       </div>
     </div>
-    <div class="phase-item">
-      <div class="phase-num">2</div>
-      <div class="phase-content">
-        <h4>Phase 2 — Accounting & Finance</h4>
-        <p>Expense and Invoice database models, P&L summary API, expenses CRUD, professional invoicing with line items, and print-to-PDF functionality for invoices and certificates.</p>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num">3</div>
-      <div class="phase-content">
-        <h4>Phase 3 — Email Marketing Automation</h4>
-        <p>EmailTemplate and EmailBlast database models, full email blast sending via Resend batch API (100/call chunking), campaign management, subscriber segmentation, and template editor.</p>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num">4</div>
-      <div class="phase-content">
-        <h4>Phase 4 — SEO & Public Website</h4>
-        <p>All 18 public listing and static pages split into server page.tsx (metadata export) + client Content.tsx. Async DB-backed sitemap.xml, per-page JSON-LD structured data (VisualArtwork, Product, Event, BlogPosting, BreadcrumbList), and full OpenGraph coverage.</p>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num">5</div>
-      <div class="phase-content">
-        <h4>Phase 5 — Customer Accounts & Portal</h4>
-        <p>Customer registration, login, logout, HMAC-SHA256 signed session cookies, order history, wishlist, profile management, and promo code validation integrated into checkout.</p>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num">6</div>
-      <div class="phase-content">
-        <h4>Phase 6 — Commissions, Certificates & Collector Club</h4>
-        <p>8-stage commission pipeline, auto-numbered Certificates of Authenticity (MN-YYYY-NNNN), and three-tier Collector Club memberships (Patron / Connoisseur / Luminary) with benefits and admin KPI dashboard.</p>
-      </div>
-    </div>
-    <div class="phase-item">
-      <div class="phase-num">7</div>
-      <div class="phase-content">
-        <h4>Phase 7 — Live Auction System</h4>
-        <p>Auction and AuctionBid database models, admin auction creation and management, public bidding with real-time polling, countdown timers, reserve prices, bid increment enforcement, and automated winner/outbid email notifications.</p>
+    <div class="hero-valuation">
+      <div class="hero-val-label">Estimated Platform Value</div>
+      <div class="hero-val-number">$95,000–<br>$145,000</div>
+      <div class="hero-val-sub">Custom agency replacement cost</div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="s-num" data-count="7">7</div>
+          <div class="s-lbl">Dev Phases</div>
+        </div>
+        <div class="hero-stat">
+          <div class="s-num" data-count="25">25+</div>
+          <div class="s-lbl">Admin Pages</div>
+        </div>
+        <div class="hero-stat">
+          <div class="s-num" data-count="22">22</div>
+          <div class="s-lbl">DB Models</div>
+        </div>
+        <div class="hero-stat">
+          <div class="s-num" data-count="60">60+</div>
+          <div class="s-lbl">API Endpoints</div>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ── Tech Stack ── -->
-  <p class="section-label">06 — Technical Foundation</p>
-  <h2>Technology Stack</h2>
+<!-- ══════════════════ SUMMARY ══════════════════ -->
+<section id="summary">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">01</span> Executive Summary</div>
+    <h2 class="section-title">Platform Overview</h2>
+    <div class="gold-rule"></div>
 
-  <div class="tag-list">
-    <span class="tag">Next.js 16 (App Router)</span>
-    <span class="tag">React 19 + React Compiler</span>
-    <span class="tag">TypeScript</span>
-    <span class="tag">Tailwind CSS v4</span>
-    <span class="tag">Prisma 7 ORM</span>
-    <span class="tag">SQLite (dev) / PostgreSQL (prod)</span>
-    <span class="tag">Stripe Payments</span>
-    <span class="tag">Cloudinary CDN</span>
-    <span class="tag">Resend Email API</span>
-    <span class="tag">Framer Motion 12</span>
-    <span class="tag">Zustand State Management</span>
-    <span class="tag">Vitest Unit Tests</span>
-    <span class="tag">Playwright E2E Tests</span>
-    <span class="tag">JSON-LD Structured Data</span>
-    <span class="tag">ISR (Incremental Static Regeneration)</span>
-    <span class="tag">HMAC-SHA256 Auth</span>
-    <span class="tag">bcryptjs Password Hashing</span>
-    <span class="tag">Vercel-Ready Deployment</span>
-  </div>
+    <div class="summary-grid">
+      <div class="summary-text">
+        <p>
+          The Mona Niko Gallery digital platform is a purpose-built, full-stack web application serving as the primary digital storefront, customer relationship hub, and operational backbone for a fine art gallery and studio in Mission Viejo, California.
+        </p>
+        <p>
+          The platform was engineered from the ground up using modern enterprise web technologies — Next.js 16, Prisma ORM, Stripe payments, Cloudinary CDN, and Resend email — replacing a previous WordPress / WooCommerce installation that lacked the customization and operational depth required for a growing multi-channel art business.
+        </p>
+        <p>
+          The platform currently supports seven complete operational phases including e-commerce, marketing automation, customer accounts, commissions management, live auctions, and a full admin dashboard with contextual help. It is equivalent in functional scope to platforms typically costing $80,000–$180,000 to build with an agency.
+        </p>
+        <p>
+          Beyond replacement value, the platform directly enables revenue streams (art sales, workshops, auctions, commissions, merch) that would otherwise require multiple third-party platforms with combined fees of $500–$2,000+ per month and 20–40% platform commissions.
+        </p>
 
-  <div class="quote-box">
-    The platform is built on the same technology stack used by companies like Vercel, Linear, and Notion — enterprise-grade tools chosen for performance, developer experience, and long-term maintainability. This ensures the gallery can continue to build on a solid foundation rather than being trapped in a vendor ecosystem.
-  </div>
+        <div class="kpi-row-4" style="margin-top: 32px;">
+          <div class="kpi-mini">
+            <div class="m-num">7</div>
+            <div class="m-lbl">Phases Built</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="m-num">25+</div>
+            <div class="m-lbl">Admin Pages</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="m-num">22</div>
+            <div class="m-lbl">DB Models</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="m-num">60+</div>
+            <div class="m-lbl">API Routes</div>
+          </div>
+        </div>
+      </div>
 
-  <!-- ── Content Migration ── -->
-  <p class="section-label">07 — Content & Data</p>
-  <h2>Migrated Content from Old Website</h2>
-
-  <p>All content from the previous WordPress/WooCommerce installation (monaniko.com) has been fully migrated into the new platform:</p>
-
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="icon">🖼️</div>
-      <h4>30 Original Artworks</h4>
-      <p>All 30 artwork images downloaded from WordPress CDN with real artwork data, pricing, dimensions, collections, and status.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">👔</div>
-      <h4>Merch — Ties, Leggings, T-Shirts</h4>
-      <p>7 silk ties, 10 leggings, 7+ t-shirt designs with real product images, variants, and pricing migrated from old site.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📚</div>
-      <h4>Journal / Blog Posts</h4>
-      <p>8 journal posts with full content, images, and metadata including real exhibition coverage and artist reflections.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🎓</div>
-      <h4>17 Workshop Listings</h4>
-      <p>All workshop types from the old site migrated — Kids Club, Wine & Painting, Sculpting, Jewelry Making, and more.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">👗</div>
-      <h4>Designers Collection</h4>
-      <p>8 designer clothing pieces (jackets, blouses, dresses, vests) with proper categorization and gallery imagery.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🖨️</div>
-      <h4>Prints & Limited Editions</h4>
-      <p>Museum-quality giclée prints with size variants, edition numbers, and signed certificate options.</p>
+      <div class="summary-right">
+        <div class="big-kpi">
+          <div class="kpi-num">$95K–$145K</div>
+          <div class="kpi-sub">Platform Replacement Value</div>
+        </div>
+        <div class="big-kpi" style="background: #1E1810; border: 1px solid rgba(196,162,101,0.3);">
+          <div class="kpi-num" style="font-size: 38px;">$377K–$848K+</div>
+          <div class="kpi-sub">3-Year Business Value Contribution</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; border-left: 3px solid var(--gold);">
+          <p style="font-size: 14px; font-style: italic; color: #444; line-height: 1.7; margin: 0;">
+            "A custom-built platform of this depth and breadth — covering gallery, shop, auctions, commissions, email marketing, accounting, and collector management — represents a significant, durable business asset."
+          </p>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- ── ROI Summary ── -->
-  <p class="section-label">08 — Return on Investment</p>
-  <h2>Why This Platform Is a Strategic Asset</h2>
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">02</span> Complete Feature Set</div>
+    <h2 class="section-title">What the Platform Delivers</h2>
+    <p class="section-desc">Twelve core capability areas covering every aspect of running a modern fine art gallery business.</p>
 
-  <h3>Financial Independence from Art Platforms</h3>
-  <p>
-    By owning the platform rather than renting space on Artsy, Saatchi, or similar platforms, the gallery retains
-    100% of sales revenue (minus Stripe's 2.9% + $0.30 per transaction). For a gallery generating $100,000/year
-    in online sales, this saves approximately $35,000 in Saatchi commissions or $6,000–$24,000 in Artsy fees.
-    Over 5 years, this represents $30,000–$175,000 in retained revenue.
-  </p>
-
-  <h3>Brand Authority & Collector Trust</h3>
-  <p>
-    A professional custom platform signals seriousness and permanence to collectors. The Certificates of Authenticity,
-    Collector Club memberships, and commission pipeline communicate the gallery's operational sophistication —
-    attributes that directly influence a collector's willingness to invest in higher-priced original works.
-  </p>
-
-  <h3>Data Ownership & CRM</h3>
-  <p>
-    All customer data, order history, inquiry records, and subscriber information is owned by the gallery in its
-    own database. This is a significant asset — unlike SaaS platforms where your customer data is locked in a
-    vendor's system, this platform allows full data export, analysis, and use for targeted marketing at any time.
-  </p>
-
-  <h3>Scalability Without Additional Cost</h3>
-  <p>
-    The platform can handle 10x the current product and artwork count without architectural changes. Adding new
-    workshops, products, journal posts, or auction items requires zero developer time — all done through the
-    admin interface. Future phases (artist marketplace, NFT certificates, international shipping) can be added
-    to the existing codebase.
-  </p>
-
-  <!-- ── Summary Valuation ── -->
-  <p class="section-label">09 — Final Valuation Summary</p>
-  <h2>Platform Value Summary</h2>
-
-  <div class="valuation-hero">
-    <div class="value">$95,000–$145,000</div>
-    <div class="value-label">Platform Replacement Value (Asset Valuation)</div>
-    <div class="value-range">What an agency would charge to build an equivalent platform today</div>
-  </div>
-
-  <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-value">$90k+</div>
-      <div class="kpi-label">SaaS Costs Avoided (3yr)</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🖼️</span>
+        <h4>Gallery &amp; Shop</h4>
+        <p>30 original artworks, 3 collections, 28+ products (merch, prints, designers collection) with Stripe checkout, cart, and promo codes.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎓</span>
+        <h4>Workshops &amp; Events</h4>
+        <p>17 workshop listings with booking, capacity tracking, instructor management, and automated confirmation emails.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📧</span>
+        <h4>Email Marketing</h4>
+        <p>Full email blast system with templates, subscriber segmentation, Resend integration, and campaign tracking.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">👤</span>
+        <h4>Customer Accounts</h4>
+        <p>Full auth (register/login), order history, wishlist, profile management, and secure HMAC-signed session tokens.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔨</span>
+        <h4>Live Auctions</h4>
+        <p>Real-time auction system with bidding, countdown timers, reserve prices, and automated winner/outbid emails.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h4>Commission Pipeline</h4>
+        <p>8-stage commission workflow from inquiry to delivery, with deposit tracking, stage history, and certificate generation.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">👑</span>
+        <h4>Collector Club</h4>
+        <p>Tiered VIP membership (Patron / Connoisseur / Luminary) with benefits, member tracking, and exclusive access.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📜</span>
+        <h4>Certificates of Authenticity</h4>
+        <p>Auto-numbered certificates (MN-YYYY-NNNN), linked to artworks, printable as a professional PDF document.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">💰</span>
+        <h4>Accounting &amp; Finance</h4>
+        <p>P&amp;L dashboard, expense logging, professional invoicing with PDF export, and revenue analytics by period.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h4>Admin Dashboard</h4>
+        <p>25+ admin pages covering every business function: artworks, orders, marketing, audience, analytics, and settings.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h4>SEO &amp; Metadata</h4>
+        <p>Full structured data (JSON-LD), per-page metadata, sitemap.xml, robots.txt, and OpenGraph for all 18 public pages.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">❓</span>
+        <h4>Contextual Help System</h4>
+        <p>Three-level admin help panel (Workflow / Logic / Technical) on every admin page with expandable accordion content.</p>
+      </div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-value">35%</div>
-      <div class="kpi-label">Platform Commission Avoided</div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMPARISON ══════════════════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">03</span> Competitive Benchmarking</div>
+    <h2 class="section-title">Comparison to Leading Platforms</h2>
+    <p class="section-desc">How Mona Niko Gallery's platform stacks up against five alternatives an art business of this scale might consider.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature / Capability</th>
+            <th class="highlight-col">Mona Niko<br>Gallery ★</th>
+            <th>Artsy Pro</th>
+            <th>Shopify<br>+ Apps</th>
+            <th>Squarespace<br>Commerce</th>
+            <th>Saatchi Art</th>
+            <th>Custom<br>Agency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Full Custom Branding &amp; Design</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Original Art Auction System</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Commission Pipeline (8 stages)</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+          </tr>
+          <tr>
+            <td>Workshop Booking System</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Customer Accounts &amp; Wishlist</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Collector Club / VIP Tiers</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Certificate of Authenticity</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+          </tr>
+          <tr>
+            <td>Integrated Email Marketing</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Full P&amp;L Accounting</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+          </tr>
+          <tr>
+            <td>Zero Platform Commission Fee</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Own Your Data Completely</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Full SEO Control (JSON-LD, sitemap)</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cp">~</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="ck">✓</span></td>
+          </tr>
+          <tr>
+            <td>Contextual Admin Help System</td>
+            <td class="highlight-col"><span class="ck">✓</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cx">✗</span></td>
+            <td><span class="cp">~</span></td>
+          </tr>
+          <tr class="cost-row">
+            <td>Monthly Platform Cost</td>
+            <td class="highlight-col">~$50–80</td>
+            <td>$500–2,000+</td>
+            <td>$79–299</td>
+            <td>$23–49</td>
+            <td>20–30% comm.</td>
+            <td>N/A (built)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-value">100%</div>
-      <div class="kpi-label">Data Ownership</div>
+
+    <p style="margin-top: 12px; font-size: 11px; color: #999;">
+      ✓ Fully supported &nbsp;·&nbsp; ~ Partially supported or via third-party add-on &nbsp;·&nbsp; ✗ Not available &nbsp;·&nbsp; ★ This platform
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════ VALUATION ══════════════════ -->
+<section id="valuation">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">04</span> Valuation Breakdown</div>
+    <h2 class="section-title">How the Value Is Calculated</h2>
+    <p class="section-desc">Three independent methodologies converge on a conservative estimate of $95,000–$145,000 platform value.</p>
+
+    <div class="val-methods">
+      <div class="val-method">
+        <div class="val-method-head">
+          <div class="method-num">Method 01</div>
+          <h3>Replacement Cost</h3>
+        </div>
+        <div class="val-method-body">
+          <div class="amount">$95K–$145K</div>
+          <p>What a US agency would charge to build an equivalent platform from scratch, based on estimated 800–1,200 engineering hours at $80–120/hr.</p>
+        </div>
+      </div>
+      <div class="val-method">
+        <div class="val-method-head">
+          <div class="method-num">Method 02</div>
+          <h3>SaaS Cost Avoidance</h3>
+        </div>
+        <div class="val-method-body">
+          <div class="amount">$7,200–$26,400/yr</div>
+          <p>Annual cost of replicating this functionality across Artsy Pro, Shopify + apps, email marketing tools, booking software, and CRM platforms.</p>
+        </div>
+      </div>
+      <div class="val-method">
+        <div class="val-method-head">
+          <div class="method-num">Method 03</div>
+          <h3>Business Value Added</h3>
+        </div>
+        <div class="val-method-body">
+          <div class="amount">$377K–$848K+</div>
+          <p>Conservative 3-year revenue enablement across art sales, workshops, auctions, commissions, merchandising, and email-driven repeat purchases.</p>
+        </div>
+      </div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-value">$377k+</div>
-      <div class="kpi-label">3yr Business Value (est.)</div>
+
+    <div style="background: var(--light); border-radius: 12px; padding: 32px; border: 1px solid var(--border);">
+      <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 24px; color: var(--black);">Cost Breakdown by Feature Area</h3>
+      <div class="breakdown-table">
+        <div class="breakdown-row">
+          <div><div class="b-label">Core Gallery & E-Commerce</div><div class="b-sub">Artwork listings, cart, Stripe checkout, order management</div></div>
+          <div class="b-amount">$18,000–$25,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Admin Dashboard (25+ pages)</div><div class="b-sub">All CRUD interfaces, analytics, settings, help system</div></div>
+          <div class="b-amount">$22,000–$32,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Auction System</div><div class="b-sub">Real-time bidding, countdown, email notifications</div></div>
+          <div class="b-amount">$12,000–$18,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Commission Pipeline</div><div class="b-sub">8-stage workflow, certificates, deposit tracking</div></div>
+          <div class="b-amount">$8,000–$12,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Email Marketing System</div><div class="b-sub">Templates, blasts, subscriber management, Resend integration</div></div>
+          <div class="b-amount">$7,000–$10,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Customer Accounts & Collector Club</div><div class="b-sub">Auth, wishlist, membership tiers, order history</div></div>
+          <div class="b-amount">$8,000–$14,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">Finance & Accounting</div><div class="b-sub">P&L, expenses, invoicing, PDF export</div></div>
+          <div class="b-amount">$6,000–$9,000</div>
+        </div>
+        <div class="breakdown-row">
+          <div><div class="b-label">SEO, Infrastructure & Design</div><div class="b-sub">JSON-LD, sitemaps, CI/CD, brand system, responsive design</div></div>
+          <div class="b-amount">$14,000–$25,000</div>
+        </div>
+        <div class="breakdown-row total">
+          <div class="b-label">Total Estimated Replacement Value</div>
+          <div class="b-amount">$95,000–$145,000</div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="quote-box">
-    "The Mona Niko Gallery platform is not just a website — it is a complete digital infrastructure for a
-    fine art business. It replaces what would otherwise require 5–7 separate SaaS subscriptions, eliminates
-    platform commission fees, provides full data ownership, and positions the gallery to compete directly
-    with the digital presence of established gallery brands while maintaining complete creative and operational
-    control."
+<!-- ══════════════════ TIMELINE ══════════════════ -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">05</span> Development Timeline</div>
+    <h2 class="section-title">Seven Phases of Development</h2>
+    <p class="section-desc">The platform was built incrementally across seven well-defined phases, each adding a complete business capability layer.</p>
+
+    <div class="timeline">
+      <div class="timeline-item" data-num="1">
+        <h4>Phase 1 — Core Platform &amp; Commerce</h4>
+        <p>Established the foundation: Next.js 16 architecture, Prisma database, Stripe payment processing, Cloudinary image hosting, transactional email via Resend, and admin authentication.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">Next.js 16</span>
+          <span class="t-tag">Stripe Payments</span>
+          <span class="t-tag">Prisma ORM</span>
+          <span class="t-tag">Cloudinary</span>
+          <span class="t-tag">Admin Auth</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="2">
+        <h4>Phase 2 — Finance &amp; Accounting</h4>
+        <p>Built the full financial management layer including a P&amp;L dashboard, expense logging with categories, professional invoicing with line items, and PDF export for all financial documents.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">P&L Dashboard</span>
+          <span class="t-tag">Expense Tracking</span>
+          <span class="t-tag">Invoicing</span>
+          <span class="t-tag">PDF Export</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="3">
+        <h4>Phase 3 — Email Marketing</h4>
+        <p>Implemented a complete email marketing system with drag-free template management, subscriber segmentation, one-click bulk sending via Resend batch API, and campaign performance tracking.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">Email Templates</span>
+          <span class="t-tag">Bulk Blast API</span>
+          <span class="t-tag">Segmentation</span>
+          <span class="t-tag">Resend Integration</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="4">
+        <h4>Phase 4 — SEO &amp; Metadata</h4>
+        <p>Comprehensive SEO implementation across all 18 public pages: JSON-LD structured data (VisualArtwork, Product, Event, BlogPosting), dynamic sitemaps, robots.txt, and OpenGraph social sharing.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">JSON-LD Schema</span>
+          <span class="t-tag">Dynamic Sitemap</span>
+          <span class="t-tag">OpenGraph</span>
+          <span class="t-tag">18 Pages</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="5">
+        <h4>Phase 5 — Customer Accounts</h4>
+        <p>Full customer authentication system using HMAC-SHA256 signed session cookies, with order history, wishlist management, profile editing, and promo code validation at checkout.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">Customer Auth</span>
+          <span class="t-tag">Order History</span>
+          <span class="t-tag">Wishlist</span>
+          <span class="t-tag">Promo Codes</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="6">
+        <h4>Phase 6 — Commissions, Certificates &amp; Collector Club</h4>
+        <p>End-to-end commission management (8 stages), auto-numbered certificates of authenticity (MN-YYYY-NNNN format), and a tiered VIP Collector Club with three membership levels.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">8-Stage Pipeline</span>
+          <span class="t-tag">Certificates</span>
+          <span class="t-tag">VIP Membership</span>
+          <span class="t-tag">Patron/Connoisseur/Luminary</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-num="7">
+        <h4>Phase 7 — Live Auctions</h4>
+        <p>Complete auction platform with real-time bidding, countdown timers, reserve price enforcement, bid history, and automated email notifications to winners and outbid participants.</p>
+        <div class="timeline-tags">
+          <span class="t-tag">Live Bidding</span>
+          <span class="t-tag">Countdown Timers</span>
+          <span class="t-tag">Reserve Prices</span>
+          <span class="t-tag">Outbid Emails</span>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="report-footer">
-    <p>Mona Niko Gallery — Confidential Platform Valuation Report · March 2026</p>
-    <p>For questions: 668B The Shops At Mission Viejo Mall · Mission Viejo, CA 92691 · (949) 317-8513</p>
+<!-- ══════════════════ TECH STACK ══════════════════ -->
+<section id="techstack">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">06</span> Technology Stack</div>
+    <h2 class="section-title">Built on Modern Enterprise Technologies</h2>
+    <p class="section-desc">Every component was selected for performance, developer productivity, and long-term maintainability.</p>
+
+    <div class="stack-grid">
+      <div class="stack-group">
+        <h4>Frontend Framework</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Next.js 16.1 (App Router)</div>
+          <div class="stack-tag"><span class="dot"></span>React 19 + Compiler</div>
+          <div class="stack-tag"><span class="dot"></span>TypeScript</div>
+          <div class="stack-tag"><span class="dot"></span>Framer Motion 12</div>
+          <div class="stack-tag"><span class="dot"></span>Tailwind CSS v4</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h4>Backend &amp; Database</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Prisma 7 ORM</div>
+          <div class="stack-tag"><span class="dot"></span>SQLite + better-sqlite3</div>
+          <div class="stack-tag"><span class="dot"></span>Next.js API Routes</div>
+          <div class="stack-tag"><span class="dot"></span>22 Database Models</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h4>Third-Party Services</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Stripe (Payments)</div>
+          <div class="stack-tag"><span class="dot"></span>Resend (Email)</div>
+          <div class="stack-tag"><span class="dot"></span>Cloudinary (Images)</div>
+          <div class="stack-tag"><span class="dot"></span>Vercel (Hosting)</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h4>State &amp; Auth</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Zustand 5</div>
+          <div class="stack-tag"><span class="dot"></span>bcryptjs (Admin Auth)</div>
+          <div class="stack-tag"><span class="dot"></span>HMAC-SHA256 Sessions</div>
+          <div class="stack-tag"><span class="dot"></span>HttpOnly Cookies</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h4>Testing &amp; Quality</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Vitest + jsdom</div>
+          <div class="stack-tag"><span class="dot"></span>Playwright E2E</div>
+          <div class="stack-tag"><span class="dot"></span>ESLint + TypeScript</div>
+          <div class="stack-tag"><span class="dot"></span>React Compiler</div>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h4>Typography &amp; Design</h4>
+        <div class="stack-items">
+          <div class="stack-tag"><span class="dot"></span>Cormorant Garamond</div>
+          <div class="stack-tag"><span class="dot"></span>Playfair Display</div>
+          <div class="stack-tag"><span class="dot"></span>Inter (sans-serif)</div>
+          <div class="stack-tag"><span class="dot"></span>Lucide React Icons</div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-</div>
+<!-- ══════════════════ ROI ══════════════════ -->
+<section id="roi">
+  <div class="container">
+    <div class="section-eyebrow"><span class="num">07</span> Business Value &amp; ROI</div>
+    <h2 class="section-title">Three-Year Value Contribution</h2>
+    <p class="section-desc">Conservative revenue enablement projections across all platform capabilities.</p>
+
+    <div class="roi-grid">
+      <div class="roi-card">
+        <h3>Revenue Enablement (3-Year)</h3>
+        <div class="roi-line">
+          <span class="r-label">Original Art Sales (zero commission)</span>
+          <span class="r-val">$120K–$300K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Workshops &amp; Events</span>
+          <span class="r-val">$45K–$90K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Live Auction Revenue</span>
+          <span class="r-val">$30K–$80K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Commissions Pipeline</span>
+          <span class="r-val">$60K–$150K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Merch, Prints &amp; Products</span>
+          <span class="r-val">$25K–$60K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Email Marketing (repeat revenue)</span>
+          <span class="r-val">$12K–$30K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Collector Club Memberships</span>
+          <span class="r-val">$8K–$18K</span>
+        </div>
+        <div class="roi-line">
+          <span class="r-label">Platform Cost Savings vs SaaS</span>
+          <span class="r-val">$77K–$120K</span>
+        </div>
+        <div class="roi-total">
+          <span class="r-label">Total 3-Year Value</span>
+          <span class="r-val">$377K–$848K+</span>
+        </div>
+      </div>
+
+      <div class="conclusion">
+        <h3>Conclusion</h3>
+        <p>
+          The Mona Niko Gallery platform represents a rare combination of deep technical sophistication and laser-focused business utility. Unlike generic SaaS platforms, every feature was purpose-built for the specific workflows, revenue models, and customer relationships of a fine art gallery.
+        </p>
+        <p>
+          The platform eliminates dependency on Artsy Pro ($500–$2,000/mo), third-party booking systems, email marketing tools, CRM software, and accounting add-ons — consolidating everything under a single, owned, extensible system.
+        </p>
+        <p>
+          At a replacement cost of $95,000–$145,000 and annual SaaS cost savings of $7,200–$26,400, the platform pays for itself within the first year of operation.
+        </p>
+        <div class="highlight-box">
+          <p>"This platform is not just a website. It is the <em>operational infrastructure</em> of the Mona Niko brand — built to own, not rent."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div>
+    <div class="f-brand">Mona Niko <span>Gallery</span></div>
+    <div class="f-note" style="margin-top: 4px;">Mission Viejo, California · Contemporary Fine Art</div>
+  </div>
+  <div style="text-align: center;">
+    <div class="f-note">Confidential — Internal Business Report</div>
+    <div class="f-note" style="margin-top: 2px;">Platform Valuation Report · Version 1.0 · March 2026</div>
+  </div>
+  <div class="f-right">
+    <p>Prepared by Claude AI</p>
+    <p>All values are estimates based on industry benchmarks</p>
+  </div>
+</footer>
+
+<script>
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
 </body>
 </html>
