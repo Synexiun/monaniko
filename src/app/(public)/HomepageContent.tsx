@@ -115,8 +115,8 @@ export default function HomePage() {
                 <Image
                   src="/images/logo/1.png"
                   alt="Mona Niko"
-                  width={120}
-                  height={120}
+                  width={300}
+                  height={115}
                   priority
                   className="h-[80px] md:h-[100px] w-auto object-contain mix-blend-multiply mb-4"
                 />

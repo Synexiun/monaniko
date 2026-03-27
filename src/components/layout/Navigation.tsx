@@ -79,8 +79,8 @@ export default function Navigation() {
           <Image
             src="/images/logo/1.png"
             alt="Mona Niko"
-            width={100}
-            height={100}
+            width={300}
+            height={115}
             priority
             className={cn(
               "h-[48px] lg:h-[56px] w-auto object-contain transition-all duration-500",
