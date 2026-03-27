@@ -89,10 +89,10 @@ export default function Navigation() {
                 : "mix-blend-multiply"
             )}
           />
-          <div className="hidden sm:block">
+          <div>
             <h1
               className={cn(
-                "font-display text-[1.5rem] lg:text-[1.75rem] tracking-[0.08em] font-semibold uppercase transition-colors duration-500 leading-tight",
+                "font-display text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] tracking-[0.08em] font-semibold uppercase transition-colors duration-500 leading-tight",
                 isOpen ? "text-white" : "text-stone-900"
               )}
             >
