@@ -7,7 +7,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 
 const galleryInfo = {
-  address: "25550 Commercentre Drive, Suite 250",
+  address: "668B The Shops At Mission Viejo Mall",
   city: "Mission Viejo, CA 92691",
   phone: "949-317-8513",
   email: "admin@monaniko.com",
@@ -412,7 +412,7 @@ export default function ContactPage() {
                 <div className="divider-gold mb-6" />
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <iframe
-                    src="https://maps.google.com/maps?q=25550+Commercentre+Drive+Suite+250+Mission+Viejo+CA+92691&output=embed"
+                    src="https://maps.google.com/maps?q=668B+The+Shops+At+Mission+Viejo+Mall+Mission+Viejo+CA+92691&output=embed"
                     width="100%"
                     height="100%"
                     style={{ border: 0, position: "absolute", inset: 0 }}
