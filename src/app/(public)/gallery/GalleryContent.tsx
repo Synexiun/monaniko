@@ -42,7 +42,16 @@ export default function GalleryPage() {
 
   return (
     <>
-      <PageHero image="/images/hero/gallery/gallery.jpg" alt="Mona Niko Gallery" />
+      <PageHero
+        images={[
+          "/images/paintings/Mona-Niko-Artwork-36.jpg",
+          "/images/paintings/Mona-Niko-Artwork-46.jpg",
+          "/images/paintings/fancy-girl-scaled.jpg",
+        ]}
+        alt="Mona Niko Gallery"
+        title="Gallery"
+        subtitle="Original Works · Mixed Media · Fine Art"
+      />
 
       {/* ─── Filters ───────────────────────────────────────── */}
       <section className="border-b border-warm-gray bg-cream sticky top-[var(--header-height)] z-30">

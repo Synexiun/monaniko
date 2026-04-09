@@ -8,7 +8,16 @@ import PageHero from "@/components/ui/PageHero";
 export default function CollectionsPage() {
   return (
     <>
-      <PageHero image="/images/hero/collection/2.jpg" alt="Mona Niko Collections" />
+      <PageHero
+        images={[
+          "/images/paintings/Mona-Niko-Artwork-13.jpg",
+          "/images/paintings/mask-40x40-1-scaled.jpg",
+          "/images/paintings/Mona-Niko-Artwork-26.jpg",
+        ]}
+        alt="Mona Niko Collections"
+        title="Collections"
+        subtitle="Curated Series · Themed Works · Artist Selection"
+      />
 
       {/* ─── Collections Grid ──────────────────────────────── */}
       <section className="py-16 md:py-24 bg-cream">
