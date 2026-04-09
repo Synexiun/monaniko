@@ -19,14 +19,14 @@ const levelLabels: Record<string, string> = {
 export default function WorkshopsPage() {
   return (
     <>
-      <PageHero image="/images/hero/workshop/hero.jpg" alt="Mona Niko Workshops" />
+      <PageHero image="/images/hero/workshop/hero.jpg" alt="Mona Niko Classes & Workshops" />
 
       {/* ─── Workshop Grid ────────────────────────────────── */}
       <section className="py-24 md:py-32">
         <div className="container-gallery">
           <SectionHeading
-            title="Upcoming Workshops"
-            subtitle="Explore our current schedule of workshops and creative experiences."
+            title="Classes & Workshops"
+            subtitle="Explore our current schedule of classes and creative experiences."
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

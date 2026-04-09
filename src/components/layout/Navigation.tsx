@@ -20,7 +20,7 @@ const navLinks = [
       { href: "/shop/designers", label: "Designers Collection" },
     ],
   },
-  { href: "/workshops", label: "Workshops" },
+  { href: "/workshops", label: "Classes" },
   { href: "/commissions", label: "Commissions" },
   { href: "/journal", label: "Journal" },
   { href: "/about", label: "About" },

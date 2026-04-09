@@ -11,7 +11,7 @@ const footerLinks = {
     { href: "/shop/prints", label: "Prints" },
   ],
   experience: [
-    { href: "/workshops", label: "Workshops" },
+    { href: "/workshops", label: "Classes" },
     { href: "/commissions", label: "Custom Commissions" },
     { href: "/journal", label: "Journal" },
     { href: "/press", label: "Press" },

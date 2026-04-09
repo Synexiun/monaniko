@@ -101,6 +101,7 @@ export default function WorkshopsPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const searchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const fetchData = useCallback(async () => {
@@ -203,12 +204,20 @@ export default function WorkshopsPage() {
   };
 
   const handleDelete = async (id: string) => {
+    setDeleteError(null);
     try {
-      await fetch(`/api/workshops/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/workshops/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setDeleteError(json.error || `Server error (${res.status}). Please try again.`);
+        return;
+      }
       setDeleteConfirm(null);
+      setDeleteError(null);
       fetchData();
     } catch (err) {
       console.error('Failed to delete workshop:', err);
+      setDeleteError('Network error. Please try again.');
     }
   };
 
@@ -243,7 +252,7 @@ export default function WorkshopsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Workshops</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Classes & Workshops</h1>
           <p className="text-sm text-gray-500 mt-1">
             Manage workshop listings and registrations ({total} total)
           </p>
@@ -850,13 +859,16 @@ export default function WorkshopsPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-xl shadow-2xl z-50 p-6"
             >
-              <h3 className="text-lg font-semibold text-gray-900">Delete Workshop</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Delete Class / Workshop</h3>
               <p className="text-sm text-gray-500 mt-2">
-                Are you sure you want to delete this workshop? This action cannot be undone.
+                Are you sure you want to delete this entry? This action cannot be undone.
               </p>
+              {deleteError && (
+                <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mt-3">{deleteError}</p>
+              )}
               <div className="flex items-center justify-end gap-3 mt-6">
                 <button
-                  onClick={() => setDeleteConfirm(null)}
+                  onClick={() => { setDeleteConfirm(null); setDeleteError(null); }}
                   className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Cancel

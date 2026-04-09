@@ -66,7 +66,7 @@ const sidebarSections: SidebarSection[] = [
     title: 'Shop',
     links: [
       { href: '/admin/products', label: 'Products', icon: Package },
-      { href: '/admin/workshops', label: 'Workshops', icon: GraduationCap },
+      { href: '/admin/workshops', label: 'Classes', icon: GraduationCap },
       { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
       { href: '/admin/promo-codes', label: 'Promo Codes', icon: Tag },
     ],
