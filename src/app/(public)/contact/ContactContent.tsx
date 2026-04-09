@@ -89,7 +89,7 @@ export default function ContactPage() {
         images={[
           "/images/paintings/Mona-Niko-Artwork-46.jpg",
           "/images/paintings/fancy-girl-scaled.jpg",
-          "/images/paintings/Mona-Niko-Artwork-30-1.jpg",
+          "/images/paintings/Mona-Niko-Artwork-36.jpg",
         ]}
         alt="Mona Niko Gallery — Contact & Visit"
         title="Contact & Visit"
