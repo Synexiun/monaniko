@@ -94,17 +94,24 @@ export default function Footer() {
               Located in Mission Viejo, California.
             </p>
             <div className="flex gap-6">
-              <a
-                href="https://www.instagram.com/monaniko_/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white/40 hover:text-gold transition-colors duration-300"
-                aria-label="Instagram"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.8 2h8.4C19 2 22 5 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C5 22 2 19 2 16.2V7.8A5.8 5.8 0 017.8 2m-.2 2A3.6 3.6 0 004 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5M12 7a5 5 0 110 10 5 5 0 010-10m0 2a3 3 0 100 6 3 3 0 000-6z" />
-                </svg>
-              </a>
+              {[
+                { href: "https://www.instagram.com/monaniko_/", label: "@monaniko_" },
+                { href: "https://www.instagram.com/monanikogallery/", label: "@monanikogallery" },
+              ].map((ig) => (
+                <a
+                  key={ig.href}
+                  href={ig.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/40 hover:text-gold transition-colors duration-300"
+                  aria-label={ig.label}
+                  title={ig.label}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7.8 2h8.4C19 2 22 5 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C5 22 2 19 2 16.2V7.8A5.8 5.8 0 017.8 2m-.2 2A3.6 3.6 0 004 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5M12 7a5 5 0 110 10 5 5 0 010-10m0 2a3 3 0 100 6 3 3 0 000-6z" />
+                  </svg>
+                </a>
+              ))}
             </div>
           </div>
 

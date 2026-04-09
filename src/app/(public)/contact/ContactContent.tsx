@@ -388,19 +388,26 @@ export default function ContactPage() {
                 </h3>
                 <div className="divider-gold mb-6" />
                 <div className="flex items-center gap-5">
-                  <a
-                    href="https://www.instagram.com/monaniko_/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="text-charcoal-light hover:text-gold transition-colors"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                      <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                    </svg>
-                  </a>
+                  {[
+                    { href: "https://www.instagram.com/monaniko_/", label: "@monaniko_" },
+                    { href: "https://www.instagram.com/monanikogallery/", label: "@monanikogallery" },
+                  ].map((ig) => (
+                    <a
+                      key={ig.href}
+                      href={ig.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={ig.label}
+                      title={ig.label}
+                      className="text-charcoal-light hover:text-gold transition-colors"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                      </svg>
+                    </a>
+                  ))}
                 </div>
               </div>
 
