@@ -100,6 +100,7 @@ export default function WorkshopsPage() {
   const [formData, setFormData] = useState(emptyFormData);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const searchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const fetchData = useCallback(async () => {
@@ -166,10 +167,14 @@ export default function WorkshopsPage() {
     setModalOpen(false);
     setEditing(null);
     setFormData(emptyFormData);
+    setSaveError(null);
   };
 
   const handleSave = async () => {
+    if (!formData.title.trim()) { setSaveError('Title is required.'); return; }
+    if (!formData.date) { setSaveError('Date is required.'); return; }
     setSaving(true);
+    setSaveError(null);
     try {
       const body = {
         ...formData,
@@ -177,15 +182,21 @@ export default function WorkshopsPage() {
       };
       const url = editing ? `/api/workshops/${editing.id}` : '/api/workshops';
       const method = editing ? 'PUT' : 'POST';
-      await fetch(url, {
+      const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        setSaveError(json.error || `Server error (${res.status}). Please try again.`);
+        return;
+      }
       closeModal();
       fetchData();
     } catch (err) {
       console.error('Failed to save workshop:', err);
+      setSaveError('Network error. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -796,7 +807,11 @@ export default function WorkshopsPage() {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200">
+              <div className="px-6 py-4 border-t border-gray-200 space-y-3">
+                {saveError && (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{saveError}</p>
+                )}
+                <div className="flex items-center justify-end gap-3">
                 <button
                   onClick={closeModal}
                   className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -805,12 +820,13 @@ export default function WorkshopsPage() {
                 </button>
                 <button
                   onClick={handleSave}
-                  disabled={saving || !formData.title.trim()}
+                  disabled={saving || !formData.title.trim() || !formData.date}
                   className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {saving && <Loader2 className="w-4 h-4 animate-spin" />}
                   {editing ? 'Update Workshop' : 'Create Workshop'}
                 </button>
+                </div>
               </div>
             </motion.div>
           </>
