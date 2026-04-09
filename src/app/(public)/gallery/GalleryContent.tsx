@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ArtworkCard from "@/components/gallery/ArtworkCard";
-import { artworks } from "@/data/artworks";
 import PageHero from "@/components/ui/PageHero";
 import { cn } from "@/lib/utils";
 import type { ArtworkCategory, ArtworkStatus } from "@/types";
@@ -27,15 +26,19 @@ const statusTabs: { value: StatusFilter; label: string }[] = [
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("all");
+  const [filteredArtworks, setFilteredArtworks] = useState<unknown[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredArtworks = useMemo(() => {
-    return artworks.filter((artwork) => {
-      const matchesCategory =
-        activeCategory === "all" || artwork.category === activeCategory;
-      const matchesStatus =
-        activeStatus === "all" || artwork.status === activeStatus;
-      return matchesCategory && matchesStatus;
-    });
+  useEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams({ limit: "100" });
+    if (activeCategory !== "all") params.set("category", activeCategory);
+    if (activeStatus !== "all") params.set("status", activeStatus);
+    fetch(`/api/artworks?${params}`)
+      .then((r) => r.json())
+      .then((json) => setFilteredArtworks(json.artworks || json.data || []))
+      .catch(() => setFilteredArtworks([]))
+      .finally(() => setLoading(false));
   }, [activeCategory, activeStatus]);
 
   return (
@@ -107,48 +110,58 @@ export default function GalleryPage() {
       {/* ─── Gallery Grid ──────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-cream">
         <div className="container-gallery">
-          {/* Results Count */}
-          <motion.p
-            key={`${activeCategory}-${activeStatus}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-[12px] tracking-wider uppercase text-charcoal-light mb-10"
-          >
-            {filteredArtworks.length}{" "}
-            {filteredArtworks.length === 1 ? "Work" : "Works"}
-          </motion.p>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="aspect-[3/4] bg-warm-gray animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <>
+              {/* Results Count */}
+              <motion.p
+                key={`${activeCategory}-${activeStatus}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-[12px] tracking-wider uppercase text-charcoal-light mb-10"
+              >
+                {filteredArtworks.length}{" "}
+                {filteredArtworks.length === 1 ? "Work" : "Works"}
+              </motion.p>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeCategory}-${activeStatus}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-            >
-              {filteredArtworks.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-                  {filteredArtworks.map((artwork, i) => (
-                    <ArtworkCard
-                      key={artwork.id}
-                      artwork={artwork}
-                      index={i}
-                      priority={i < 4}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-24">
-                  <p className="font-serif text-2xl text-black mb-3">
-                    No works found
-                  </p>
-                  <p className="text-sm text-charcoal-light">
-                    Try adjusting your filters to discover more pieces.
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${activeCategory}-${activeStatus}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {filteredArtworks.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                      {filteredArtworks.map((artwork, i) => (
+                        <ArtworkCard
+                          key={artwork.id}
+                          artwork={artwork}
+                          index={i}
+                          priority={i < 4}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-24">
+                      <p className="font-serif text-2xl text-black mb-3">
+                        No works found
+                      </p>
+                      <p className="text-sm text-charcoal-light">
+                        Try adjusting your filters to discover more pieces.
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </>
+          )}
         </div>
       </section>
 
