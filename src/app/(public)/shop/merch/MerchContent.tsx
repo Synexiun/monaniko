@@ -10,12 +10,10 @@ import type { ShopCategory } from "@/types";
 
 const subCategories: { label: string; value: string }[] = [
   { label: "All", value: "all" },
-  { label: "Phone Cases", value: "merch_phone_case" },
   { label: "Cushions", value: "merch_cushion" },
   { label: "T-Shirts", value: "merch_tshirt" },
   { label: "Sweatshirts", value: "merch_sweatshirt" },
   { label: "Leggings", value: "merch_leggings" },
-  { label: "Laptop Cases", value: "merch_laptop_case" },
   { label: "Suitcases", value: "merch_suitcase" },
   { label: "Ties", value: "merch_tie" },
 ];
