@@ -1,6 +1,6 @@
 // ─── Artwork ───────────────────────────────────────────────
 export type ArtworkStatus = "available" | "sold" | "on_exhibition" | "commissioned";
-export type ArtworkCategory = "painting" | "sculpture_3d" | "mixed_media" | "limited_edition";
+export type ArtworkCategory = "painting" | "celebrity";
 export type ArtworkMedium = "oil" | "acrylic" | "watercolor" | "mixed_media" | "ink" | "pastel" | "digital" | "sculpture" | "ceramic";
 
 export interface Artwork {

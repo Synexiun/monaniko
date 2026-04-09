@@ -14,9 +14,7 @@ type StatusFilter = "all" | ArtworkStatus;
 const categoryTabs: { value: CategoryFilter; label: string }[] = [
   { value: "all", label: "All" },
   { value: "painting", label: "Paintings" },
-  { value: "sculpture_3d", label: "Sculpture & 3D" },
-  { value: "mixed_media", label: "Mixed Media" },
-  { value: "limited_edition", label: "Limited Editions" },
+  { value: "celebrity", label: "Celebrities" },
 ];
 
 const statusTabs: { value: StatusFilter; label: string }[] = [
@@ -50,7 +48,7 @@ export default function GalleryPage() {
         ]}
         alt="Mona Niko Gallery"
         title="Gallery"
-        subtitle="Original Works · Mixed Media · Fine Art"
+        subtitle="Original Paintings · Celebrities · Fine Art"
       />
 
       {/* ─── Filters ───────────────────────────────────────── */}

@@ -53,9 +53,7 @@ const statusFilterOptions: { value: string; label: string }[] = [
 
 const categoryOptions: { value: ArtworkCategory; label: string }[] = [
   { value: 'painting', label: 'Painting' },
-  { value: 'sculpture_3d', label: 'Sculpture / 3D' },
-  { value: 'mixed_media', label: 'Mixed Media' },
-  { value: 'limited_edition', label: 'Limited Edition' },
+  { value: 'celebrity', label: 'Celebrity' },
 ];
 
 const mediumOptions: { value: ArtworkMedium; label: string }[] = [
