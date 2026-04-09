@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ArtworkCard from "@/components/gallery/ArtworkCard";
 import PageHero from "@/components/ui/PageHero";
 import { cn } from "@/lib/utils";
-import type { ArtworkCategory, ArtworkStatus } from "@/types";
+import type { Artwork, ArtworkCategory, ArtworkStatus } from "@/types";
 
 type CategoryFilter = "all" | ArtworkCategory;
 type StatusFilter = "all" | ArtworkStatus;
@@ -26,7 +26,7 @@ const statusTabs: { value: StatusFilter; label: string }[] = [
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
   const [activeStatus, setActiveStatus] = useState<StatusFilter>("all");
-  const [filteredArtworks, setFilteredArtworks] = useState<unknown[]>([]);
+  const [filteredArtworks, setFilteredArtworks] = useState<Artwork[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
