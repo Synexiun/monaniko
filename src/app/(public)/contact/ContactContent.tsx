@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import PageHero from "@/components/ui/PageHero";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 
@@ -58,12 +57,103 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHero
-        image="/images/hero/collection/contact.png"
-        alt="Contact"
-        title="Contact & Visit"
-        subtitle="We'd love to hear from you"
-      />
+      {/* ── Contact Hero — "The Invitation" ──────────────── */}
+      <section className="pt-28 lg:pt-32">
+        <div className="container-gallery">
+          <div className="relative h-[220px] sm:h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden bg-[#111111]">
+
+            {/* Grain texture overlay */}
+            <div
+              className="absolute inset-0 z-10 opacity-[0.04] pointer-events-none"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
+                backgroundSize: "128px 128px",
+              }}
+            />
+
+            {/* Left — warm painting, fades into black at right edge */}
+            <motion.div
+              className="absolute inset-y-0 left-0 w-[46%] md:w-[44%]"
+              initial={{ x: "-6%", opacity: 0 }}
+              animate={{ x: "0%", opacity: 1 }}
+              transition={{ duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Image
+                src="/images/artworks/fancy-girl.jpg"
+                alt="Mona Niko Gallery"
+                fill
+                priority
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 46vw, 42vw"
+              />
+              {/* Fade right edge into the dark background */}
+              <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-transparent to-[#111111] pointer-events-none" />
+              {/* Subtle top + bottom vignette */}
+              <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-[#111111]/60 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#111111]/60 to-transparent pointer-events-none" />
+            </motion.div>
+
+            {/* Right — invitation text */}
+            <motion.div
+              className="absolute inset-y-0 right-0 w-[60%] md:w-[62%] flex flex-col justify-center px-6 sm:px-10 md:px-14 lg:px-16 z-20"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.35 }}
+            >
+              <span className="block text-[7px] sm:text-[8px] tracking-[0.5em] uppercase text-[#C4A265]/70 font-sans mb-3 md:mb-4">
+                Mona Niko Gallery
+              </span>
+
+              <h1
+                className="font-display font-light italic text-white leading-[0.88] tracking-[-0.02em]"
+                style={{ fontSize: "clamp(2rem, 5.5vw, 5rem)" }}
+              >
+                Contact &amp; Visit
+              </h1>
+
+              {/* Gold + white divider */}
+              <div className="mt-4 md:mt-5 flex items-center gap-3">
+                <div className="h-px w-8 bg-[#C4A265]/70 flex-shrink-0" />
+                <div className="h-px w-16 bg-white/10 flex-shrink-0" />
+              </div>
+
+              {/* Gallery details */}
+              <div className="mt-4 md:mt-5 space-y-1.5">
+                <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-white/35 font-sans">
+                  Mission Viejo · California
+                </p>
+                <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-white/35 font-sans">
+                  Tue – Fri &nbsp;10:00 – 18:00 &nbsp;·&nbsp; Sat 11:00 – 17:00
+                </p>
+              </div>
+
+              {/* Open indicator */}
+              <div className="mt-4 md:mt-5 flex items-center gap-2">
+                <span className="block w-1.5 h-1.5 rounded-full bg-[#C4A265] animate-pulse flex-shrink-0" />
+                <span className="text-[8px] tracking-[0.35em] uppercase text-[#C4A265]/75 font-sans">
+                  Open for Visits &amp; Inquiries
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Four corner brackets — invitation card motif */}
+            {(["top-3 left-3 border-t border-l",
+               "top-3 right-3 border-t border-r",
+               "bottom-3 left-3 border-b border-l",
+               "bottom-3 right-3 border-b border-r"] as const).map((cls) => (
+              <div
+                key={cls}
+                className={`absolute w-5 h-5 sm:w-6 sm:h-6 border-[#C4A265]/30 pointer-events-none z-30 ${cls}`}
+              />
+            ))}
+
+            {/* Top gold hairline */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C4A265]/40 to-transparent z-30 pointer-events-none" />
+          </div>
+          <div className="h-px bg-warm-gray/50" />
+        </div>
+      </section>
 
       {/* ─── Contact Form + Info ───────────────────────────── */}
       <section className="py-24 md:py-32">
