@@ -52,7 +52,7 @@ export default function JournalPostContent() {
             src={post.coverImage}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-cover object-top"
             priority
           />
           <div className="absolute inset-0 bg-black/70" />
@@ -133,7 +133,7 @@ export default function JournalPostContent() {
                 src={post.coverImage}
                 alt={post.title}
                 fill
-                className="object-cover"
+                className="object-cover object-top"
               />
             </div>
 
