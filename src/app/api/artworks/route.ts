@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
         tags: JSON.stringify(body.tags || []),
         featured: body.featured || false,
         framing: body.framing || null,
-        certificate: body.certificate || null,
+        certificate: body.certificate != null ? String(body.certificate) : null,
       },
     })
 

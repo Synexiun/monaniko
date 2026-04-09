@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { cn, formatPrice, slugify } from '@/lib/utils';
 import type { ArtworkStatus, ArtworkCategory, ArtworkMedium } from '@/types';
+import FileUpload from '@/components/admin/FileUpload';
 
 const fadeIn = {
   initial: { opacity: 0, y: 12 },
@@ -99,6 +100,7 @@ interface ArtworkFormState {
   title: string;
   slug: string;
   description: string;
+  images: string[];
   category: ArtworkCategory;
   medium: ArtworkMedium;
   dimensionWidth: number;
@@ -119,6 +121,7 @@ const emptyForm: ArtworkFormState = {
   title: '',
   slug: '',
   description: '',
+  images: [],
   category: 'painting',
   medium: 'oil',
   dimensionWidth: 0,
@@ -261,6 +264,7 @@ export default function ArtworksPage() {
       title: artwork.title,
       slug: artwork.slug,
       description: artwork.description,
+      images: artwork.images || [],
       category: artwork.category,
       medium: artwork.medium,
       dimensionWidth: artwork.dimensions?.width ?? 0,
@@ -295,6 +299,7 @@ export default function ArtworksPage() {
         title: form.title,
         slug: form.slug || slugify(form.title),
         description: form.description,
+        images: form.images,
         category: form.category,
         medium: form.medium,
         dimensions: {
@@ -751,6 +756,19 @@ export default function ArtworksPage() {
                     onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
                     className="w-full px-3.5 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-300 transition-colors resize-none"
                     placeholder="Describe the artwork..."
+                  />
+                </div>
+
+                {/* Images */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Images
+                  </label>
+                  <FileUpload
+                    value={form.images}
+                    onChange={(urls) => setForm((prev) => ({ ...prev, images: urls }))}
+                    maxFiles={6}
+                    folder="mona-niko-gallery/artworks"
                   />
                 </div>
 

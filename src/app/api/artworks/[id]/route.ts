@@ -47,7 +47,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (body.tags !== undefined) data.tags = JSON.stringify(body.tags)
     if (body.featured !== undefined) data.featured = body.featured
     if (body.framing !== undefined) data.framing = body.framing
-    if (body.certificate !== undefined) data.certificate = body.certificate
+    if (body.certificate !== undefined) data.certificate = body.certificate != null ? String(body.certificate) : null
 
     const artwork = await db.artwork.update({ where: { id }, data })
 
