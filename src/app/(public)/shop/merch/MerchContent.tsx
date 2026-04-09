@@ -14,7 +14,6 @@ const subCategories: { label: string; value: string }[] = [
   { label: "T-Shirts", value: "merch_tshirt" },
   { label: "Sweatshirts", value: "merch_sweatshirt" },
   { label: "Leggings", value: "merch_leggings" },
-  { label: "Suitcases", value: "merch_suitcase" },
   { label: "Ties", value: "merch_tie" },
 ];
 

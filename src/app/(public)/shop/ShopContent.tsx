@@ -38,7 +38,7 @@ const categories = [
   {
     title: "Merch & Objects",
     description:
-      "Cushions, t-shirts, sweatshirts, leggings, suitcases, and more — everyday objects transformed into wearable and functional art.",
+      "Cushions, t-shirts, sweatshirts, leggings, and more — everyday objects transformed into wearable and functional art.",
     href: "/shop/merch",
     image: "/images/artworks/artwork-3.jpg",
     count: merchCount,
