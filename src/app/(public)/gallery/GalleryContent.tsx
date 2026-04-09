@@ -174,9 +174,6 @@ export default function GalleryPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-[11px] tracking-[0.3em] uppercase text-gold mb-5">
-              By Appointment
-            </p>
             <h2 className="font-serif text-3xl md:text-4xl text-white font-medium mb-4">
               Request a Private Viewing
             </h2>

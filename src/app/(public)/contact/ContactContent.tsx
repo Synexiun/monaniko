@@ -9,12 +9,10 @@ import Button from "@/components/ui/Button";
 const galleryInfo = {
   address: "25550 Commercentre Drive, Suite 250",
   city: "Mission Viejo, CA 92691",
-  phone: "(949) 555-0142",
-  email: "hello@monaniko.com",
+  phone: "949-317-8513",
+  email: "admin@monaniko.com",
   hours: [
-    { days: "Tuesday – Friday", time: "10:00 AM – 6:00 PM" },
-    { days: "Saturday", time: "11:00 AM – 5:00 PM" },
-    { days: "Sunday – Monday", time: "By Appointment Only" },
+    { days: "Every Day", time: "11:00 AM – 5:00 PM" },
   ],
 };
 
@@ -60,7 +58,7 @@ export default function ContactPage() {
       {/* ── Contact Hero — "The Invitation" ──────────────── */}
       <section className="pt-28 lg:pt-32">
         <div className="container-gallery">
-          <div className="relative h-[220px] sm:h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden bg-[#111111]">
+          <div className="relative h-[220px] sm:h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden bg-[#1B0D08]">
 
             {/* Grain texture overlay */}
             <div
@@ -88,7 +86,7 @@ export default function ContactPage() {
                 sizes="(max-width: 768px) 46vw, 42vw"
               />
               {/* Fade right edge into the dark background */}
-              <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-transparent to-[#111111] pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-r from-transparent to-[#1B0D08] pointer-events-none" />
               {/* Subtle top + bottom vignette */}
               <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-[#111111]/60 to-transparent pointer-events-none" />
               <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#111111]/60 to-transparent pointer-events-none" />
@@ -124,7 +122,7 @@ export default function ContactPage() {
                   Mission Viejo · California
                 </p>
                 <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-white/35 font-sans">
-                  Tue – Fri &nbsp;10:00 – 18:00 &nbsp;·&nbsp; Sat 11:00 – 17:00
+                  Every Day &nbsp;11:00 AM – 5:00 PM
                 </p>
               </div>
 
@@ -390,58 +388,19 @@ export default function ContactPage() {
                 </h3>
                 <div className="divider-gold mb-6" />
                 <div className="flex items-center gap-5">
-                  {[
-                    {
-                      name: "Instagram",
-                      href: "https://instagram.com/monaniko",
-                      icon: (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                          <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                        </svg>
-                      ),
-                    },
-                    {
-                      name: "Pinterest",
-                      href: "https://pinterest.com/monaniko",
-                      icon: (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M12 2C6.48 2 2 6.48 2 12c0 4.25 2.67 7.9 6.44 9.34-.09-.78-.17-1.99.04-2.85.18-.78 1.17-4.97 1.17-4.97s-.3-.6-.3-1.48c0-1.39.8-2.42 1.8-2.42.85 0 1.26.64 1.26 1.4 0 .85-.54 2.12-.82 3.3-.24.99.5 1.8 1.47 1.8 1.76 0 3.12-1.86 3.12-4.54 0-2.37-1.7-4.03-4.14-4.03-2.82 0-4.47 2.11-4.47 4.3 0 .85.33 1.76.74 2.26.08.1.09.19.07.29-.08.31-.25.99-.28 1.13-.04.18-.15.22-.34.13-1.26-.58-2.05-2.43-2.05-3.91 0-3.18 2.31-6.1 6.67-6.1 3.5 0 6.22 2.49 6.22 5.83 0 3.48-2.19 6.28-5.23 6.28-1.02 0-1.98-.53-2.31-1.16l-.63 2.4c-.23.88-.85 1.98-1.27 2.66A10 10 0 0022 12c0-5.52-4.48-10-10-10z" />
-                        </svg>
-                      ),
-                    },
-                    {
-                      name: "Facebook",
-                      href: "https://facebook.com/monaniko",
-                      icon: (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                        </svg>
-                      ),
-                    },
-                    {
-                      name: "YouTube",
-                      href: "https://youtube.com/@monaniko",
-                      icon: (
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.43z" />
-                          <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
-                        </svg>
-                      ),
-                    },
-                  ].map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.name}
-                      className="text-charcoal-light hover:text-gold transition-colors"
-                    >
-                      {social.icon}
-                    </a>
-                  ))}
+                  <a
+                    href="https://www.instagram.com/monaniko_/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="text-charcoal-light hover:text-gold transition-colors"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    </svg>
+                  </a>
                 </div>
               </div>
 
@@ -451,29 +410,17 @@ export default function ContactPage() {
                   Find Us
                 </h3>
                 <div className="divider-gold mb-6" />
-                <div className="relative aspect-[16/9] bg-warm-gray overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <svg
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        className="text-charcoal-light mx-auto mb-3"
-                      >
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                      <p className="text-sm text-charcoal-light">
-                        Interactive map coming soon
-                      </p>
-                      <p className="text-[11px] text-charcoal-light mt-1">
-                        Mission Viejo, CA 92691
-                      </p>
-                    </div>
-                  </div>
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <iframe
+                    src="https://maps.google.com/maps?q=25550+Commercentre+Drive+Suite+250+Mission+Viejo+CA+92691&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, position: "absolute", inset: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Mona Niko Gallery Location"
+                  />
                 </div>
               </div>
             </motion.div>
