@@ -285,7 +285,7 @@ export default function FaqPage() {
                   Contact Us
                 </Button>
               </Link>
-              <a href="mailto:hello@monaniko.com">
+              <a href="mailto:admin@monaniko.com">
                 <Button variant="outline" size="lg">
                   Email Directly
                 </Button>

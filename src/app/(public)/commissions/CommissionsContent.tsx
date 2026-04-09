@@ -322,7 +322,7 @@ export default function CommissionsPage() {
                   <p className="text-[12px] text-charcoal-light">
                     Feel free to include reference images in your follow-up
                     email to{" "}
-                    <span className="text-gold">studio@monaniko.com</span> after
+                    <span className="text-gold">admin@monaniko.com</span> after
                     submitting this form.
                   </p>
 

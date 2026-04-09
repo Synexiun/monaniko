@@ -41,15 +41,45 @@ export default function ContactPage() {
     notes: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [pvSubmitted, setPvSubmitted] = useState(false);
+  const [pvSubmitting, setPvSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "GENERAL",
+          name: formData.name,
+          email: formData.email,
+          message: `Subject: ${formData.subject}\n\n${formData.message}`,
+        }),
+      });
+    } catch {}
+    setSubmitting(false);
     setSubmitted(true);
   };
 
-  const handlePvSubmit = (e: React.FormEvent) => {
+  const handlePvSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPvSubmitting(true);
+    try {
+      await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "PRIVATE_VIEWING",
+          name: pvFormData.name,
+          email: pvFormData.email,
+          message: `Preferred date: ${pvFormData.preferredDate}${pvFormData.notes ? `\n\nNotes: ${pvFormData.notes}` : ""}`,
+        }),
+      });
+    } catch {}
+    setPvSubmitting(false);
     setPvSubmitted(true);
   };
 
@@ -270,8 +300,8 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <Button type="submit" variant="gold" size="lg">
-                    Send Message
+                  <Button type="submit" variant="gold" size="lg" disabled={submitting}>
+                    {submitting ? "Sending…" : "Send Message"}
                   </Button>
                 </form>
               )}
@@ -584,8 +614,9 @@ export default function ContactPage() {
                     variant="gold"
                     size="lg"
                     className="w-full"
+                    disabled={pvSubmitting}
                   >
-                    Request Private Viewing
+                    {pvSubmitting ? "Sending…" : "Request Private Viewing"}
                   </Button>
                 </form>
               )}
