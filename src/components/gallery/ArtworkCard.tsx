@@ -20,6 +20,7 @@ const statusLabels: Record<string, { label: string; className: string }> = {
 
 export default function ArtworkCard({ artwork, index = 0, priority = false }: ArtworkCardProps) {
   const status = statusLabels[artwork.status];
+  const coverImage = Array.isArray(artwork.images) ? artwork.images[0] : null;
 
   return (
     <motion.div
@@ -31,14 +32,20 @@ export default function ArtworkCard({ artwork, index = 0, priority = false }: Ar
       <Link href={`/gallery/${artwork.slug}`} className="group block">
         {/* Image */}
         <div className="relative aspect-[3/4] overflow-hidden bg-cream-dark">
-          <Image
-            src={artwork.images[0]}
-            alt={artwork.title}
-            fill
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            priority={priority}
-          />
+          {coverImage ? (
+            <Image
+              src={coverImage}
+              alt={artwork.title}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={priority}
+            />
+          ) : (
+            <div className="w-full h-full bg-warm-gray flex items-center justify-center">
+              <span className="text-[10px] tracking-[0.15em] uppercase text-charcoal-light/40">No Image</span>
+            </div>
+          )}
           {/* Status Badge */}
           {status && (
             <div className={cn("absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase font-medium", status.className)}>
@@ -61,7 +68,8 @@ export default function ArtworkCard({ artwork, index = 0, priority = false }: Ar
             {artwork.title}
           </h3>
           <p className="text-[11px] tracking-[0.14em] uppercase text-charcoal-light">
-            {artwork.medium.replace("_", " ")} — {artwork.dimensions.width}&quot; × {artwork.dimensions.height}&quot;
+            {artwork.medium ? artwork.medium.replace("_", " ") : ""}
+            {artwork.dimensions ? ` — ${artwork.dimensions.width}" × ${artwork.dimensions.height}"` : ""}
           </p>
           <p className="text-[13px] font-medium text-charcoal">
             {artwork.status === "available" && artwork.price

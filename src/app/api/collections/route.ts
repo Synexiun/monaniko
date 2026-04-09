@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 import { parsePagination, paginatedResponse, jsonResponse, errorResponse } from '@/lib/api-utils'
 import { slugify } from '@/lib/utils'
 import { requireAuth } from '@/lib/auth'
