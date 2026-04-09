@@ -68,8 +68,12 @@ export default function ShopPage() {
   return (
     <>
       <PageHero
-        image="/images/hero/shop/2.jpg"
-        alt="Shop"
+        images={[
+          "/images/paintings/Mona-Niko-Artwork-1.jpg",
+          "/images/paintings/Mona-Niko-Artwork-26.jpg",
+          "/images/paintings/Mona-Niko-Artwork-8.jpg",
+        ]}
+        alt="Shop — Mona Niko Gallery"
         title="Shop"
         subtitle="Original Paintings · Prints · Limited Editions"
       />

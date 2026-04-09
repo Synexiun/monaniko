@@ -24,8 +24,12 @@ export default function JournalPage() {
   return (
     <>
       <PageHero
-        image="/images/hero/gallery/2.jpg"
-        alt="Journal"
+        images={[
+          "/images/paintings/Mona-Niko-Artwork-11-1.jpg",
+          "/images/paintings/Mona-Niko-Artwork-13.jpg",
+          "/images/paintings/Mona-Niko-Artwork-30-1.jpg",
+        ]}
+        alt="Journal — Mona Niko Gallery"
         title="Journal"
         subtitle="Stories, studio notes, and creative insights"
       />

@@ -112,8 +112,12 @@ export default function CommissionsPage() {
   return (
     <>
       <PageHero
-        image="/images/hero/collection/com.png"
-        alt="Commissions"
+        images={[
+          "/images/paintings/Mona-Niko-Artwork-20-1.jpg",
+          "/images/paintings/Mona-Niko-Artwork-25-1.jpg",
+          "/images/paintings/Mona-Niko-Artwork-23-1.jpg",
+        ]}
+        alt="Commissions — Mona Niko Gallery"
         title="Custom Commissions"
         subtitle="A bespoke artwork tailored to your vision"
       />
