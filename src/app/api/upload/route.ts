@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import { uploadImage } from '@/lib/cloudinary'
+import { put } from '@vercel/blob'
 import { requireAuth } from '@/lib/auth'
 import { jsonResponse, errorResponse } from '@/lib/api-utils'
 
@@ -12,14 +12,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const formData = await req.formData()
-    const folder = (formData.get('folder') as string) || 'mona-niko-gallery'
-
-    const urls: string[] = []
     const files = formData.getAll('files') as File[]
 
     if (!files.length) {
       return errorResponse('No files provided', 400)
     }
+
+    const urls: string[] = []
 
     for (const file of files) {
       if (file.size > MAX_FILE_SIZE) {
@@ -29,14 +28,9 @@ export async function POST(req: NextRequest) {
         return errorResponse(`File type ${file.type} is not allowed`, 400)
       }
 
-      const bytes = await file.arrayBuffer()
-      const buffer = Buffer.from(bytes)
-
-      const result = await uploadImage(buffer, folder, {
-        public_id: `${Date.now()}-${file.name.replace(/\.[^.]+$/, '').replace(/[^a-z0-9]/gi, '-').toLowerCase()}`,
-      })
-
-      urls.push(result.url)
+      const filename = `artworks/${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi, '-').toLowerCase()}`
+      const blob = await put(filename, file, { access: 'public' })
+      urls.push(blob.url)
     }
 
     return jsonResponse({ urls })

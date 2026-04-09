@@ -22,6 +22,7 @@
     "@stripe/stripe-js": "^8.9.0",
     "@types/pg": "^8.18.0",
     "@vercel/analytics": "^2.0.0",
+    "@vercel/blob": "^2.3.3",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.9.0",
